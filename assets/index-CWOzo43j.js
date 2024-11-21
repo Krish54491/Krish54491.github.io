@@ -14,4 +14,9 @@
       Click on the Vite logo to learn more
     </p>
   </div>
+`;document.querySelector("#test").innerHTML=`
+  <div>
+    <h1> This is a test of my super cool button:<h1>
+    <MyButton />
+  </div>
 `;a(document.querySelector("#counter"));
