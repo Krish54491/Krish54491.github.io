@@ -7,8 +7,14 @@ export function setupCounter(element) {
   element.addEventListener('click', () => setCounter(counter + 1))
   setCounter(0)
 }
-export function MyButton(){
-  return (
-    <button>I'm a button</button>
-  );
+export function MyButton(element){
+  const fun = () => {
+    if(element.innerHTML == `Waa`){
+      element.innerHTML = `Hoo`
+    } else {
+      element.innerHTML = `Waa`
+    }
+  }
+
+  element.addEventListener('click', () => fun())
 }

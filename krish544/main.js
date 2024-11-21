@@ -23,7 +23,8 @@ document.querySelector('#app').innerHTML = `
 document.querySelector('#test').innerHTML = `
   <div>
     <h1> This is a test of my super cool button:<h1>
-    <MyButton />
+    <button id="fun"> I'm a button </button>
   </div>
 `
+MyButton(document.querySelector('#fun'))
 setupCounter(document.querySelector('#counter'))
