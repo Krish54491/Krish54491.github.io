@@ -7,3 +7,8 @@ export function setupCounter(element) {
   element.addEventListener('click', () => setCounter(counter + 1))
   setCounter(0)
 }
+export function MyButton(){
+  return (
+    <button>I'm a button</button>
+  );
+}
