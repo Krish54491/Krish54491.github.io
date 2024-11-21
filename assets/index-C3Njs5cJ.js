@@ -17,6 +17,6 @@
 `;document.querySelector("#test").innerHTML=`
   <div>
     <h1> This is a test of my super cool button:<h1>
-    <button id="fun"> I'm a button </button>
+    <button id="fun"></button>
   </div>
 `;u(document.querySelector("#fun"));a(document.querySelector("#counter"));
