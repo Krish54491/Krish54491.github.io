@@ -3,7 +3,7 @@ import { useState } from "react";
 const Square = ({ value, onSquareClick }) => {
   return (
     <button
-      className="border-2 dark:border-neutral-200 border-slate-900 p-2 lg:p-20 text-8xl rounded-md lg:w-[16.25rem] lg:h-[16.25rem]"
+      className="border-2 dark:border-neutral-200 border-slate-900 p-2 lg:p-20 text-8xl rounded-md lg:w-[16.25rem] lg:h-[16.25rem] hover:animate-pulse"
       onClick={onSquareClick}
     >
       {value ?? "⠀"}
