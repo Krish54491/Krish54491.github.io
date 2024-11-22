@@ -3,7 +3,9 @@ import { useState } from "react";
 const Square = ({ value, onSquareClick }) => {
   return (
     <button
-      className="border-2 dark:border-neutral-200 border-slate-900 p-2 lg:p-20 text-8xl rounded-md lg:w-[16.25rem] lg:h-[16.25rem] hover:animate-pulse"
+      className={`border-2 dark:border-neutral-200 border-slate-900 p-2 lg:p-20 text-8xl rounded-md lg:w-[16.25rem] lg:h-[16.25rem] ${
+        value ? "" : "hover:animate-scale"
+      }`}
       onClick={onSquareClick}
     >
       {value ?? "⠀"}
@@ -103,8 +105,10 @@ export const TicTacToe = () => {
       <li key={move}>
         <button
           onClick={() => jumpTo(move)}
-          className={`bg-cyan-500 dark:bg-indigo-800 hover:animate-bounce p-2 rounded-md my-1 ${
-            !status.includes("Next player:") ? "animate-bounce" : ""
+          className={`bg-cyan-500 dark:bg-indigo-800 p-2 rounded-md my-1 ${
+            !status.includes("Next player:")
+              ? "animate-bounce"
+              : "hover:animate-wiggle"
           }`}
         >
           Go to game start
