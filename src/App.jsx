@@ -51,12 +51,12 @@ function App() {
               <ol className="auto-cols-auto m-4 w-fit">
                 <li className="m-2">
                   <button className="text-2xl bg-cyan-500 dark:bg-indigo-800 rounded-md p-2">
-                    Tic-Tac-Toe
+                    <Link to="/TicTacToe">Tic-Tac-Toe</Link>
                   </button>
                 </li>
                 <li className="m-2">
                   <button className="text-2xl bg-cyan-500 dark:bg-indigo-800 rounded-md p-2">
-                    Countdown
+                    <Link to="/Countdown">Countdown</Link>
                   </button>
                 </li>
               </ol>
