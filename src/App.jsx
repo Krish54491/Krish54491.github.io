@@ -1,55 +1,73 @@
-import { TicTacToe } from "./TicTacToe";
-import { Countdown } from "./Countdown";
+import { TicTacToe } from "./pages/TicTacToe";
+import { Countdown } from "./pages/Countdown";
 import { useState } from "react";
+import { Route, Routes, useNavigate, Link } from "react-router-dom";
+import { Nav } from "./Nav.jsx";
+const Button = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/");
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      style={{
+        padding: "10px 20px",
+        fontSize: "16px",
+        cursor: "pointer",
+        outline: "none",
+        border: "2px solid green",
+        borderRadius: "4px",
+        marginTop: "16px",
+        marginBottom: "16px",
+      }}
+    >
+      Go to Home
+    </button>
+  );
+};
 
 function App() {
-  const [mode, setMode] = useState("");
-  const modeShift = (shifter) => {
-    setMode(shifter);
-  };
-  //let mode;
-  if (mode === "Tic-Tac-Toe") return <TicTacToe />;
-  else if (mode === "Countdown") return <Countdown />;
-  else {
-    return (
-      <>
-        <div className="flex items-start justify-center mt-2">
-          <img
-            src="Krish544 Icon.png"
-            alt="Krish544 Logo"
-            className="w-10 hover:animate-bounce"
-          ></img>
-          <h2 className="text-3xl">Krish Bharal's Portfolio:</h2>
-        </div>
-        <a
-          href="https://drive.google.com/file/d/14UwY0AH2w9QE-HEedoqScHLyFy7U8P-H/view?usp=sharing"
-          className="flex items-start justify-center mt-2"
-        >
-          <button className="text-2xl bg-cyan-500 dark:bg-indigo-800 rounded-md p-2">
-            My Resume
-          </button>
-        </a>
-        <ol className="auto-cols-auto m-4">
-          <li className="m-2">
-            <button
-              onClick={() => modeShift("Tic-Tac-Toe")}
-              className="text-2xl bg-cyan-500 dark:bg-indigo-800 rounded-md p-2"
-            >
-              Tic-Tac-Toe
-            </button>
-          </li>
-          <li className="m-2">
-            <button
-              onClick={() => modeShift("Countdown")}
-              className="text-2xl bg-cyan-500 dark:bg-indigo-800 rounded-md p-2"
-            >
-              Countdown
-            </button>
-          </li>
-        </ol>
-      </>
-    );
-  }
+  return (
+    <>
+      <Nav />
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <div className="flex flex-col relative lg:absolute top-0 right-0 items-center justify-start mt-14">
+                <img
+                  src="Krish544 Icon.png"
+                  alt="Krish544 Logo"
+                  className="lg:w-[20svw] w-[80svw] hover:animate-smallspin"
+                ></img>
+                <h2 className="text-3xl m-4">Krish Bharal's Portfolio</h2>
+              </div>
+
+              <ol className="auto-cols-auto m-4 w-fit">
+                <li className="m-2">
+                  <button className="text-2xl bg-cyan-500 dark:bg-indigo-800 rounded-md p-2">
+                    Tic-Tac-Toe
+                  </button>
+                </li>
+                <li className="m-2">
+                  <button className="text-2xl bg-cyan-500 dark:bg-indigo-800 rounded-md p-2">
+                    Countdown
+                  </button>
+                </li>
+              </ol>
+            </>
+          }
+        />
+        <Route path="/TicTacToe" element={<TicTacToe />} />
+        <Route path="/Countdown" element={<Countdown />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;
