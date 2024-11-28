@@ -25,6 +25,7 @@ export const Nav = () => {
             <a
               href="https://drive.google.com/file/d/14UwY0AH2w9QE-HEedoqScHLyFy7U8P-H/view?usp=sharing"
               className=""
+              target="_blank"
             >
               <button className="bg-cyan-500 dark:bg-indigo-800 rounded-md p-2 m-1">
                 My Resume

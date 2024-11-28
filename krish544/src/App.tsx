@@ -1,7 +1,7 @@
-import { TicTacToe } from "./pages/TicTacToe.js";
+import { TicTacToe } from "./pages/TicTacToe.tsx";
 import { Countdown } from "./pages/Countdown.js";
 //import { useState } from "react";
-import { Route, Routes, useNavigate, Link } from "react-router-dom";
+import { Route, Routes, Link } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
 
 function App() {

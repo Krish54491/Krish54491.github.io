@@ -5,6 +5,16 @@ import { Route, Routes, useNavigate, Link } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
 
 function App() {
+  const [pic, setPic] = useState("Krish544 Icon.png");
+  const changePic = () => {
+    if (pic === "Ampharos.png") {
+      setPic("Krish544 Icon.png");
+    } else {
+      setPic("Ampharos.png");
+      console.log("Worse pokemon than jolteon!");
+    }
+  };
+
   return (
     <>
       <Nav />
@@ -16,7 +26,8 @@ function App() {
             <>
               <div className="flex flex-col relative lg:absolute top-0 right-0 items-center justify-start mt-14">
                 <img
-                  src="Krish544 Icon.png"
+                  src={`${pic}`}
+                  onClick={changePic}
                   alt="Krish544 Logo"
                   className="lg:w-[20svw] w-[80svw] hover:animate-smallspin"
                 ></img>
