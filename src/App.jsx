@@ -11,7 +11,7 @@ function App() {
       setPic("Krish544 Icon.png");
     } else {
       setPic("Ampharos.png");
-      console.log("Worse pokemon than jolteon!");
+      console.log("Worse than jolteon!");
     }
   };
 
