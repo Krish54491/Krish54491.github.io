@@ -13,12 +13,17 @@ export const Nav = () => {
           </li>
           <li>
             <button className="bg-cyan-500 dark:bg-indigo-800 p-2 rounded-md m-1">
-              <Link to="/TicTacToe">Tic-Tac-Toe</Link>
+              <Link to="/tictactoe">Tic-Tac-Toe</Link>
             </button>
           </li>
           <li>
             <button className="bg-cyan-500 dark:bg-indigo-800 p-2 rounded-md m-1">
-              <Link to="/Countdown">Countdown</Link>
+              <Link to="/countdown">Countdown</Link>
+            </button>
+          </li>
+          <li>
+            <button className="bg-cyan-500 dark:bg-indigo-800 p-2 rounded-md m-1">
+              <Link to="/todo">To-Do</Link>
             </button>
           </li>
           <li>

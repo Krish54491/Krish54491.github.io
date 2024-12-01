@@ -3,6 +3,7 @@ import { Countdown } from "./pages/Countdown";
 import { useState } from "react";
 import { Route, Routes, useNavigate, Link } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
+import { ToDoList } from "./pages/TodoList";
 
 function App() {
   const [pic, setPic] = useState("Krish544 Icon.png");
@@ -18,7 +19,6 @@ function App() {
   return (
     <>
       <Nav />
-
       <Routes>
         <Route
           path="/"
@@ -37,20 +37,21 @@ function App() {
               <ol className="auto-cols-auto m-4 w-fit">
                 <li className="m-2">
                   <button className="text-2xl bg-cyan-500 dark:bg-indigo-800 rounded-md p-2">
-                    <Link to="/TicTacToe">Tic-Tac-Toe</Link>
+                    <Link to="/tictactoe">Tic-Tac-Toe</Link>
                   </button>
                 </li>
                 <li className="m-2">
                   <button className="text-2xl bg-cyan-500 dark:bg-indigo-800 rounded-md p-2">
-                    <Link to="/Countdown">Countdown</Link>
+                    <Link to="/countdown">Countdown</Link>
                   </button>
                 </li>
               </ol>
             </>
           }
         />
-        <Route path="/TicTacToe" element={<TicTacToe />} />
-        <Route path="/Countdown" element={<Countdown />} />
+        <Route path="/tictactoe" element={<TicTacToe />} />
+        <Route path="/countdown" element={<Countdown />} />
+        <Route path="/todo" element={<ToDoList />} />
       </Routes>
     </>
   );
