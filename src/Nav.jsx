@@ -28,7 +28,18 @@ export const Nav = () => {
           </li>
           <li>
             <a
-              href="https://drive.google.com/file/d/14UwY0AH2w9QE-HEedoqScHLyFy7U8P-H/view?usp=sharing"
+              href="https://krish54491.github.io/Krish54491-chipmunk/"
+              className=""
+              target="_blank"
+            >
+            <button className="bg-cyan-500 dark:bg-indigo-800 p-2 rounded-md m-1">
+              Chipmunk
+            </button>
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://drive.google.com/file/d/1Fzdb4QaAYYBDV-JkGhtMtlGTjvjRJB-e/view?usp=sharing"
               className=""
               target="_blank"
             >
