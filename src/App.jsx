@@ -19,6 +19,7 @@ function App() {
       } else{
         setPic("Ampharos.png");
       }
+      return;
     }
     const pokemonRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
     const pokemon = await pokemonRes.json();
@@ -26,6 +27,7 @@ function App() {
     if (shinyChance === 1) {
       const shinySpriteUrl = pokemon.sprites.front_shiny;
       setPic(shinySpriteUrl);
+      console.log("Shiny!");
     } else{
       const spriteUrl = pokemon.sprites.front_default;
       setPic(spriteUrl);
