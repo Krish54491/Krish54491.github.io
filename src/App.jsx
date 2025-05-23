@@ -7,13 +7,38 @@ import { ToDoList } from "./pages/TodoList";
 
 function App() {
   const [pic, setPic] = useState("Krish544 Icon.png");
-  const changePic = () => {
-    if (pic === "Ampharos.png") {
-      setPic("Krish544 Icon.png");
-    } else {
-      setPic("Ampharos.png");
-      console.log("Worse than jolteon!");
+  const [pokemonName, setPokemonName] = useState("Krish544 Icon");
+  const changePic = async () => {
+    const speciesRes = await fetch("https://pokeapi.co/api/v2/pokemon-species?limit=0");
+    const speciesData = await speciesRes.json();
+    const total = speciesData.count;
+    const randomId = Math.floor(Math.random() * (total + 1));
+    if(randomId === 0) {
+      if(Math.floor(Math.random() * 2) === 0) {
+        setPic("Krish544 Icon.png");
+      } else{
+        setPic("Ampharos.png");
+      }
     }
+    const pokemonRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
+    const pokemon = await pokemonRes.json();
+    const shinyChance = Math.floor((Math.random() * 4096) + 1);
+    if (shinyChance === 1) {
+      const shinySpriteUrl = pokemon.sprites.front_shiny;
+      setPic(shinySpriteUrl);
+    } else{
+      const spriteUrl = pokemon.sprites.front_default;
+      setPic(spriteUrl);
+    }
+    setPokemonName(pokemon.name);
+
+    
+    //if (pic === "Ampharos.png") {
+    //  setPic("Krish544 Icon.png");
+    //} else {
+    //  setPic("Ampharos.png");
+    //  console.log("Worse than jolteon!");
+    //}
   };
 
   return (
@@ -28,7 +53,7 @@ function App() {
                 <img
                   src={`${pic}`}
                   onClick={changePic}
-                  alt="Krish544 Logo"
+                  alt={pokemonName}
                   className="lg:w-[20svw] w-[80svw] hover:animate-smallspin"
                 ></img>
                 <h2 className="text-3xl m-4">Krish Bharal's Portfolio</h2>
