@@ -4,7 +4,7 @@ const Item = ({ s, onComplete }) => {
   return (
     <>
       <div className="flex flex-row m-1">
-        <input type="checkbox" className="m-1" onChange={onComplete}></input>
+        <input type="checkbox" className="mr-1 mt-1" onChange={onComplete}></input>
         <p className="text-2xl">{s}</p>
       </div>
     </>
@@ -16,7 +16,7 @@ const CompletedItem = ({ s, onUncomplete }) => {
       <div className="flex flex-row m-1">
         <input
           type="checkbox"
-          className="m-1"
+          className="mr-1 mt-1"
           checked={true}
           onChange={onUncomplete}
         ></input>
@@ -76,7 +76,7 @@ export const ToDoList = () => {
               onComplete={() => handleComplete(index)}
             />
           ))}
-          <h3 className="flex justify-center text-3xl lg:text-4xl bg-cyan-500 dark:bg-indigo-800 rounded-md mt-4 mb-2">
+          <h3 className="flex justify-center text-3xl lg:text-4xl p-1 bg-cyan-500 dark:bg-indigo-800 rounded-md mt-4 mb-2">
             Completed:
           </h3>
           {completed.map((item, index) => (
