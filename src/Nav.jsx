@@ -7,7 +7,7 @@ export const Nav = () => {
     <>
       <nav>
         <button
-          className="md:hidden text-white focus:outline-none"
+          className={`${menuOpen ? "" :"md:hidden"} text-white focus:outline-none`}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -18,22 +18,22 @@ export const Nav = () => {
           </svg>
         </button>
         <div className={`flex-row justify-center md:flex ${menuOpen ? "flex flex-col" : "hidden space-x-2"} p-2 space-y-2 md:space-y-0 absolute md:static bg-cyan-500 dark:bg-indigo-800 left-0 w-full md:w-auto  md:top-auto z-10`}>
-          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1">
-              <Link to="/">Home</Link>
+          <button className={" bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 "}>
+              <Link to="/" className={`${menuOpen ? "block w-full" : ""}`}>Home</Link>
             </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1">
-              <Link to="/tictactoe">Tic-Tac-Toe</Link>
+              <Link to="/tictactoe" className={`${menuOpen ? "block w-full" : ""}`}>Tic-Tac-Toe</Link>
             </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1">
-              <Link to="/countdown">Countdown</Link>
+              <Link to="/countdown" className={`${menuOpen ? "block w-full" : ""}`}>Countdown</Link>
             </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1">
-              <Link to="/todo">To-Do</Link>
+              <Link to="/todo" className={`${menuOpen ? "block w-full" : ""}`}>To-Do</Link>
             </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1">
           <a
               href="https://krish54491.github.io/Krish54491-chipmunk/"
-              className=""
+              className={`${menuOpen ? "block w-full" : ""}`}
               target="_blank"
             >
             
@@ -44,7 +44,7 @@ export const Nav = () => {
           <button className="bg-cyan-500 dark:bg-blue-800 rounded-md p-2 m-1">
             <a
                 href="https://drive.google.com/file/d/1Fzdb4QaAYYBDV-JkGhtMtlGTjvjRJB-e/view?usp=sharing"
-                className=""
+                className={`${menuOpen ? "block w-full" : ""}`}
                 target="_blank"
               >
                 My Resume
