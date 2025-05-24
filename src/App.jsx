@@ -97,15 +97,15 @@ function App() {
           path="/"
           element={
             <>
-              <div className="flex flex-col relative lg:absolute top-10 right-0 left-0 items-center justify-center mt-14">
+              <div className="flex flex-col relative lg:absolute top-10 right-0 left-0 items-center justify-center mb-12 lg:mt-14">
                 <img
                   src={`${pic}`}
                   onClick={changePic}
                   alt={pokemonName}
                   className="lg:w-[20svw] w-[80svw] hover:animate-smallspin"
                 ></img>
-                <h3 className="text-2xl m-4">{pokemonFound === 0 ? "Pokedex Data Loaded" : `Amount of Pokemon Found: ${pokemonFound}`}</h3>
-                <h2 className="text-3xl m-4">Krish Bharal's Portfolio</h2>
+                <h3 className="text-2xl">{pokemonFound === 0 ? "Pokedex Data Loaded" : `Amount of Pokemon Found: ${pokemonFound}`}</h3>
+                <h2 className="text-3xl">Krish Bharal's Portfolio</h2>
               </div>
               <ol className="auto-cols-auto m-4 w-fit">
                 <li className="m-2">
