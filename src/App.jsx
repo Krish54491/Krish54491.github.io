@@ -24,7 +24,7 @@ function PokemonImage({ pokemonId, getPokemonPic }) {
 
 
 function App() {
-  const [pokedexCompletion, setPokedexCompletion] = useState(Array(1025).fill(0));
+  const [pokedexCompletion, setPokedexCompletion] = useState(Array(1026).fill(0));
   const [pic, setPic] = useState("Krish544 Icon.png");
   const [pokemonName, setPokemonName] = useState("Krish544 Icon");
   const [pokemonFound, setPokemonFound] = useState(1);
@@ -35,11 +35,13 @@ function App() {
     console.log("Pokedex Completion Loaded");
     setPokeCheck(false);
   }
+  if(pokedexCompletion[0] === 0){
+    pokedexCompletion[0] = 1;
+  }
     const getPokemonPic = async (id) => {
     const pokemonRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const pokemonData = await pokemonRes.json();
     const shinypic = pokemonData.sprites.front_shiny;
-    //console.log(shinypic);
     return shinypic;
   }
   const changePic = async () => {
@@ -47,8 +49,15 @@ function App() {
     const speciesData = await speciesRes.json();
     const total = speciesData.count;
     const randomId = Math.floor(Math.random() * (total + 1));
+    // this is a hot fix because the pokedex orginally could not hold 1026 pokemon and I want to keep the pokedex completion of previous users
+    if(pokedexCompletion.length < 1026){
+      pokedexCompletion.push(0);
+      pokedexCompletion[0] = 1;
+    }
+
     if (pokeCheck) {
-      setPokedexCompletion(Array(total).fill(0));
+      setPokedexCompletion(Array(total+1).fill(0));
+      pokedexCompletion[0] = 1;
       console.log("No Previous Pokedex Completion Found");
       setPokeCheck(false);
     }
@@ -66,13 +75,18 @@ function App() {
     const pokemonRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
     const pokemon = await pokemonRes.json();
     const shinyChance = Math.floor((Math.random() * 4096) + 1);
-    if (shinyChance === 1) {
+    if( shinyChance < 10 && pokemonFound === 1026) {
+      const shinySpriteUrl = pokemon.sprites.front_shiny;
+      setPic(shinySpriteUrl);
+      console.log("Shiny!");
+      pokedexCompletion[randomId] = 2;
+    } else if (shinyChance === 1) {
       const shinySpriteUrl = pokemon.sprites.front_shiny;
       setPic(shinySpriteUrl);
       console.log("Shiny!");
       pokedexCompletion[randomId] = 2;
       //console.log(shinySpriteUrl);
-    } else{
+    } else {
       const spriteUrl = pokemon.sprites.front_default;
       setPic(spriteUrl);
       //console.log(spriteUrl);
@@ -80,7 +94,7 @@ function App() {
     localStorage.setItem("pokedexCompletion", JSON.stringify(pokedexCompletion));
     setPokemonName(pokemon.name);
     setPokemonFound(pokedexCompletion.reduce((amount, val) => ((val === 1 || val === 2) ? amount + 1 : amount), 0));
-
+  console.log(pokedexCompletion[0]);
     //if (pic === "Ampharos.png") {
     //  setPic("Krish544 Icon.png");
     //} else {
