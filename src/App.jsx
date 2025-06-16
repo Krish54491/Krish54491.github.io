@@ -121,19 +121,7 @@ function App() {
                 <h3 className="text-2xl">{pokemonFound === 0 ? "Pokedex Data Loaded" : `Amount of Pokemon Found: ${pokemonFound}`}</h3>
                 <h2 className="text-3xl">Krish Bharal's Portfolio</h2>
               </div>
-              <ol className="auto-cols-auto m-4 w-fit">
-                <li className="m-2">
-                  <button className="text-2xl bg-cyan-500 dark:bg-blue-800 rounded-md p-2">
-                    <Link to="/tictactoe">Tic-Tac-Toe</Link>
-                  </button>
-                </li>
-                <li className="m-2">
-                  <button className="text-2xl bg-cyan-500 dark:bg-blue-800 rounded-md p-2">
-                    <Link to="/countdown">Countdown</Link>
-                  </button>
-                </li>
-              </ol>
-              <div className=" absolute bottom-0 left-0 right-0 hidden lg:flex flex-row flex-wrap items-center justify-center space-x-0">
+              <div className="absolute bottom-0 left-0 right-0 hidden lg:flex flex-row flex-wrap items-center justify-center space-x-0">
                   {pokedexCompletion ? (
                   pokedexCompletion.map((item, idx) =>
                     item === 2 ? <PokemonImage pokemonId={idx} getPokemonPic={getPokemonPic} /> : null

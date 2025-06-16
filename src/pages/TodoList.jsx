@@ -29,26 +29,43 @@ export const ToDoList = () => {
   const [items, setItems] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [itemName, setItemName] = useState("");
+  const [itemCheck, setItemCheck] = useState(true);
+  if(JSON.parse(localStorage.getItem("UncompletedTasks")) != null && itemCheck){
+    setItems(JSON.parse(localStorage.getItem("UncompletedTasks")))
+    setItemCheck(false)
+  }
   const textFollow = (e) => {
     setItemName(e.currentTarget.value);
   };
   const addToArray = () => {
-    setItems(items.concat(itemName));
+    items.push(itemName)
+    setItems(items);
     setItemName("");
-    console.log(items);
+    //console.log(items);
+    saveData()
   };
 
   const handleComplete = (itemIndex) => {
     const itemToMove = items[itemIndex];
-    setItems(items.filter((_, index) => index !== itemIndex));
+    items.pop(itemIndex)
+    setItems(items);
     setCompleted([...completed, itemToMove]);
+    console.log(items);
+    saveData()
   };
   const handleUncomplete = (itemIndex) => {
     const itemToMove = completed[itemIndex];
     setCompleted(completed.filter((_, index) => index !== itemIndex));
-    setItems([...items, itemToMove]);
+    items.push(itemToMove)
+    setItems(items);
+    //console.log(items);
+    saveData()
   };
+  const saveData = () => {
+    localStorage.setItem("UncompletedTasks", JSON.stringify(items))
+    //console.log(items);
 
+  }
   return (
     <>
       <div className="flex flex-col justify-center items-center">
