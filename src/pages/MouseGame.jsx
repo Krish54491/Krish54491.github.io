@@ -52,7 +52,7 @@ export const MouseGame = () => {
     return (
         <>
         <div className="flex flex-col items-center justify-normal mt-4">
-            <h1 className="text-4xl font-bold mb-4">Mouse Game</h1>
+            <h1 className="text-4xl font-bold mb-4">Mouse Dodge</h1>
             <p className="text-xl mb-2">Avoid the projectiles and survive as long as you can! (WIP)</p>
             <p className="text-lg mb-4">{gameStarted ? "Time Survived: " + formatTime(timeSurvived) : "Click Start to begin!"}</p>
         <div
