@@ -17,7 +17,7 @@ export const Nav = () => {
               d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <div className={`flex-row justify-center md:flex ${menuOpen ? "flex flex-col" : "hidden space-x-2"} p-2 space-y-2 md:space-y-0 absolute md:static bg-cyan-500 dark:bg-indigo-800 left-0 w-full md:w-auto  md:top-auto z-10 md:items-center`}>
+        <div className={`flex-row justify-center md:hidden ${menuOpen ? "flex flex-col" : "hidden space-x-2"} p-2 space-y-2 md:space-y-0 absolute md:static bg-cyan-500 dark:bg-indigo-800 left-0 w-full md:w-auto  md:top-auto z-10 md:items-center`}>
           <button className={"bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 px-4 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"}>
               <Link to="/" className={`${menuOpen ? "block w-full" : ""}`}>Home</Link>
             </button>
@@ -29,6 +29,9 @@ export const Nav = () => {
             </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
               <Link to="/todo" className={`${menuOpen ? "block w-full" : ""}`}>To-Do</Link>
+            </button>
+          <button className={`${menuOpen ? "hidden" : "hidden md:flex bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"}`}>
+              <Link to="/mouse" className={``}>Mouse Game</Link>
             </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
           <a
@@ -50,8 +53,66 @@ export const Nav = () => {
                 My Resume
             </a>
           </button>
-        </div>
 
+        </div>
+        
+        <div className={`flex-row justify-center hidden md:flex ${menuOpen ? "flex flex-col" : "hidden space-x-2"} p-2 space-y-2 md:space-y-0 absolute md:static bg-cyan-500 dark:bg-indigo-800 left-0 w-full md:w-auto  md:top-auto z-10 md:items-center`}>
+          <Link to="/">
+          <button className={"bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 px-4 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"}>
+              <Link to="/" className={`${menuOpen ? "block w-full" : ""}`}>Home</Link>
+            </button>
+          </Link>
+          <Link to="/tictactoe">
+          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
+              <Link to="/tictactoe" className={`${menuOpen ? "block w-full" : ""}`}>Tic-Tac-Toe</Link>
+            </button>
+          </Link>
+          <Link to="/countdown">
+          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
+              <Link to="/countdown" className={`${menuOpen ? "block w-full" : ""}`}>Countdown</Link>
+            </button>
+          </Link>
+          <Link to="/todo">
+          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
+              <Link to="/todo" className={`${menuOpen ? "block w-full" : ""}`}>To-Do</Link>
+            </button>
+          </Link>
+          <Link to="/mouse">
+          <button className={`${menuOpen ? "hidden" : "hidden md:flex bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"}`}>
+              <Link to="/mouse" className={``}>Mouse Game</Link>
+            </button>
+          </Link>
+          <a
+            href="https://krish54491.github.io/Krish54491-chipmunk/"
+            target="_blank"
+            >
+          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
+          <a
+              href="https://krish54491.github.io/Krish54491-chipmunk/"
+              className={`${menuOpen ? "block w-full" : ""}`}
+              target="_blank"
+            >
+            
+              Chipmunk
+            
+          </a>
+          </button>
+          </a>
+          <a
+            href="https://drive.google.com/file/d/1Fzdb4QaAYYBDV-JkGhtMtlGTjvjRJB-e/view?usp=sharing"
+            target="_blank"
+          >
+          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
+            <a
+                href="https://drive.google.com/file/d/1Fzdb4QaAYYBDV-JkGhtMtlGTjvjRJB-e/view?usp=sharing"
+                className={`${menuOpen ? "block w-full" : ""}`}
+                target="_blank"
+              >
+                My Resume
+            </a>
+          </button>
+          </a>
+        </div>
 
 
 

@@ -1,5 +1,6 @@
 import { TicTacToe } from "./pages/TicTacToe";
 import { Countdown } from "./pages/Countdown";
+import { MouseGame } from "./pages/MouseGame.jsx";
 import { useState,useEffect } from "react";
 import { Route, Routes, useNavigate, Link } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
@@ -32,7 +33,7 @@ function App() {
   if(localStorage.getItem("pokedexCompletion") != null && pokeCheck) {
     setPokedexCompletion(JSON.parse(localStorage.getItem("pokedexCompletion")));
     setPokemonFound(pokedexCompletion.reduce((amount, val) => ((val === 1 || val === 2) ? amount + 1 : amount), 0));
-    console.log("Pokedex Completion Loaded");
+    //console.log("Pokedex Completion Loaded");
     setPokeCheck(false);
   }
   if(pokedexCompletion[0] === 0){
@@ -58,7 +59,7 @@ function App() {
     if (pokeCheck) {
       setPokedexCompletion(Array(total+1).fill(0));
       pokedexCompletion[0] = 1;
-      console.log("No Previous Pokedex Completion Found");
+      //console.log("No Previous Pokedex Completion Found");
       setPokeCheck(false);
     }
     if(randomId === 0) {  
@@ -94,7 +95,7 @@ function App() {
     localStorage.setItem("pokedexCompletion", JSON.stringify(pokedexCompletion));
     setPokemonName(pokemon.name);
     setPokemonFound(pokedexCompletion.reduce((amount, val) => ((val === 1 || val === 2) ? amount + 1 : amount), 0));
-  console.log(pokedexCompletion[0]);
+  //console.log(pokedexCompletion[0]);
     //if (pic === "Ampharos.png") {
     //  setPic("Krish544 Icon.png");
     //} else {
@@ -135,6 +136,7 @@ function App() {
         <Route path="/tictactoe" element={<TicTacToe />} />
         <Route path="/countdown" element={<Countdown />} />
         <Route path="/todo" element={<ToDoList />} />
+        <Route path="/mouse" element={<MouseGame />} />
       </Routes>
       
     </>
