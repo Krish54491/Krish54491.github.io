@@ -121,7 +121,7 @@ export const TicTacToe = () => {
     <>
       <div className="flex flex-col lg:flex-row justify-center mt-2 ">
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-        <ol class="flex items-start justify-center flex-col m-3 ">
+        <ol className="flex items-start justify-center flex-col m-3 ">
           {status}
           {moves}
         </ol>
