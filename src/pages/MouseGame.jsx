@@ -25,6 +25,7 @@ export const MouseGame = () => {
             // put commands to set up game environment
             setDifficulty(1);
             setPrevTime(0);
+            setPrevPosition({ x: 0, y: 0 });
             setProjectiles([]); // reset projectiles
             console.log("Game Started");
         }
@@ -40,6 +41,10 @@ export const MouseGame = () => {
             localStorage.setItem("mouseGameHighScore", timeSurvived.toString());
         }
         console.log("Game Ended");
+    };
+    const resetHighScore = () => {
+        setHighScore(0);
+        localStorage.setItem("mouseGameHighScore", "0");
     };
     const handleMouseMove = (event) => {
     setPosition({ x: event.clientX, y: event.clientY });
@@ -126,14 +131,14 @@ export const MouseGame = () => {
             <h1 className="text-4xl font-bold mb-4">Mouse Dodge</h1>
             <p className="text-xl mb-2">{cheater ? "Don't try to cheat my game..." : "Avoid the projectiles and survive as long as you can!"}</p>
             <p className="text-xl mb-2">High Score: {formatTime(highScore)}</p>
-            <p className="text-lg mb-4">{gameStarted ? "Time Survived: " + formatTime(timeSurvived) : "Click Start to begin!"}</p>
+            <p className="text-lg mb-4">{gameStarted ? "Time Survived: " + formatTime(timeSurvived) : timeSurvived ? "Previous run: " + formatTime(timeSurvived) : "Click Start to begin!"}</p>
         <div
-          className={`flex flex-col items-center justify-center mt-10 ${gameStarted ? `w-96 h-96 border-4 dark:border-neutral-200 border-slate-900 lg relative` : ""}`}
+          className={`flex flex-col items-center justify-center ${gameStarted ? `w-96 h-96 border-4 dark:border-neutral-200 border-slate-900 lg relative` : ""}`}
           onMouseMove={handleMouseMove}
-          onMouseLeave={endGame}
+          onMouseLeave={() => endGame(false)}
         >
           <button
-            className={`${!gameStarted ? "p-2 bg-green-500 dark:bg-green-600 rounded-md m-2" : "hidden"}`}
+            className={`${!gameStarted ? "mt-10 p-2 bg-green-500 dark:bg-green-600 rounded-md m-2" : "hidden"}`}
             onClick={start}
           >
             Start
@@ -141,7 +146,7 @@ export const MouseGame = () => {
         {gameStarted && projectiles.map((p,i) => (
             <div
               key={i}
-              onMouseEnter={endGame}
+              onMouseEnter={() => endGame(false)}
               style={{
                 position: "absolute",
                 left: (p.x - 10),
@@ -155,8 +160,14 @@ export const MouseGame = () => {
           ))}
         </div>
         <p>X: {position.x}, Y: {position.y}</p>
+        <button
+            className={"mt-2 p-2 bg-yellow-500 dark:bg-yellow-600 rounded-md m-2"}
+            onClick={resetHighScore}
+          >
+            Reset High Score
+        </button>
         </div>
-
+          
         </>
     )
 }
