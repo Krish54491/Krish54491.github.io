@@ -110,7 +110,7 @@ export const MouseGame = () => {
             setDifficulty(difficulty + 1);
             setPrevTime(Math.floor(time / 10));
             setPrevPosition({ x: position.x, y: position.y });
-            if(position.x === prevPosition.x || position.y === prevPosition.y) {
+            if(position.x === prevPosition.x && position.y === prevPosition.y) {
                 setTimeSurvived(0);
                 setCheater(true);
                 localStorage.setItem("mouseGameCheated", "true");
