@@ -29,10 +29,7 @@ export const Nav = () => {
             </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
               <Link to="/todo" className={`${menuOpen ? "block w-full" : ""}`}>To-Do</Link>
-            </button>
-          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
-              <Link to="/ai-video-rater" className={`${menuOpen ? "block w-full" : ""}`}>Video Rater</Link>
-            </button>          
+            </button>         
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
           <a
               href="https://krish54491.github.io/Krish54491-chipmunk/"
@@ -81,11 +78,6 @@ export const Nav = () => {
           <Link to="/mouse">
           <button className={`${menuOpen ? "hidden" : "hidden md:flex bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"}`}>
               Mouse Game
-            </button>
-          </Link>
-          <Link to="/ai-video-rater">
-          <button className={`${menuOpen ? "hidden" : "hidden md:flex bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"}`}>
-              Video Rater
             </button>
           </Link>
 

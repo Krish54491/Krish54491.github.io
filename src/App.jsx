@@ -6,7 +6,6 @@ import { useState,useEffect } from "react";
 import { Route, Routes, useNavigate, Link } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
 import { ToDoList } from "./pages/TodoList";
-import { VideoEditor } from "./pages/VideoRater.jsx";
 
 function PokemonImage({ pokemonId, getPokemonPic }) {
   const [imgUrl, setImgUrl] = useState(null);
@@ -161,7 +160,6 @@ function App() {
         <Route path="/todo" element={<ToDoList />} />
         <Route path="/mouse" element={<MouseGame />} />
         <Route path="/clicker" element={<Clicker />}/>
-        <Route path="/ai-video-rater" element={<VideoEditor />} />
       </Routes>
       
     </>
