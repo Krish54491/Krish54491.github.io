@@ -30,8 +30,8 @@ export const Nav = () => {
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
               <Link to="/todo" className={`${menuOpen ? "block w-full" : ""}`}>To-Do</Link>
             </button>
-          <button className={`${menuOpen ? "hidden" : "hidden md:flex bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"}`}>
-              <Link to="/mouse" className={``}>Mouse Game</Link>
+          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
+              <Link to="/ai-video-rater" className={`${menuOpen ? "block w-full" : ""}`}>Video Rater</Link>
             </button>          
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
           <a
@@ -46,8 +46,9 @@ export const Nav = () => {
           </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
             <a
-                href="https://drive.google.com/file/d/1Fzdb4QaAYYBDV-JkGhtMtlGTjvjRJB-e/view?usp=sharing"
+                href="/Krish Bharal - Resume.pdf"
                 className={`${menuOpen ? "block w-full" : ""}`}
+                rel="noopener noreferrer"
                 target="_blank"
               >
                 My Resume
@@ -82,6 +83,11 @@ export const Nav = () => {
               Mouse Game
             </button>
           </Link>
+          <Link to="/ai-video-rater">
+          <button className={`${menuOpen ? "hidden" : "hidden md:flex bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"}`}>
+              Video Rater
+            </button>
+          </Link>
 
           <a
             href="https://krish54491.github.io/Krish54491-chipmunk/"
@@ -92,8 +98,9 @@ export const Nav = () => {
           </button>
           </a>
           <a
-            href="https://drive.google.com/file/d/1Fzdb4QaAYYBDV-JkGhtMtlGTjvjRJB-e/view?usp=sharing"
+            href="/Krish Bharal - Resume.pdf"
             target="_blank"
+            rel="noopener noreferrer"
           >
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
              My Resume

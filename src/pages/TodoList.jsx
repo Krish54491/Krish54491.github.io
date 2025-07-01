@@ -46,23 +46,29 @@ export const ToDoList = () => {
   };
 
   const handleComplete = (itemIndex) => {
+    //console.log(items);
     const itemToMove = items[itemIndex];
-    items.pop(itemIndex)
-    setItems(items);
+    //console.log(itemToMove);
+    const newItems = items.filter((_, index) => index !== itemIndex);
+    setItems(newItems);
     setCompleted([...completed, itemToMove]);
-    console.log(items);
-    saveData()
+    //console.log(items);
+    saveDataUsingIndex(newItems)
   };
   const handleUncomplete = (itemIndex) => {
     const itemToMove = completed[itemIndex];
     setCompleted(completed.filter((_, index) => index !== itemIndex));
-    items.push(itemToMove)
-    setItems(items);
+    const newItems = [...items, itemToMove];
+    setItems(newItems);
     //console.log(items);
-    saveData()
+    saveDataUsingIndex(newItems)
   };
   const saveData = () => {
     localStorage.setItem("UncompletedTasks", JSON.stringify(items))
+    //console.log(items);
+  }
+  const saveDataUsingIndex = (store) => {
+    localStorage.setItem("UncompletedTasks", JSON.stringify(store))
     //console.log(items);
 
   }
