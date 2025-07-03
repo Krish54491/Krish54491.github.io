@@ -9,6 +9,7 @@ export const Clicker = () => {
     const [multBroke, setMultBroke] = useState(false)
     const [prevTime, setPrevTime] = useState(0)
     const [check, setCheck] = useState(true)
+    const [startTime,setStartTime] = useState(Date.now());
     //if(localStorage.getItem("clickerGame") && check){
     //    const prevData = JSON.parse(localStorage.getItem("clickerGame"))
     //    setClicked(prevData[0])
@@ -42,14 +43,13 @@ export const Clicker = () => {
         } else 
             setGrandBroke(true)
     }
-    useEffect(() => {
+    useEffect(() => {   
         let timerInterval;
-    
         timerInterval = setInterval(() => {
-          setTime((prev) => prev + 1);
+          setTime(Math.floor((Date.now() - startTime)/1000))
         }, 1000);
-    
-        return () => clearInterval(timerInterval); // Cleanup interval on unmount
+
+        return () => clearInterval(timerInterval); // Cleanup interval on unmount         
         },);
     const formatTime = (time) => {
         const minutes = Math.floor(time / 60);
