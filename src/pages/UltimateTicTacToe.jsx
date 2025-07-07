@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 export const UltimateTicTacToe = () =>{
   const [squares, setSquares] = useState(Array(9).fill(0).map(() => Array(9).fill(0)));
   const [finalSquares, setFinalSquares] = useState(Array(9).fill(0))
-  const [playingBoard, setPlayingBoard] = useState(10)
+  const [playingBoard, setPlayingBoard] = useState(null); // null means any board is allowed
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 === 0;
   const winner = calculateWinner(finalSquares)
-  //console.log(finalSquares)
-  let status;
+  const gameOver = winner && winner !== "-" || finalSquares.every(val => val !== 0 && val !== undefined);  let status;
   if (winner && winner != "-") {
     status = "Winner: " + winner;
+
     //console.log("won")
   } else if (finalSquares.every(val => val !== 0 && val !== undefined)) {
     status = "It's a Tie!";
@@ -38,12 +38,17 @@ export const UltimateTicTacToe = () =>{
     }
     return null;
   }
-
-  const Square = ({ value, onSquareClick }) => {
+  function restartGame() {
+    setCurrentMove(0)
+    setFinalSquares(Array(9).fill(0))
+    setSquares(Array(9).fill(0).map(() => Array(9).fill(0)))
+    setPlayingBoard(null);
+  }
+  const Square = ({ value, onSquareClick, active }) => {
     return (
       <button
         className={`border-2 dark:border-neutral-200 border-slate-900 p-2 lg:p-8 text-4xl rounded-md md:w-[4rem] md:h-[4rem] lg:w-[5rem] lg:h-[5rem] ${
-          value === 0 ? "" : "hover:animate-scale"
+          (value === 0 && active) ? "hover:animate-scale" : ""
         }`}
         onClick={onSquareClick}
       >
@@ -51,8 +56,9 @@ export const UltimateTicTacToe = () =>{
       </button>
     );
     };
-    const MiniBoard = ({ boardIndex }) => {
+    const MiniBoard = ({ boardIndex, disabled, active }) => {
       const handleClick = (i) => {
+        if(disabled || ! active) return;
         if (squares[boardIndex][i] || calculateWinner(squares[boardIndex])) return;
         let nextSquares = squares[boardIndex]
         nextSquares[i] = xIsNext ? "X" : "O";
@@ -69,12 +75,17 @@ export const UltimateTicTacToe = () =>{
             return updated;
           });
         }
+      
+      if (!calculateWinner(squares[i]) && !squares[i].every(val => val !== 0 && val !== undefined)) {
+      setPlayingBoard(i);
+      } else {
+        setPlayingBoard(null); // Any board allowed if next is won/full
+      }
       };
-
       return (
-        <div className="grid grid-cols-3 grid-rows-3 gap-1">
+        <div className={`grid grid-cols-3 grid-rows-3 gap-1 ${(active && playingBoard) ? "animate-pulse" : ""}`}>
           {squares[boardIndex].map((val, i) => (
-            <Square key={i} value={val} onSquareClick={() => handleClick(i)} />
+            <Square key={i} value={val} active={active} onSquareClick={() => handleClick(i)} />
           ))}
         </div>
       );
@@ -116,7 +127,13 @@ export const UltimateTicTacToe = () =>{
                 )
                 
                 :(
-              <MiniBoard boardIndex={i} />)
+              <MiniBoard boardIndex={i} disabled={gameOver} 
+              active={!gameOver && (
+                playingBoard === null || playingBoard === i
+              ) &&
+              !calculateWinner(squares[i]) && !squares[i].every(val => val !== 0 && val !== undefined)
+            }
+              />)
               
               
             }
@@ -131,6 +148,7 @@ export const UltimateTicTacToe = () =>{
               ? "animate-bounce"
               : "hover:animate-wiggle"
           }`}
+          onClick={restartGame}
         >
           Restart
         </button>
