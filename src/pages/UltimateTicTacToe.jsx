@@ -48,7 +48,7 @@ export const UltimateTicTacToe = () =>{
   const Square = ({ value, onSquareClick, active }) => {
     return (
       <button
-        className={`border-2 dark:border-neutral-200 border-slate-900 p-2 lg:p-8 text-4xl rounded-md md:w-[4rem] md:h-[4rem] lg:w-[5rem] lg:h-[5rem] ${
+        className={`border-2 dark:border-neutral-200 border-slate-900 p-2 lg:p-8 text-2xl md:text-4xl rounded-md md:w-[4rem] md:h-[4rem] lg:w-[5rem] lg:h-[5rem] ${
           (value === 0 && active) ? "hover:animate-scale" : ""
         }`}
         onClick={onSquareClick}
@@ -165,7 +165,6 @@ export const UltimateTicTacToe = () =>{
         </Link>
       </ol>
     </div>
-    <p className="m-2">Work In Progress</p>
     </div>
   );
 }
