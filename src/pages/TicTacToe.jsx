@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Square = ({ value, onSquareClick }) => {
   return (
@@ -124,8 +125,13 @@ export const TicTacToe = () => {
         <ol className="flex items-start justify-center flex-col m-3 ">
           {status}
           {moves}
+          <Link to="/ultimatetictactoe" className="flex items-center justify-center">
+        <button className="bg-cyan-500 dark:bg-blue-800 p-2 my-1 rounded-md hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">Ultimate Tic-Tac-Toe</button>
+        </Link>
         </ol>
+        
       </div>
+      
     </>
   );
 };

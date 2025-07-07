@@ -9,6 +9,8 @@ export const MouseGame = () => {
     const [check, setCheck] = useState(true); 
     const [difficulty, setDifficulty] = useState(1); // amount of projectiles
     const [prevTime, setPrevTime] = useState(0);
+    const [prevMinute, setPrevMinute] = useState(0);
+    const [speed, setSpeed] = useState(5);
     const [cheater, setCheater] = useState(localStorage.getItem("mouseGameCheated") === "true"); // if you ever have cheated you will be shamed for it
     const [prevPosition, setPrevPosition] = useState({ x: 0, y: 0 });
     if(localStorage.getItem("mouseGameHighScore") != null && check) {
@@ -25,6 +27,8 @@ export const MouseGame = () => {
             // put commands to set up game environment
             setDifficulty(1);
             setPrevTime(0);
+            setPrevMinute(0)
+            setSpeed(5)
             setPrevPosition({ x: 0, y: 0 });
             setProjectiles([]); // reset projectiles
             console.log("Game Started");
@@ -32,6 +36,8 @@ export const MouseGame = () => {
     }
     const endGame = (cheat) => {
         setGameStarted(false);
+
+
         if(cheat) {
             return;
         }
@@ -90,7 +96,7 @@ export const MouseGame = () => {
                 } else if (p.y < 5) {
                     p.ydirection = true;
                 }
-                return { ...p, x: p.x + (p.xdirection ? 5 : -5), y: p.y + (p.ydirection ? 5 : -5) }; // random vertical movement
+                return { ...p, x: p.x + (p.xdirection ? speed : -1*speed), y: p.y + (p.ydirection ? speed : -1*speed) }; // random vertical movement
             });
         });
     }, 30);
@@ -104,18 +110,41 @@ export const MouseGame = () => {
         //if (minutes >= 1 && check) {
         //    setGameSize({ width: 128, height: 128 });
         //    setCheck(false);
-        //}            
-        
-        if(Math.floor(time / 10) > prevTime && time != highScore) {
+        //}       
+        if(minutes > prevMinute && time != highScore) {
+            console.log("minute change")
+            setDifficulty(1)
+            const newProjectiles = []
+            newProjectiles.push({
+            x: 15,
+            y: Math.random() * 343,
+            xdirection: true,
+            ydirection: true
+            });
+            setProjectiles(newProjectiles)
+            setPrevMinute(minutes)
+            setPrevTime(Math.floor(time / 10));
+            setPrevPosition({ x: position.x, y: position.y });
+            setSpeed(speed + 2)
+            //if(position.x === prevPosition.x && position.y === prevPosition.y) {
+            //    setTimeSurvived(0);
+            //    setCheater(true);
+            //    localStorage.setItem("mouseGameCheated", "true");
+            //    endGame(true);
+            //}
+        }
+        else if(Math.floor(time / 10) > prevTime && time != highScore) {
+            console.log("seconds change")
+
             setDifficulty(difficulty + 1);
             setPrevTime(Math.floor(time / 10));
             setPrevPosition({ x: position.x, y: position.y });
-            if(position.x === prevPosition.x && position.y === prevPosition.y) {
-                setTimeSurvived(0);
-                setCheater(true);
-                localStorage.setItem("mouseGameCheated", "true");
-                endGame(true);
-            }
+            //if(position.x === prevPosition.x && position.y === prevPosition.y) {
+            //    setTimeSurvived(0);
+            //    setCheater(true);
+            //    localStorage.setItem("mouseGameCheated", "true");
+            //    endGame(true);
+            //}
         }
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };

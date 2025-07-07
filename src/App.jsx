@@ -6,6 +6,9 @@ import { useState,useEffect } from "react";
 import { Route, Routes, useNavigate, Link } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
 import { ToDoList } from "./pages/TodoList";
+import { SidewaysSam } from "./pages/SidewaysSam.jsx"
+import { UltimateTicTacToe} from "./pages/UltimateTicTacToe.jsx"
+
 
 function PokemonImage({ pokemonId, getPokemonPic }) {
   const [imgUrl, setImgUrl] = useState(null);
@@ -160,6 +163,8 @@ function App() {
         <Route path="/todo" element={<ToDoList />} />
         <Route path="/mouse" element={<MouseGame />} />
         <Route path="/clicker" element={<Clicker />}/>
+        <Route path="/ultimatetictactoe" element={<UltimateTicTacToe />}/>
+        <Route path="/sidewayssam" element={<SidewaysSam />}/>
       </Routes>
       
     </>
