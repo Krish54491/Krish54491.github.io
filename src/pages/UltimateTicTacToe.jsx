@@ -18,6 +18,7 @@ export const UltimateTicTacToe = () =>{
   } else {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
+  //console.log(finalSquares)
   function calculateWinner(squares) {
     if(squares === Array(9).fill(0)){return null;}
     const lines = [
@@ -74,6 +75,12 @@ export const UltimateTicTacToe = () =>{
             updated[boardIndex] = miniWinner;
             return updated;
           });
+        } else if(nextSquares.every(val => val !== 0 && val !== undefined)){
+          setFinalSquares(prev => {
+            const updated = [...prev];
+            updated[boardIndex] = '-';
+            return updated;
+          });
         }
       
       if (!calculateWinner(squares[i]) && !squares[i].every(val => val !== 0 && val !== undefined)) {
@@ -82,8 +89,9 @@ export const UltimateTicTacToe = () =>{
         setPlayingBoard(null); // Any board allowed if next is won/full
       }
       };
+      //console.log((active +" "+ playingBoard))
       return (
-        <div className={`grid grid-cols-3 grid-rows-3 gap-1 ${(active && playingBoard) ? "animate-pulse" : ""}`}>
+        <div className={`grid grid-cols-3 grid-rows-3 gap-1 ${(active && playingBoard !== null) ? "animate-pulse" : ""}`}>
           {squares[boardIndex].map((val, i) => (
             <Square key={i} value={val} active={active} onSquareClick={() => handleClick(i)} />
           ))}
