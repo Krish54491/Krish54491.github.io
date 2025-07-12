@@ -126,12 +126,12 @@ export const MouseGame = () => {
             setPrevTime(Math.floor(time / 10));
             setPrevPosition({ x: position.x, y: position.y });
             setSpeed(speed + 2)
-            //if(position.x === prevPosition.x && position.y === prevPosition.y) {
-            //    setTimeSurvived(0);
-            //    setCheater(true);
-            //    localStorage.setItem("mouseGameCheated", "true");
-            //    endGame(true);
-            //}
+            if(position.x === prevPosition.x && position.y === prevPosition.y) {
+                setTimeSurvived(0);
+                setCheater(true);
+                localStorage.setItem("mouseGameCheated", "true");
+                endGame(true);
+            }
         }
         else if(Math.floor(time / 10) > prevTime && time != highScore) {
             console.log("seconds change")
@@ -139,12 +139,12 @@ export const MouseGame = () => {
             setDifficulty(difficulty + 1);
             setPrevTime(Math.floor(time / 10));
             setPrevPosition({ x: position.x, y: position.y });
-            //if(position.x === prevPosition.x && position.y === prevPosition.y) {
-            //    setTimeSurvived(0);
-            //    setCheater(true);
-            //    localStorage.setItem("mouseGameCheated", "true");
-            //    endGame(true);
-            //}
+            if(position.x === prevPosition.x && position.y === prevPosition.y) {
+                setTimeSurvived(0);
+                setCheater(true);
+                localStorage.setItem("mouseGameCheated", "true");
+                endGame(true);
+            }
         }
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
