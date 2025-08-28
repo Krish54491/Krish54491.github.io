@@ -33,7 +33,10 @@ export const Nav = () => {
             </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
               <Link to="/todo" className={`${menuOpen ? "block w-full" : ""}`}>To-Do</Link>
-            </button>         
+            </button>
+          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
+              <Link to="/sidewayssam" className={`${menuOpen ? "block w-full" : ""}`}>Sideways Sam</Link>
+            </button>                
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
           <a
               href="https://krish54491.github.io/Krish54491-chipmunk/"
@@ -84,7 +87,11 @@ export const Nav = () => {
               Mouse Game
             </button>
           </Link>
-
+          <Link to="/sidewayssam">
+          <button className={`${menuOpen ? "hidden" : "hidden md:flex bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"}`}>
+              Sideways Sam
+            </button>
+          </Link>
           <a
             href="https://krish54491.github.io/Krish54491-chipmunk/"
             target="_blank"
