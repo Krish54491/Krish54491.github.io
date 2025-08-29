@@ -70,8 +70,8 @@ export const SidewaysSam = () =>{
     const [highscore, setHighscore] = useState(0);
     const [score, setScore] = useState(0);
     const [check, setCheck] = useState(true);
-    const [adjustment, setAdjustment] = useState(2); // adjustment for sam position based on speed
-
+    const [adjustment, setAdjustment] = useState(2); // adjustment for sam position
+    const [sizeAdjustment, setSizeAdjustment] = useState(50); // adjustment for sam size 
     if(localStorage.getItem("SamHighScore") != null && check) {
         setHighscore(parseInt(localStorage.getItem("SamHighScore")));
         setCheck(false);
@@ -101,7 +101,7 @@ export const SidewaysSam = () =>{
     }
 
     //console.log(x, y);
-    
+    console.log(bounds);
     useEffect(() => {
         let scoreInterval;
         if (!gameStarted) return;
@@ -120,15 +120,17 @@ export const SidewaysSam = () =>{
         if (x > bounds.right) newX = bounds.right;
         if (y < bounds.top) newY = bounds.top;
 
-        if(bounds.bottom <= 270){ 
+        if(bounds.bottom - sizeAdjustment <= 270){ 
             setHeight(50);
             setWidth(20);
             setAdjustment(2);
-        } else if(bounds.bottom > 300){
+            setSizeAdjustment(50);
+        } else if(bounds.bottom > 320){
             setHeight(100);
             setWidth(40);
             setAdjustment(10);
             setY(bounds.bottom);
+            setSizeAdjustment(0);
         }
         setX(newX);
         setY(bounds.bottom);
