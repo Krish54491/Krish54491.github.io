@@ -227,6 +227,7 @@ export const SidewaysSam = () =>{
                 onMouseLeave={() => setMouseDown({left: false, right: mouseDown.right})}
                 onTouchStart={() => setMouseDown({left: true, right: mouseDown.right})}
                 onTouchEnd={() => setMouseDown({left: false, right: mouseDown.right})}
+                draggable="false"
                 >
                     {"<-"}
                     </button>
@@ -236,6 +237,7 @@ export const SidewaysSam = () =>{
                 onMouseLeave={() => setMouseDown({left: mouseDown.left, right: false})}
                 onTouchStart={() => setMouseDown({left: mouseDown.left, right: true})}
                 onTouchEnd={() => setMouseDown({left: mouseDown.left, right: false})}
+                draggable="false"
                 >
                     {"->"}
                 </button>
