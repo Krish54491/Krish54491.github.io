@@ -36,13 +36,10 @@ export const MouseGame = () => {
     }
     const endGame = (cheat) => {
         setGameStarted(false);
-
-
         if(cheat) {
             return;
         }
         if(timeSurvived > highScore) {
-            
             setHighScore(timeSurvived);
             localStorage.setItem("mouseGameHighScore", timeSurvived.toString());
         }

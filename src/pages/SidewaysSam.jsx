@@ -1,3 +1,4 @@
+import { use } from "react";
 import { useState, useEffect, useRef } from "react";
 
 const Sam = ({x, y, w, h}) => {
@@ -55,7 +56,21 @@ const Sam = ({x, y, w, h}) => {
     </div>
     );
 }
-
+const Rock = ({x, y}) => {
+    return (
+        <div
+            className="mx-auto bg-gray-600 dark:bg-gray-500 shadow-md"
+            style={{
+                position: "relative",
+                left: x,
+                top: y,
+                width: 20,
+                height: 20,
+                borderRadius: "50%",
+            }}
+        />
+    );
+}
 export const SidewaysSam = () =>{
     const [bounds, setBounds] = useState({ left: 0, right: 0, top: 0, bottom: 1000 });
     const borderRef = useRef(null);
@@ -65,18 +80,19 @@ export const SidewaysSam = () =>{
     const [width, setWidth] = useState(20);
     const [height, setHeight] = useState(50);
     const [mouseDown, setMouseDown] = useState({left: false, right: false});
-    const [period, setPeriod] = useState(100); // how often rocks are thrown
+    const [period, setPeriod] = useState(50); // how often rocks are thrown
     const [rockSpeed, setRockSpeed] = useState(5); // how fast rocks move
+    const [rockAmount, setRockAmount] = useState(2); // how many rocks at a time
     const [highscore, setHighscore] = useState(0);
     const [score, setScore] = useState(0);
     const [check, setCheck] = useState(true);
     const [adjustment, setAdjustment] = useState(2); // adjustment for sam position
     const [sizeAdjustment, setSizeAdjustment] = useState(50); // adjustment for sam size 
+    const [projectiles, setProjectiles] = useState([]);
     if(localStorage.getItem("SamHighScore") != null && check) {
         setHighscore(parseInt(localStorage.getItem("SamHighScore")));
         setCheck(false);
     }
-    // increase difficulty every 10 seconds
     const startGame = () => {
         setGameStarted(true);
         setX(0);
@@ -96,12 +112,44 @@ export const SidewaysSam = () =>{
             localStorage.setItem("SamHighScore", score.toString());
         }
         setScore(0);
-        setPeriod(100);
+        setPeriod(900);
         setRockSpeed(5);
+        setRockAmount(2);
+        setProjectiles([]);
     }
-
+    //console.log(projectiles);
+    //console.log(period+" "+ rockSpeed);
     //console.log(x, y);
-    console.log(bounds);
+    //console.log(bounds);
+    //console.log("RockAmount:", rockAmount, "Period:", period, "RockSpeed:", rockSpeed);
+    useEffect(() => {
+        if(!gameStarted) return;
+        const interval = setInterval(() => {
+            
+            
+        },period);
+        return () => clearInterval(interval);
+    })
+    useEffect(() => {
+        if (!gameStarted) return;
+        // Collision detection
+        projectiles.forEach(p => {
+                console.log(p);
+                console.log("Sam:", {x, y, width, height});
+                const isColliding =
+                (p.x >= x - width / 4 - 5 && // left side of rock to left side of sam
+                p.x <= x + width / 4 + 5) &&
+                p.y > 0 &&
+                p.y <= y &&
+                p.y > y - height - adjustment -(sizeAdjustment ? 10 : 0); // bottom of rock to top of sam (size adjustment for when sam is small)
+                // hitbox is very generous when sam is small compared to when sam is big 
+                // arms are not included in hitbox
+                if (isColliding) {
+                    console.log("Collision detected");
+                    endGame();
+                }
+            });
+    }, [projectiles, x, width, height, gameStarted]);
     useEffect(() => {
         let scoreInterval;
         if (!gameStarted) return;
@@ -140,11 +188,37 @@ export const SidewaysSam = () =>{
     useEffect(() => {
         if (!gameStarted) return;
         const interval = setInterval(() => {
-            setPeriod(period => Math.max(50, period - 10));
-            setRockSpeed(speed => speed + 1);
+            setPeriod(period => Math.max(10, period - 5)); // cap period at 10ms
+            setRockSpeed(rockSpeed => Math.min(rockSpeed + 1, 100)); // cap rock speed at 100
+            setRockAmount(rockAmount => Math.min(rockAmount + 1, 10)); // cap rock amount at 10
+            //console.log("Increased difficulty: period =", period, "rockSpeed =", rockSpeed);
         }, 10000);
-        return () => clearInterval(interval);
-    }, [gameStarted]);
+
+    
+    const moveInterval = setInterval(() => {
+        setProjectiles(prev => {
+            //console.log(prev);
+            let newProjectiles = prev
+            .map(p => ({ ...p, x: p.x, y: p.y + rockSpeed }))
+            .filter(p => p.y <= bounds.bottom - 24 - adjustment);
+            setProjectiles(prev => {
+            const newProjectiles = [...prev];
+            while (newProjectiles.length < rockAmount) {
+                newProjectiles.push({
+                    x: Math.random() * (bounds.right - bounds.left) + bounds.left,
+                    y: bounds.top - 20*rockAmount -adjustment,
+                });
+            }
+            return newProjectiles;
+            });
+            return newProjectiles;
+        });
+    }, 30);
+        return () => {
+            clearInterval(moveInterval)
+            clearInterval(interval)
+        };
+    }, [gameStarted, bounds, period]);
     useEffect(() => {
         if (!gameStarted) return;
         function updateBounds() {
@@ -169,7 +243,7 @@ export const SidewaysSam = () =>{
                 setX(x =>x <= bounds.left ? bounds.left : x - 5);
             } else if(event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
                 setX(x=> (x >= bounds.right) ? bounds.right : x + 5);
-            } console.log("Key pressed:", event.key);
+            } //console.log("Key pressed:", event.key);
         }
         document.addEventListener('keydown', handleKeyDown);
         return () => {
@@ -194,7 +268,7 @@ export const SidewaysSam = () =>{
             clearInterval(rightInterval);
         };
     },[mouseDown, bounds]);
-    // all thats left is to add rocks and collision detection
+    // all thats left is to add rocks and collision detection - done
     // add touch controls - done
     // add high score - done
     // sam can glitch out if they use inspect element, so track location of the border, and endgame if sam goes out of bounds. - solved
@@ -203,14 +277,15 @@ export const SidewaysSam = () =>{
         <>
         <div className="flex flex-col items-center justify-normal mt-4">
         <h1>Sideways Sam</h1>
-        <p>In this game sam has to dodge the rocks that I'm throwing at him. Yes me. WIP</p>
+        <p>In this game sam has to dodge the rocks that I'm throwing at him. Yes me.</p>
+        <br></br>
         <p>High Score: {highscore}</p>
         <p className={`${!gameStarted ? "hidden" : ""}`}>Score: {score}</p>
         <button className={`${!gameStarted ? "mt-10 p-2 bg-green-500 dark:bg-green-600 rounded-md m-2" : "hidden"}`} onClick={startGame}>
                 Start Game
         </button>
         <button
-            className={"mt-4 p-2 bg-yellow-500 dark:bg-yellow-600 rounded-md m-2"}
+            className={`${!gameStarted ? "mt-4 p-2 bg-yellow-500 dark:bg-yellow-600 rounded-md m-2" : "hidden"}`}
             onClick={resetHighScore}
           >
             Reset High Score
@@ -219,6 +294,9 @@ export const SidewaysSam = () =>{
         <div className={`${!gameStarted ? "hidden" : "flex flex-col items-center justify-normal mt-4"}`}>
             <div className="border-4 dark:border-neutral-200 border-slate-900 w-1/2 h-[40vh]" ref={borderRef}>
                 <Sam x={x} y={y} w={width} h={height} />
+                {gameStarted && projectiles.map((p,i) => (
+                    <Rock x={p.x} y={p.y} key={i} />
+                ))}
             </div> 
             <div className="flex flex-row justify-center items-center mt-4">
                 <button className="bg-cyan-500 dark:bg-blue-800 p-4 mt-1 mx-4 rounded-md hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"
