@@ -89,6 +89,7 @@ export const SidewaysSam = () =>{
     const [adjustment, setAdjustment] = useState(2); // adjustment for sam position
     const [sizeAdjustment, setSizeAdjustment] = useState(50); // adjustment for sam size 
     const [projectiles, setProjectiles] = useState([]);
+    const [samSpeed, setSamSpeed] = useState(5); // speed of sam added because my friend complained
     if(localStorage.getItem("SamHighScore") != null && check) {
         setHighscore(parseInt(localStorage.getItem("SamHighScore")));
         setCheck(false);
@@ -114,6 +115,7 @@ export const SidewaysSam = () =>{
         setScore(0);
         setPeriod(900);
         setRockSpeed(5);
+        setSamSpeed(5);
         setRockAmount(2);
         setProjectiles([]);
     }
@@ -191,6 +193,7 @@ export const SidewaysSam = () =>{
             setPeriod(period => Math.max(10, period - 5)); // cap period at 10ms
             setRockSpeed(rockSpeed => Math.min(rockSpeed + 1, 100)); // cap rock speed at 100
             setRockAmount(rockAmount => Math.min(rockAmount + 1, 10)); // cap rock amount at 10
+            setSamSpeed(samSpeed => Math.min(samSpeed + rockSpeed/2, 10)); // cap sam speed at 10
             //console.log("Increased difficulty: period =", period, "rockSpeed =", rockSpeed);
         }, 10000);
 
@@ -240,9 +243,9 @@ export const SidewaysSam = () =>{
         if (!gameStarted) return;
         const handleKeyDown = (event) => {
             if(event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
-                setX(x =>x <= bounds.left ? bounds.left : x - 5);
+                setX(x =>x <= bounds.left ? bounds.left : x - samSpeed);
             } else if(event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
-                setX(x=> (x >= bounds.right) ? bounds.right : x + 5);
+                setX(x=> (x >= bounds.right) ? bounds.right : x + samSpeed);
             } //console.log("Key pressed:", event.key);
         }
         document.addEventListener('keydown', handleKeyDown);
@@ -255,12 +258,12 @@ export const SidewaysSam = () =>{
         let leftInterval, rightInterval;
         if (mouseDown.left) {
             leftInterval = setInterval(() => {
-            setX(x => x <= bounds.left ? bounds.left : x - 5);
+            setX(x => x <= bounds.left ? bounds.left : x - samSpeed);
         }, 50);
         }
         if (mouseDown.right) {
             rightInterval = setInterval(() => {
-            setX(x => (x >= bounds.right) ? bounds.right : x + 5);
+            setX(x => (x >= bounds.right) ? bounds.right : x + samSpeed);
         }, 50);
         }
         return () => {
