@@ -1,4 +1,3 @@
-import { use } from "react";
 import { useState, useEffect, useRef } from "react";
 
 const Sam = ({x, y, w, h}) => {
@@ -90,6 +89,7 @@ export const SidewaysSam = () =>{
     const [sizeAdjustment, setSizeAdjustment] = useState(50); // adjustment for sam size 
     const [projectiles, setProjectiles] = useState([]);
     const [samSpeed, setSamSpeed] = useState(5); // speed of sam added because my friend complained
+    const [projectileX, setProjectileX] = useState(new Set()); // this is so it can throw rocks at sam's position without having an O(n) check everytime
     if(localStorage.getItem("SamHighScore") != null && check) {
         setHighscore(parseInt(localStorage.getItem("SamHighScore")));
         setCheck(false);
@@ -118,6 +118,7 @@ export const SidewaysSam = () =>{
         setSamSpeed(5);
         setRockAmount(2);
         setProjectiles([]);
+        setProjectileX(new Set());
     }
     //console.log(projectiles);
     //console.log(period+" "+ rockSpeed);
@@ -125,19 +126,11 @@ export const SidewaysSam = () =>{
     //console.log(bounds);
     //console.log("RockAmount:", rockAmount, "Period:", period, "RockSpeed:", rockSpeed);
     useEffect(() => {
-        if(!gameStarted) return;
-        const interval = setInterval(() => {
-            
-            
-        },period);
-        return () => clearInterval(interval);
-    })
-    useEffect(() => {
         if (!gameStarted) return;
         // Collision detection
         projectiles.forEach(p => {
-                console.log(p);
-                console.log("Sam:", {x, y, width, height});
+                //console.log(p);
+                //console.log("Sam:", {x, y, width, height});
                 const isColliding =
                 (p.x >= x - width / 4 - 5 && // left side of rock to left side of sam
                 p.x <= x + width / 4 + 5) &&
@@ -147,7 +140,7 @@ export const SidewaysSam = () =>{
                 // hitbox is very generous when sam is small compared to when sam is big 
                 // arms are not included in hitbox
                 if (isColliding) {
-                    console.log("Collision detected");
+                    //console.log("Collision detected");
                     endGame();
                 }
             });
@@ -203,14 +196,35 @@ export const SidewaysSam = () =>{
             //console.log(prev);
             let newProjectiles = prev
             .map(p => ({ ...p, x: p.x, y: p.y + rockSpeed }))
-            .filter(p => p.y <= bounds.bottom - 24 - adjustment);
+            .filter(p => {
+                if(p.y <= bounds.bottom - 24 - adjustment) {
+                    projectileX.delete(p.x);
+                    setProjectileX(new Set(projectileX));
+                    return false;
+                }
+                return true;
+            });
             setProjectiles(prev => {
             const newProjectiles = [...prev];
+            
             while (newProjectiles.length < rockAmount) {
+                if(projectileX.has(x)) {
+                    newProjectiles.push({
+                        x: x, 
+                        y: bounds.top - 20 * rockAmount - adjustment
+                    });
+                    projectileX.add(x);
+                    setProjectileX(new Set(projectileX));
+                    console.log("Added rock at Sam's position because I got aim!");
+                    continue;
+                }
+                let newX = Math.random() * (bounds.right - bounds.left) + bounds.left
                 newProjectiles.push({
-                    x: Math.random() * (bounds.right - bounds.left) + bounds.left,
-                    y: bounds.top - 20*rockAmount -adjustment,
+                    x: newX,
+                    y: bounds.top - 20 * rockAmount - adjustment
                 });
+                projectileX.add(newX);
+                setProjectileX(new Set(projectileX));
             }
             return newProjectiles;
             });
@@ -298,7 +312,7 @@ export const SidewaysSam = () =>{
             <div className="border-4 dark:border-neutral-200 border-slate-900 w-1/2 h-[40vh]" ref={borderRef}>
                 <Sam x={x} y={y} w={width} h={height} />
                 {gameStarted && projectiles.map((p,i) => (
-                    <Rock x={p.x} y={p.y} key={i} />
+                    <Rock x={p.x} y={p.y} w={rockSize} h={rockSize} secret ={easterEgg} key={i} />
                 ))}
             </div> 
             <div className="flex flex-row justify-center items-center mt-4">

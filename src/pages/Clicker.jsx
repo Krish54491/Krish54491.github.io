@@ -1,4 +1,5 @@
-import React, { useState,useEffect } from 'react';
+import { useState,useEffect } from 'react';
+//import cookie from '../assets/cookie.png'
 export const Clicker = () => {
     
     const [clicked, setClicked] = useState(0);
