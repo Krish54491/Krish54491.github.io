@@ -55,19 +55,31 @@ const Sam = ({x, y, w, h}) => {
     </div>
     );
 }
-const Rock = ({x, y}) => {
+const Rock = ({x, y, w, h, secret}) => {
     return (
+        <>
         <div
-            className="mx-auto bg-gray-600 dark:bg-gray-500 shadow-md"
+            className={`${secret ? "hidden" : "mx-auto bg-gray-600 dark:bg-gray-500 shadow-md"}`}
             style={{
                 position: "relative",
                 left: x,
                 top: y,
-                width: 20,
-                height: 20,
+                width: w,
+                height: h,
                 borderRadius: "50%",
             }}
         />
+        <img src="public\rock.png" alt="rock" 
+            className={`${!secret ? "hidden" : "mx-auto shadow-md"}`}
+            style={{
+                position: "relative",
+                left: x,
+                top: y,
+                width: w,
+                height: h,
+                borderRadius: "100%",
+            }}></img>
+        </>
     );
 }
 export const SidewaysSam = () =>{
@@ -89,7 +101,8 @@ export const SidewaysSam = () =>{
     const [sizeAdjustment, setSizeAdjustment] = useState(50); // adjustment for sam size 
     const [projectiles, setProjectiles] = useState([]);
     const [samSpeed, setSamSpeed] = useState(5); // speed of sam added because my friend complained
-    const [projectileX, setProjectileX] = useState(new Set()); // this is so it can throw rocks at sam's position without having an O(n) check everytime
+    const [rockSize, setRockSize] = useState(20); // size of rocks
+    const [easterEgg, setEasterEgg] = useState(false); // easter egg counter
     if(localStorage.getItem("SamHighScore") != null && check) {
         setHighscore(parseInt(localStorage.getItem("SamHighScore")));
         setCheck(false);
@@ -118,7 +131,8 @@ export const SidewaysSam = () =>{
         setSamSpeed(5);
         setRockAmount(2);
         setProjectiles([]);
-        setProjectileX(new Set());
+        setRockSize(20);
+        setEasterEgg(false);
     }
     //console.log(projectiles);
     //console.log(period+" "+ rockSpeed);
@@ -196,26 +210,16 @@ export const SidewaysSam = () =>{
             //console.log(prev);
             let newProjectiles = prev
             .map(p => ({ ...p, x: p.x, y: p.y + rockSpeed }))
-            .filter(p => {
-                if(p.y <= bounds.bottom - 24 - adjustment) {
-                    projectileX.delete(p.x);
-                    setProjectileX(new Set(projectileX));
-                    return false;
-                }
-                return true;
-            });
+            .filter(p => p.y <= bounds.bottom - 24 - adjustment);
             setProjectiles(prev => {
             const newProjectiles = [...prev];
-            
             while (newProjectiles.length < rockAmount) {
-                if(projectileX.has(x)) {
+                if(newProjectiles.filter(p => p.x === x).length === 0) {
                     newProjectiles.push({
                         x: x, 
                         y: bounds.top - 20 * rockAmount - adjustment
                     });
-                    projectileX.add(x);
-                    setProjectileX(new Set(projectileX));
-                    console.log("Added rock at Sam's position because I got aim!");
+                    //console.log("Added rock at Sam's position because I got aim!");
                     continue;
                 }
                 let newX = Math.random() * (bounds.right - bounds.left) + bounds.left
@@ -223,8 +227,6 @@ export const SidewaysSam = () =>{
                     x: newX,
                     y: bounds.top - 20 * rockAmount - adjustment
                 });
-                projectileX.add(newX);
-                setProjectileX(new Set(projectileX));
             }
             return newProjectiles;
             });
@@ -260,7 +262,14 @@ export const SidewaysSam = () =>{
                 setX(x =>x <= bounds.left ? bounds.left : x - samSpeed);
             } else if(event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
                 setX(x=> (x >= bounds.right) ? bounds.right : x + samSpeed);
-            } //console.log("Key pressed:", event.key);
+            } else if(event.key === '`'){
+                setRockSize(rockSize => rockSize + 1);
+                // the hitbox doesn't change it's just funny to see big rocks
+            } else if(event.key === 'Control'){
+                setEasterEgg(easterEgg => !easterEgg);
+            }
+
+            //console.log("Key pressed:", event.key);
         }
         document.addEventListener('keydown', handleKeyDown);
         return () => {
