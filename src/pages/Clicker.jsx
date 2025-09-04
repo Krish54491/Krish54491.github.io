@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react';
-//import cookie from '../assets/cookie.png'
+import cookie from '../assets/cookie.png'
 export const Clicker = () => {
     
     const [clicked, setClicked] = useState(0);
@@ -77,7 +77,7 @@ export const Clicker = () => {
         <h2 className="text-2xl text-center mt-2">Times Clicked: {clicked}</h2>
         <img 
         className='w-96 h-96'
-        src='cookie.png'
+        src={cookie}
         alt='Cookie!' 
         onClick={increaseClicked}>
         </img>

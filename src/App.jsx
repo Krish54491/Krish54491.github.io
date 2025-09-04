@@ -8,8 +8,8 @@ import { Nav } from "./Nav.jsx";
 import { ToDoList } from "./pages/TodoList";
 import { SidewaysSam } from "./pages/SidewaysSam.jsx"
 import { UltimateTicTacToe} from "./pages/UltimateTicTacToe.jsx"
-
-
+import Ampharos from "./assets/Ampharos.png"
+import Krish544 from "./assets/Krish544 Icon.png"
 function PokemonImage({ pokemonId, getPokemonPic }) {
   const [imgUrl, setImgUrl] = useState(null);
 
@@ -29,7 +29,7 @@ function PokemonImage({ pokemonId, getPokemonPic }) {
 
 function App() {
   const [pokedexCompletion, setPokedexCompletion] = useState(Array(1026).fill(0));
-  const [pic, setPic] = useState("Krish544 Icon.png");
+  const [pic, setPic] = useState(Krish544);
   const [pokemonName, setPokemonName] = useState("Krish544 Icon");
   const [pokemonFound, setPokemonFound] = useState(1);
   const [pokeCheck, setPokeCheck] = useState(true);
@@ -67,9 +67,9 @@ function App() {
     }
     if(randomId === 0) {  
       if(Math.floor(Math.random() * 2) === 0) {
-        setPic("Krish544 Icon.png");
+        setPic(Krish544);
       } else{
-        setPic("Ampharos.png");
+        setPic(Ampharos);
       }
       return;
     }
