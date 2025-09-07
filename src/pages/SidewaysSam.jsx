@@ -218,18 +218,24 @@ export const SidewaysSam = () =>{
         setProjectiles(prev => {
             //console.log(prev);
             let newProjectiles = prev
-            .map(p => ({ ...p, x: p.x, y: p.y + rockSpeed }))
-            .filter(p => p.y <= bounds.bottom - 24 - adjustment);
+            .filter(p => {
+                p.y += rockSpeed
+                return p.y <= bounds.bottom - 24 - adjustment
+            });
             setProjectiles(prev => {
             const newProjectiles = [...prev];
+            let rockNotOnSamCheck = true;
             while (newProjectiles.length < rockAmount) {
-                if(newProjectiles.filter(p => p.x === x).length === 0) {
+                if(rockNotOnSamCheck){
+                    if(newProjectiles.filter(p => p.x === x).length === 0) {
                     newProjectiles.push({
                         x: x, 
                         y: bounds.top - 20 * rockAmount - adjustment
                     });
                     //console.log("Added rock at Sam's position because I got aim!");
                     continue;
+                    }
+                    rockNotOnSamCheck = false;
                 }
                 let newX = Math.random() * (bounds.right - bounds.left) + bounds.left
                 newProjectiles.push({
