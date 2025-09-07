@@ -91,7 +91,7 @@ export const SidewaysSam = () =>{
     const [width, setWidth] = useState(20);
     const [height, setHeight] = useState(50);
     const [mouseDown, setMouseDown] = useState({left: false, right: false});
-    const [period, setPeriod] = useState(50); // how often rocks are thrown
+    //const [period, setPeriod] = useState(50); // how often rocks are thrown
     const [rockSpeed, setRockSpeed] = useState(5); // how fast rocks move
     const [rockAmount, setRockAmount] = useState(2); // how many rocks at a time
     const [highscore, setHighscore] = useState(0);
@@ -135,7 +135,7 @@ export const SidewaysSam = () =>{
             localStorage.setItem("SamHighScore", score.toString());
         }
         setScore(0);
-        setPeriod(900);
+        //setPeriod(900);
         setRockSpeed(5);
         setSamSpeed(5);
         setRockAmount(2);
@@ -148,7 +148,7 @@ export const SidewaysSam = () =>{
     //console.log(x, y);
     //console.log(bounds);
     //console.log("RockAmount:", rockAmount, "Period:", period, "RockSpeed:", rockSpeed);
-    useEffect(() => {
+    useEffect(() => { // collision detection
         if (!gameStarted) return;
         // Collision detection
         projectiles.forEach(p => {
@@ -168,7 +168,7 @@ export const SidewaysSam = () =>{
                 }
             });
     }, [projectiles, x, width, height, gameStarted]);
-    useEffect(() => {
+    useEffect(() => { // score counter
         let scoreInterval;
         if (!gameStarted) return;
         
@@ -178,7 +178,7 @@ export const SidewaysSam = () =>{
         return () => clearInterval(scoreInterval);
         
     }, [gameStarted]);
-    useEffect(() => {
+    useEffect(() => { // keep sam in bounds
         if (!gameStarted) return;
         let newX = x;
         let newY = y;
@@ -203,10 +203,10 @@ export const SidewaysSam = () =>{
         //console.log("Bounds:", bounds);
         //console.log("Position:", {x, y});
     }, [x,y,bounds,gameStarted]);
-    useEffect(() => {
+    useEffect(() => { // move rocks
         if (!gameStarted) return;
-        const interval = setInterval(() => {
-            setPeriod(period => Math.max(10, period - 5)); // cap period at 10ms
+        const interval = setInterval(() => { // increase difficulty every 10 seconds
+            //setPeriod(period => Math.max(10, period - 5)); // cap period at 10ms
             setRockSpeed(rockSpeed => Math.min(rockSpeed + 1, 100)); // cap rock speed at 100
             setRockAmount(rockAmount => Math.min(rockAmount + 1, 10)); // cap rock amount at 10
             setSamSpeed(samSpeed => Math.min(samSpeed + rockSpeed/2, 10)); // cap sam speed at 10
@@ -220,7 +220,7 @@ export const SidewaysSam = () =>{
             let newProjectiles = prev
             .filter(p => {
                 p.y += rockSpeed
-                return p.y <= bounds.bottom - 24 - adjustment
+                return p.y < bounds.bottom - 24 - adjustment //- rockSpeed
             });
             setProjectiles(prev => {
             const newProjectiles = [...prev];
@@ -252,7 +252,7 @@ export const SidewaysSam = () =>{
             clearInterval(moveInterval)
             clearInterval(interval)
         };
-    }, [gameStarted, bounds, period]);
+    }, [gameStarted, bounds, rockSpeed]);
     useEffect(() => {
         if (!gameStarted) return;
         function updateBounds() {
