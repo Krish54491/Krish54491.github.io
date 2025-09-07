@@ -69,7 +69,7 @@ const Rock = ({x, y, w, h, secret}) => {
                 borderRadius: "50%",
             }}
         />
-        <img src="public\rock.png" alt="rock" 
+        <img src="/Rock.png" alt="rock" 
             className={`${!secret ? "hidden" : "mx-auto shadow-md"}`}
             style={{
                 position: "relative",
@@ -114,6 +114,15 @@ export const SidewaysSam = () =>{
         setWidth(40);
         setHeight(100);
         setAdjustment(10)
+        if (borderRef.current) {
+                const rect = borderRef.current.getBoundingClientRect();
+                setBounds({
+                    left: -1 * (rect.width - width) / 2,
+                    right: (rect.width - width) / 2, // width of Sam
+                    top: 0,
+                    bottom: rect.height - height + adjustment // height of Sam
+                });
+            }
     }
     const resetHighScore = () => {
         setHighscore(0);
