@@ -240,7 +240,7 @@ export const SidewaysSam = () =>{
                 let newX = Math.random() * (bounds.right - bounds.left) + bounds.left
                 newProjectiles.push({
                     x: newX,
-                    y: bounds.top - 20 * rockAmount - adjustment
+                    y: bounds.top - rockSize * rockAmount - adjustment
                 });
             }
             return newProjectiles;
