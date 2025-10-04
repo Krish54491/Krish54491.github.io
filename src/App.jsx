@@ -29,7 +29,7 @@ function PokemonImage({ pokemonId, getPokemonPic }) {
 
 function App() {
   const [pokedexCompletion, setPokedexCompletion] = useState(Array(1026).fill(0));
-  const [pic, setPic] = useState("Krish544 Icon.png");
+  const [pic, setPic] = useState("/Krish544 Icon.png");
   const [pokemonName, setPokemonName] = useState("Krish544 Icon");
   const [pokemonFound, setPokemonFound] = useState(1);
   const [pokeCheck, setPokeCheck] = useState(true);
@@ -67,7 +67,7 @@ function App() {
     }
     if(randomId === 0) {  
       if(Math.floor(Math.random() * 2) === 0) {
-        setPic("Krish544 Icon.png");
+        setPic("/Krish544 Icon.png");
       } else{
         setPic(Ampharos);
       }
