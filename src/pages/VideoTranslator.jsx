@@ -7,6 +7,10 @@ export function VideoTranslator() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [audioError,setAudioError] = useState(null);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [audioLoading, setAudioLoading] = useState(false);
+
 
   async function uploadVideo(file, language) {
     const formData = new FormData();
@@ -34,54 +38,70 @@ export function VideoTranslator() {
     setError(null);
     setLoading(true);
     setResult(null);
-
+    let data;
     try {
-      const data = await uploadVideo(file, language);
+      data = await uploadVideo(file, language);
       setResult(data);
     } catch (err) {
       console.error(err);
       setError("Upload failed. Please try again.");
+      setLoading(false);
+      return
     } finally {
       setLoading(false);
     }
-  };
-    async function getAudio(text, language) {
-        const formData = new FormData();
-        formData.append("text", text);
-        formData.append("language", language);
-        const res = await axios.post(
-            "https://video-language-changer.onrender.com/api/audio",
-            formData,
-            {
-              headers: { "Content-Type": "multipart/form-data" },
-            }
-    );
+    try {
+      const audio = await getAudio(data.translated, language);
+      setAudioUrl(audio);
+    } catch (err){
+      console.error(err);
+      setError("Audio generation failed. Please try again.");
+    } finally {
+      setAudioLoading(false);
     }
+  };
+  async function getAudio(text, language) {
+    const res = await axios.post(
+      "https://video-language-changer.onrender.com/api/audio",
+      { text, language },
+      { responseType: "blob" }
+    );
+    const blob = new Blob([res.data], { type: "audio/mpeg" });
+    const url = URL.createObjectURL(blob);
+    return url;
+  }
+
   return (
     <>
-    <div style={{ maxWidth: 500, margin: "auto", padding: 20 }}>
-      <h1 className="flex flex-col items-center justify-normal mt-2">Video Translator</h1>
-        <h3 className="mb-4">Translates your videos to different language and outputs an audio file of your video in the desired language. If the transcript is empty that means the audio couldn't be understood.</h3>
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-row mb-4">
-          <label>
-            Video file:
-            <input
-              type="file"
-              accept="video/*"
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-          </label>
-        </div>
+      <div style={{ maxWidth: 500, margin: "auto", padding: 20 }}>
+        <h1 className="flex flex-col items-center justify-normal mt-2">
+          Video Translator
+        </h1>
+        <h3 className="mb-4">
+          Translates your videos to different language and outputs an audio file
+          of your video in the desired language. If the transcript is empty that
+          means the audio couldn't be understood.
+        </h3>
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-row mb-4">
+            <label>
+              Video file:
+              <input
+                type="file"
+                accept="video/*"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </label>
+          </div>
 
-        <div className="mb-4">
-          <label>
-            Target language:
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              className="m-2 p-2 bg-neutral-200 text-slate-900 dark:bg-slate-900 dark:text-neutral-200 border rounded"
-            >
+          <div className="mb-4">
+            <label>
+              Target language:
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="m-2 p-2 bg-neutral-200 text-slate-900 dark:bg-slate-900 dark:text-neutral-200 border rounded"
+              >
                 <option value="English">English</option>
                 <option value="Catalan">Catalan</option>
                 <option value="Czech">Czech</option>
@@ -122,7 +142,9 @@ export function VideoTranslator() {
                 <option value="Punjabi (Gurmukhi)">Punjabi (Gurmukhi)</option>
                 <option value="Polish">Polish</option>
                 <option value="Portuguese (Brazil)">Portuguese (Brazil)</option>
-                <option value="Portuguese (Portugal)">Portuguese (Portugal)</option>
+                <option value="Portuguese (Portugal)">
+                  Portuguese (Portugal)
+                </option>
                 <option value="Romanian">Romanian</option>
                 <option value="Russian">Russian</option>
                 <option value="Sinhala">Sinhala</option>
@@ -141,37 +163,48 @@ export function VideoTranslator() {
                 <option value="Urdu">Urdu</option>
                 <option value="Vietnamese">Vietnamese</option>
                 <option value="Cantonese">Cantonese</option>
-                <option value="Chinese (Simplified)">Chinese (Simplified)</option>
-                <option value="Chinese (Mandarin/Taiwan)">Chinese (Mandarin/Taiwan)</option>
-            </select>
-          </label>
-        </div>
+                <option value="Chinese (Simplified)">
+                  Chinese (Simplified)
+                </option>
+                <option value="Chinese (Mandarin/Taiwan)">
+                  Chinese (Mandarin/Taiwan)
+                </option>
+              </select>
+            </label>
+          </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-cyan-500 dark:bg-blue-800 p-2 my-1 rounded-md hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"
-        >
-          {loading ? "Uploading..." : "Submit"}
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-cyan-500 dark:bg-blue-800 p-2 my-1 rounded-md hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"
+          >
+            {loading ? "Uploading..." : "Submit"}
+          </button>
+        </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {result && (
-        <div style={{ marginTop: 20 }}>
-          <p><strong>Transcript:</strong> {result.transcript}</p>
-          <p><strong>Translated:</strong> {result.translated}</p>
-        <button
-        className="bg-cyan-500 dark:bg-blue-800 p-2 my-1 rounded-md hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"
-        disabled={loading}
-
-        >
-            Download Audio (Not yet implemented)
-        </button>
-        </div>
-      )}
-    </div>
+        {result && (
+          <div >
+            <p className="my-4">
+              <strong>Transcript:</strong> {result.transcript}
+            </p>
+            <p className="my-4">
+              <strong>Translated:</strong> {result.translated}
+            </p>
+            
+            <a
+              className="bg-cyan-500 dark:bg-blue-800 p-2 my-1 rounded-md hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"
+              disabled={audioLoading || !audioUrl}
+              href={audioUrl}
+              download="translated_audio.mp3"
+            >
+              {audioError ? audioError : "Download Audio (Not yet implemented)"}
+            </a>
+          
+          </div>
+        )}
+      </div>
     </>
   );
 }
