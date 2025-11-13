@@ -9,6 +9,7 @@ import { ToDoList } from "./pages/TodoList";
 import { SidewaysSam } from "./pages/SidewaysSam.jsx"
 import { UltimateTicTacToe} from "./pages/UltimateTicTacToe.jsx"
 import { Pokedex } from "./pages/Pokedex.jsx"
+import { VideoTranslator } from "./pages/VideoTranslator.jsx";
 import Ampharos from "./assets/Ampharos.png"
 function PokemonImage({ pokemonId, getPokemonPic }) {
   const [imgUrl, setImgUrl] = useState(null);
@@ -200,6 +201,7 @@ function App() {
         <Route path="/ultimatetictactoe" element={<UltimateTicTacToe />}/>
         <Route path="/sidewayssam" element={<SidewaysSam />}/>
         <Route path="/pokedex" element={<Pokedex />} />
+        <Route path="/videotranslator" element={<VideoTranslator/>}/>
       </Routes>
       
     </>
