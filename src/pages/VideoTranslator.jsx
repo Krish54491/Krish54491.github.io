@@ -80,7 +80,7 @@ export function VideoTranslator() {
         <h3 className="mb-4">
           Translates your videos to different language and outputs an audio file
           of your video in the desired language. If the transcript is empty that
-          means the audio couldn't be understood.
+          means the audio couldn't be understood. The audio takes a while to be made, sorry about that.
         </h3>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-row mb-4">
@@ -199,7 +199,7 @@ export function VideoTranslator() {
               href={audioUrl}
               download="translated_audio.mp3"
             >
-              {audioError ? audioError : "Download Audio (Not yet implemented)"}
+              {audioError ? audioError : "Download Audio"}
             </a>
           
           </div>
