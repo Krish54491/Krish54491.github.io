@@ -55,7 +55,7 @@ export function VideoTranslator() {
       setAudioUrl(audio);
     } catch (err){
       console.error(err);
-      setError("Audio generation failed. Please try again.");
+      setAudioError("Audio generation failed. Please try again.");
     } finally {
       setAudioLoading(false);
     }
