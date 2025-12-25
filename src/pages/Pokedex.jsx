@@ -42,7 +42,7 @@ export const Pokedex = () => {
         }, [pokemonId, getPokemonPic]);
         
         if (!imgUrl) return <div></div>;
-        return <a href={`https://bulbapedia.bulbagarden.net/wiki/${pokemonNames[pokemonId]}_(Pokemon)`} target="_blank"><img src={imgUrl} className={`${pokedexCompletion[pokemonId] === 0 ? "brightness-0" : ""}`} alt={pokemonNames[pokemonId]} /></a>;
+        return <a href={`https://bulbapedia.bulbagarden.net/wiki/${pokemonNames[pokemonId]}_(Pokémon)`} target="_blank"><img src={imgUrl} className={`${pokedexCompletion[pokemonId] === 0 ? "brightness-0" : ""}`} alt={pokemonNames[pokemonId]} /></a>;
     }
     return (
         <>
