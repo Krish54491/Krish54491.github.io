@@ -1,15 +1,15 @@
-import { TicTacToe } from "./pages/TicTacToe";
-import { Countdown } from "./pages/Countdown";
-import { MouseGame } from "./pages/MouseGame.jsx";
-import { Clicker } from "./pages/Clicker.jsx";
+import { TicTacToe } from "./components/TicTacToe.jsx";
+import { Countdown } from "./components/Countdown.jsx";
+import { MouseGame } from "./components/MouseGame.jsx";
+import { Clicker } from "./components/Clicker.jsx";
 import { useState,useEffect } from "react";
 import { Route, Routes, useNavigate, Link } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
-import { ToDoList } from "./pages/TodoList";
-import { SidewaysSam } from "./pages/SidewaysSam.jsx"
-import { UltimateTicTacToe} from "./pages/UltimateTicTacToe.jsx"
-import { Pokedex } from "./pages/Pokedex.jsx"
-import { VideoTranslator } from "./pages/VideoTranslator.jsx";
+import { ToDoList } from "./components/TodoList.jsx";
+import { SidewaysSam } from "./components/SidewaysSam.jsx"
+import { UltimateTicTacToe} from "./components/UltimateTicTacToe.jsx"
+import { Pokedex } from "./components/Pokedex.jsx"
+import { VideoTranslator } from "./components/VideoTranslator.jsx";
 import Ampharos from "./assets/Ampharos.png"
 function PokemonImage({ pokemonId, getPokemonPic }) {
   const [imgUrl, setImgUrl] = useState(null);
