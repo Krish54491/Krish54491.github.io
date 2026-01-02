@@ -39,7 +39,7 @@ export const Nav = () => {
             </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
               <Link to="/videotranslator" className={`${menuOpen ? "block w-full" : ""}`}>Video Translator</Link>
-            </button>                
+            </button>                  
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
           <a
               href="https://krish54491.github.io/Krish54491-chipmunk/"
