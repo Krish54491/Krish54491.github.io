@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Confetti } from "../Confetti.jsx";
+import { Confetti } from "../../Confetti.jsx";
 
 export const Countdown = () => {
   const [initial, setInitial] = useState({
@@ -22,16 +22,6 @@ export const Countdown = () => {
     setSeconds(timeLeft.getSeconds());
   };
 
-  const startTimer = () => {
-    if (!timerActive) {
-      setEndPoint(
-        new Date(
-          new Date().getTime() + minutes * 60 * 1000 + (seconds + 1) * 1000
-        )
-      );
-      setTimerActive(true);
-    }
-  };
   useEffect(() => {
     let timerInterval;
     if (!timerActive || !endPoint) return;
@@ -49,7 +39,7 @@ export const Countdown = () => {
 
   const reset = () => {
     setTimerActive(false);
-    setMinutes(initial.minutes);
+    setMinutes(initial.seconds || initial.minutes ? initial.minutes : 1);
     setSeconds(initial.seconds);
   };
 
@@ -66,8 +56,30 @@ export const Countdown = () => {
     setSeconds(arr[1]);
   };
 
-  const isConfettiTime = seconds === 0 && minutes === 0 && timerActive;
+  const isConfettiTime = seconds === 0 && minutes === 0 && !timerActive;
+  const startTimer = () => {
+    if (isConfettiTime) {
+      reset();
+      setEndPoint(
+        new Date(
+          new Date().getTime() +
+            initial.minutes * 60 * 1000 +
+            (initial.seconds + 1) * 1000
+        )
+      );
+      setTimerActive(true);
+      return;
+    }
 
+    if (!timerActive) {
+      setEndPoint(
+        new Date(
+          new Date().getTime() + minutes * 60 * 1000 + (seconds + 1) * 1000
+        )
+      );
+      setTimerActive(true);
+    }
+  };
   return (
     <>
       {isConfettiTime && <Confetti />}
