@@ -1,0 +1,4 @@
+name = "krish544"
+compatibility_date = "2025-04-03"
+assets = { not_found_handling = "single-page-application", run_worker_first = ["/api/*"]  }
+main = "./worker/index.js"
