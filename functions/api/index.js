@@ -1,4 +1,4 @@
-import { addComment } from "./Comment";
+import { addComment } from "comment";
 
 export default {
   async fetch(request) {
