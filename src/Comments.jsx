@@ -7,10 +7,8 @@
 // I'm going to make a backend api route to handle the comments, so the component will call that route
 // The api route will handle fetching and adding comments to the database
 export default function Comments({ pageName }) {
-
-    // check if the page has a table for comments
-    
-    // else, fetch comments from the table for that page
+  // check if the page has a table for comments
+  // else, fetch comments from the table for that page
 }
 // if the page has no table yet, create one
 // The table will have the following columns:

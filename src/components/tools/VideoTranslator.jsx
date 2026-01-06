@@ -7,10 +7,9 @@ export function VideoTranslator() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-  const [audioError,setAudioError] = useState(null);
+  const [audioError, setAudioError] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
   const [audioLoading, setAudioLoading] = useState(false);
-
 
   async function uploadVideo(file, language) {
     const formData = new FormData();
@@ -46,14 +45,14 @@ export function VideoTranslator() {
       console.error(err);
       setError("Upload failed. Please try again.");
       setLoading(false);
-      return
+      return;
     } finally {
       setLoading(false);
     }
     try {
       const audio = await getAudio(data.translated, language);
       setAudioUrl(audio);
-    } catch (err){
+    } catch (err) {
       console.error(err);
       setAudioError("Audio generation failed. Please try again.");
     } finally {
@@ -80,7 +79,9 @@ export function VideoTranslator() {
         <h3 className="mb-4">
           Translates your videos to different language and outputs an audio file
           of your video in the desired language. If the transcript is empty that
-          means the audio couldn't be understood. The audio takes a while to be made, sorry about that. The program may fail at times due to the AI calls getting rate limited.
+          means the audio couldn't be understood. The audio takes a while to be
+          made, sorry about that. The program may fail at times due to the AI
+          calls getting rate limited.
         </h3>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-row mb-4">
@@ -186,14 +187,14 @@ export function VideoTranslator() {
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {result && (
-          <div >
+          <div>
             <p className="my-4">
               <strong>Transcript:</strong> {result.transcript}
             </p>
             <p className="my-4">
               <strong>Translated:</strong> {result.translated}
             </p>
-            
+
             <a
               className="bg-cyan-500 dark:bg-blue-800 p-2 my-1 rounded-md hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"
               disabled={audioLoading || !audioUrl}
@@ -202,7 +203,6 @@ export function VideoTranslator() {
             >
               {audioError ? audioError : "Download Audio"}
             </a>
-          
           </div>
         )}
       </div>
@@ -258,7 +258,7 @@ export function VideoTranslator() {
 //     <div style={{ maxWidth: 500, margin: "auto", padding: 20 }}>
 //       <h1 className="flex flex-col items-center justify-normal mt-2">AI Video Rater</h1>
 //       <h3  className="mb-4">
-//         If the script score is -1, it means the AI errored out and could not give a rating. This tool only works for English videos shorter than 30 minutes. Sometimes due to issues with server it may take a while to respond. 
+//         If the script score is -1, it means the AI errored out and could not give a rating. This tool only works for English videos shorter than 30 minutes. Sometimes due to issues with server it may take a while to respond.
 //       </h3>
 //       <form onSubmit={handleSubmit}>
 //         <div className="flex flex-row mb-4">
@@ -278,17 +278,17 @@ export function VideoTranslator() {
 //             </button>
 //         </div>
 //       </form>
-        
+
 //       {error && <p style={{ color: "red" }}>{error}</p>}
 
 //       {result && (
 //         <div className="flex flex-row items-center justify-center">
 //           <div
-//             dangerouslySetInnerHTML={{ __html: result }} 
+//             dangerouslySetInnerHTML={{ __html: result }}
 //             className="flex flex-col my-2"
 //             />
 //           {transcriptUrl && (
-//             <a href={transcriptUrl} download               
+//             <a href={transcriptUrl} download
 //             className="bg-cyan-500 dark:bg-blue-800 p-2 my-1 rounded-md hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700"
 //             >
 //               Download Transcript

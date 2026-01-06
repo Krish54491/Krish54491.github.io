@@ -4,7 +4,11 @@ const Item = ({ s, onComplete }) => {
   return (
     <>
       <div className="flex flex-row m-1">
-        <input type="checkbox" className="mr-1 mt-1" onChange={onComplete}></input>
+        <input
+          type="checkbox"
+          className="mr-1 mt-1"
+          onChange={onComplete}
+        ></input>
         <p className="text-2xl">{s}</p>
       </div>
     </>
@@ -30,19 +34,22 @@ export const ToDoList = () => {
   const [completed, setCompleted] = useState([]);
   const [itemName, setItemName] = useState("");
   const [itemCheck, setItemCheck] = useState(true);
-  if(JSON.parse(localStorage.getItem("UncompletedTasks")) != null && itemCheck){
-    setItems(JSON.parse(localStorage.getItem("UncompletedTasks")))
-    setItemCheck(false)
+  if (
+    JSON.parse(localStorage.getItem("UncompletedTasks")) != null &&
+    itemCheck
+  ) {
+    setItems(JSON.parse(localStorage.getItem("UncompletedTasks")));
+    setItemCheck(false);
   }
   const textFollow = (e) => {
     setItemName(e.currentTarget.value);
   };
   const addToArray = () => {
-    items.push(itemName)
+    items.push(itemName);
     setItems(items);
     setItemName("");
     //console.log(items);
-    saveData()
+    saveData();
   };
 
   const handleComplete = (itemIndex) => {
@@ -53,7 +60,7 @@ export const ToDoList = () => {
     setItems(newItems);
     setCompleted([...completed, itemToMove]);
     //console.log(items);
-    saveDataUsingIndex(newItems)
+    saveDataUsingIndex(newItems);
   };
   const handleUncomplete = (itemIndex) => {
     const itemToMove = completed[itemIndex];
@@ -61,17 +68,16 @@ export const ToDoList = () => {
     const newItems = [...items, itemToMove];
     setItems(newItems);
     //console.log(items);
-    saveDataUsingIndex(newItems)
+    saveDataUsingIndex(newItems);
   };
   const saveData = () => {
-    localStorage.setItem("UncompletedTasks", JSON.stringify(items))
+    localStorage.setItem("UncompletedTasks", JSON.stringify(items));
     //console.log(items);
-  }
+  };
   const saveDataUsingIndex = (store) => {
-    localStorage.setItem("UncompletedTasks", JSON.stringify(store))
+    localStorage.setItem("UncompletedTasks", JSON.stringify(store));
     //console.log(items);
-
-  }
+  };
   return (
     <>
       <div className="flex flex-col justify-center items-center">
