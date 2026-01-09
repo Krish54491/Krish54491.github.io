@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import cookie from "../../assets/cookie.png";
+
+const startTime = Date.now();
+
 export const Clicker = () => {
   const [clicked, setClicked] = useState(0);
   const [clickMult, setClickMult] = useState(1);
@@ -8,8 +11,6 @@ export const Clicker = () => {
   const [grandBroke, setGrandBroke] = useState(false);
   const [multBroke, setMultBroke] = useState(false);
   const [prevTime, setPrevTime] = useState(0);
-  const [check, setCheck] = useState(true);
-  const [startTime, setStartTime] = useState(Date.now());
   //if(localStorage.getItem("clickerGame") && check){
   //    const prevData = JSON.parse(localStorage.getItem("clickerGame"))
   //    setClicked(prevData[0])
@@ -97,8 +98,8 @@ export const Clicker = () => {
         </button>
       </div>
       <div className="flex flex-col items-center justify-center text-red-600">
-        {grandBroke ? <p>Can't afford a Grandma</p> : ""}
-        {multBroke ? <p>Can't afford a Multiplier</p> : ""}
+        {grandBroke ? <p>Can&apos;t afford a Grandma</p> : ""}
+        {multBroke ? <p>Can&apos;t afford a Multiplier</p> : ""}
       </div>
     </>
   );

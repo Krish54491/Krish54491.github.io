@@ -105,6 +105,7 @@ export const MouseGame = () => {
     }, 30);
 
     return () => clearInterval(moveInterval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStarted, difficulty]);
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);

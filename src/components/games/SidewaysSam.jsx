@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useRef } from "react";
 
 const Sam = ({ x, y, w, h }) => {
@@ -201,10 +202,8 @@ export const SidewaysSam = () => {
     // keep sam in bounds
     if (!gameStarted) return;
     let newX = x;
-    let newY = y;
     if (x < bounds.left) newX = bounds.left;
     if (x > bounds.right) newX = bounds.right;
-    if (y < bounds.top) newY = bounds.top;
 
     if (bounds.bottom - sizeAdjustment <= 270) {
       setHeight(50);
@@ -346,8 +345,8 @@ export const SidewaysSam = () => {
       <div className="flex flex-col items-center justify-normal mt-4">
         <h1>Sideways Sam</h1>
         <p>
-          In this game sam has to dodge the rocks that I'm throwing at him. Yes
-          me.
+          In this game sam has to dodge the rocks that I&apos;m throwing at him.
+          Yes me.
         </p>
         <br></br>
         <p>High Score: {highscore}</p>

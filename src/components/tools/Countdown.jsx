@@ -35,6 +35,7 @@ export const Countdown = () => {
     }
 
     return () => clearInterval(timerInterval); // Cleanup interval on unmount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timerActive, endPoint]);
 
   const reset = () => {

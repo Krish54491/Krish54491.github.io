@@ -149,7 +149,7 @@ function App() {
                     ? "Pokedex Data Loaded"
                     : `Amount of Pokemon Found: ${pokemonFound}`}
                 </h3>
-                <h2 className="text-3xl">Krish Bharal's Portfolio</h2>
+                <h2 className="text-3xl">Krish Bharal&apos;s Portfolio</h2>
               </div>
               <div className="hidden lg:flex flex-row flex-wrap items-center justify-center space-x-0">
                 {pokedexCompletion ? (
