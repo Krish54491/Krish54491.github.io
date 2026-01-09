@@ -74,24 +74,24 @@ export default function Comments() {
   }
 
   // Handle deleting a comment
-  async function handleDeleteComment(commentId) {
-    try {
-      const response = await fetch(
-        `/api/comment?action=delete&page=${encodeURIComponent(page)}&id=${encodeURIComponent(
-          commentId
-        )}`,
-        { method: "POST" }
-      );
-      const data = await response.json();
-      if (data.success) {
-        setComments(comments.filter((comment) => comment.id !== commentId));
-      } else {
-        console.error("Failed to delete comment:", data.message);
-      }
-    } catch (error) {
-      console.error("Error deleting comment:", error);
-    }
-  }
+  // async function handleDeleteComment(commentId) {
+  //   try {
+  //     const response = await fetch(
+  //       `/api/comment?action=delete&page=${encodeURIComponent(page)}&id=${encodeURIComponent(
+  //         commentId
+  //       )}`,
+  //       { method: "POST" }
+  //     );
+  //     const data = await response.json();
+  //     if (data.success) {
+  //       setComments(comments.filter((comment) => comment.id !== commentId));
+  //     } else {
+  //       console.error("Failed to delete comment:", data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting comment:", error);
+  //   }
+  // }
 
   return (
     <div className="max-w-2xl mx-auto p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md mt-8">
@@ -138,15 +138,15 @@ export default function Comments() {
             <p className="text-gray-800 dark:text-gray-200">
               {comment.content}
             </p>
-            <button
+            {/* <button
               onClick={() =>
                 setMenuOpen((prev) => (prev === comment.id ? null : comment.id))
               }
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-gray-200"
             >
-              &#x22EE; {/* Vertical ellipsis */}
-            </button>
-            {menuOpen === comment.id && (
+              &#x22EE;
+            </button> */}
+            {/* {menuOpen === comment.id && (
               <div className="absolute top-8 right-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg">
                 <button
                   onClick={() => handleDeleteComment(comment.id)}
@@ -155,7 +155,7 @@ export default function Comments() {
                   Delete
                 </button>
               </div>
-            )}
+            )} */}
           </li>
         ))}
       </ul>
