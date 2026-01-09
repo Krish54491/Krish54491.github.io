@@ -3,7 +3,7 @@ import { Countdown } from "./components/tools/Countdown.jsx";
 import { MouseGame } from "./components/games/MouseGame.jsx";
 import { Clicker } from "./components/games/Clicker.jsx";
 import { useState, useEffect } from "react";
-import { Route, Routes, useNavigate, Link } from "react-router-dom";
+import { Route, Routes, Link } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
 import { ToDoList } from "./components/tools/TodoList.jsx";
 import { SidewaysSam } from "./components/games/SidewaysSam.jsx";
@@ -316,6 +316,7 @@ function App() {
             </div>
           }
         />
+        <Route path="*" element={<></>} />
       </Routes>
     </>
   );

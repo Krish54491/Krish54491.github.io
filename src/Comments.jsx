@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { API_ROUTES } from "./utils/apiRoutes";
 // this will a while so I'll start by writing what it should do first
 // This component is not in pages because it will be used in almost every page
 
@@ -10,7 +11,6 @@ import { useLocation } from "react-router-dom";
 // The api route will handle fetching and adding comments to the database
 export default function Comments() {
   const [comments, setComments] = useState([]);
-  const [username, setUsername] = useState("");
   const [content, setContent] = useState("");
   const [menuOpen, setMenuOpen] = useState(null); // Track which menu is open
   const location = useLocation(); // React Router hook to detect URL changes
@@ -24,7 +24,7 @@ export default function Comments() {
     async function fetchComments() {
       try {
         const response = await fetch(
-          `/api/comment?action=list&page=${encodeURIComponent(page)}`
+          `${API_ROUTES.COMMENTS}?action=list&page=${encodeURIComponent(page)}`
         );
         const data = await response.json();
         if (data.success) {
@@ -42,28 +42,27 @@ export default function Comments() {
   // Handle adding a new comment
   async function handleAddComment(event) {
     event.preventDefault();
-    if (!username || !content) {
-      alert("Please enter both a username and a comment.");
+    if (!content) {
+      alert("Please enter a comment.");
       return;
     }
     try {
       const response = await fetch(
-        `/api/comment?action=add&page=${encodeURIComponent(page)}&username=${encodeURIComponent(
-          username
-        )}&content=${encodeURIComponent(content)}`,
-        { method: "POST" }
+        `${API_ROUTES.COMMENTS}?action=add&page=${encodeURIComponent(page)}&content=${encodeURIComponent(content)}`,
+        {
+          method: "POST",
+        }
       );
       const data = await response.json();
       if (data.success) {
         // Refetch comments to include the new comment with its generated id
         const updatedComments = await fetch(
-          `/api/comment?action=list&page=${encodeURIComponent(page)}`
+          `${API_ROUTES.COMMENTS}?action=list&page=${encodeURIComponent(page)}`
         );
         const updatedData = await updatedComments.json();
         if (updatedData.success) {
           setComments(updatedData.comments);
         }
-        setUsername("");
         setContent("");
       } else {
         console.error("Failed to add comment:", data.message);
@@ -74,24 +73,24 @@ export default function Comments() {
   }
 
   // Handle deleting a comment
-  // async function handleDeleteComment(commentId) {
-  //   try {
-  //     const response = await fetch(
-  //       `/api/comment?action=delete&page=${encodeURIComponent(page)}&id=${encodeURIComponent(
-  //         commentId
-  //       )}`,
-  //       { method: "POST" }
-  //     );
-  //     const data = await response.json();
-  //     if (data.success) {
-  //       setComments(comments.filter((comment) => comment.id !== commentId));
-  //     } else {
-  //       console.error("Failed to delete comment:", data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting comment:", error);
-  //   }
-  // }
+  async function handleDeleteComment(commentId) {
+    try {
+      const response = await fetch(
+        `${API_ROUTES.COMMENTS}?action=delete&page=${encodeURIComponent(page)}&id=${encodeURIComponent(
+          commentId
+        )}`,
+        { method: "POST" }
+      );
+      const data = await response.json();
+      if (data.success) {
+        setComments(comments.filter((comment) => comment.id !== commentId));
+      } else {
+        console.error("Failed to delete comment:", data.message);
+      }
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  }
 
   return (
     <div className="max-w-2xl mx-auto p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md mt-8">
@@ -99,15 +98,6 @@ export default function Comments() {
         Comments
       </h2>
       <form onSubmit={handleAddComment} className="mb-6">
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-300 bg-inherit"
-          />
-        </div>
         <div className="mb-4">
           <textarea
             placeholder="Write a comment..."
@@ -138,15 +128,15 @@ export default function Comments() {
             <p className="text-gray-800 dark:text-gray-200">
               {comment.content}
             </p>
-            {/* <button
+            <button
               onClick={() =>
                 setMenuOpen((prev) => (prev === comment.id ? null : comment.id))
               }
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-gray-200"
             >
               &#x22EE;
-            </button> */}
-            {/* {menuOpen === comment.id && (
+            </button>
+            {menuOpen === comment.id && (
               <div className="absolute top-8 right-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg">
                 <button
                   onClick={() => handleDeleteComment(comment.id)}
@@ -155,7 +145,7 @@ export default function Comments() {
                   Delete
                 </button>
               </div>
-            )} */}
+            )}
           </li>
         ))}
       </ul>

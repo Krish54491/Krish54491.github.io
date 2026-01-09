@@ -1,3 +1,4 @@
 name = "krish54491-github-io"
+compatibility_flags = [ "nodejs_compat" ]
 compatibility_date = "2025-07-03"
 pages_build_output_dir = "dist"

@@ -1,4 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
+import { getDb } from "../../db/drizzle.js";
+import { commentsTable, usersTable } from "../../db/schema.js";
+import { getUserFromCookie } from "../utils/cookie.js";
+import { eq } from "drizzle-orm";
 
 /**
  *
@@ -28,15 +32,15 @@ export async function onRequest({ request, env }) {
   try {
     if (action === "add") {
       // test function curl "http://127.0.0.1:8788/api/Comment?action=add&page=home&username=testuser&content=This is a test comment"
-      const username = searchParams.get("username");
+      const user = await getUserFromCookie(request);
       const content = searchParams.get("content");
-      if (!username || !content) {
+      if (!user || !content) {
         return Response.json(
           { success: false, message: "Missing username or content" },
           { status: 400 }
         );
       }
-      return await addComment(page, username, content, supabase);
+      return await addComment(page, user, content);
     } else if (action === "list") {
       // test function curl "http://127.0.0.1:8788/api/Comment?action=list&page=testpage&amount=4"
       const amount = Number(searchParams.get("amount"))
@@ -48,18 +52,18 @@ export async function onRequest({ request, env }) {
           { status: 400 }
         );
       }
-      return await listComments(page, amount, supabase);
+      return await listComments(page, amount);
     } else if (action === "delete") {
       // test function curl "http://127.0.0.1:8788/api/Comment?action=delete&page=testpage"
-      const username = searchParams.get("username");
-      const id = searchParams.get("id");
-      if (!username || !id) {
+      const user = await getUserFromCookie(request);
+      const commentId = searchParams.get("id");
+      if (!user || !commentId) {
         return Response.json(
           { success: false, message: "Missing username or id or both" },
           { status: 400 }
         );
       }
-      return await deleteComment(page, username, id, supabase);
+      return await deleteComment(page, user, commentId, supabase);
     }
     return Response.json(
       { success: false, message: "Invalid action" },
@@ -73,61 +77,103 @@ export async function onRequest({ request, env }) {
   }
 }
 
-async function addComment(page, username, content, supabase) {
-  const { data, error } = await supabase.from("comments").insert([
-    {
+async function addComment(page, user, content) {
+  try {
+    console.log("Adding comment for user:", user);
+    await getDb().insert(commentsTable).values({
       page: page,
-      username: username,
+      user_id: user.id,
       content: content,
-    },
-  ]);
-  if (error) {
+    });
+  } catch (error) {
     return Response.json(
       { success: false, message: error.message },
       { status: 500 }
     );
   }
+  // const { data, error } = await supabase.from("comments").insert([
+  //   {
+  //     page: page,
+  //     username: username,
+  //     content: content,
+  //   },
+  // ]);
+  // if (error) {
+  //   return Response.json(
+  //     { success: false, message: error.message },
+  //     { status: 500 }
+  //   );
+  // }
   return Response.json(
     { success: true, message: "Comment added successfully" },
     { status: 200 }
   );
 }
-async function listComments(page, amount, supabase) {
-  const { data, error } = await supabase
-    .from("comments")
-    .select("*")
-    .eq("page", page)
-    .order("created_at", { ascending: false })
-    .limit(amount); // limit to 100 comments for now
-  if (error) {
+async function listComments(page, amount) {
+  try {
+    const comments = await getDb()
+      .select({
+        id: commentsTable.id,
+        page: commentsTable.page,
+        content: commentsTable.content,
+        created_at: commentsTable.created_at,
+        username: usersTable.username,
+      })
+      .from(commentsTable)
+      .where(eq(commentsTable.page, page))
+      .leftJoin(usersTable, eq(commentsTable.user_id, usersTable.id))
+      .orderBy(commentsTable.created_at, "desc")
+      .limit(amount);
+    return Response.json({ success: true, comments }, { status: 200 });
+  } catch (error) {
     return Response.json(
       { success: false, message: error.message },
       { status: 500 }
     );
   }
-  return Response.json({ success: true, comments: data }, { status: 200 });
+  // const { data, error } = await supabase
+  //   .from("comments")
+  //   .select("*")
+  //   .eq("page", page)
+  //   .order("created_at", { ascending: false })
+  //   .limit(amount); // limit to 100 comments for now
+  // if (error) {
+  //   return Response.json(
+  //     { success: false, message: error.message },
+  //     { status: 500 }
+  //   );
+  // }
+  // return Response.json({ success: true, comments: data }, { status: 200 });
 }
-async function deleteComment(page, username, id, supabase) {
+async function deleteComment(page, user, id) {
   // delete comment by id or other identifier
   // has extra parameter to check for which comment to delete
   // comment has to belong to the user in order to be deleted or admin
   // admin perms will be added later
-  const { data, error } = await supabase
-    .from("comments")
-    .delete()
-    .eq("id", id)
-    .eq("username", username)
-    .eq("page", page);
-  if (error) {
+  try {
+    await getDb()
+      .delete(commentsTable)
+      .where(
+        eq(commentsTable.id, id),
+        eq(commentsTable.user_id, user.id),
+        eq(commentsTable.page, page)
+      );
+    return Response.json(
+      { success: true, message: "Comment deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    // const { data, error } = await supabase
+    //   .from("comments")
+    //   .delete()
+    //   .eq("id", id)
+    //   .eq("user_id", user)
+    //   .eq("page", page);
     return Response.json(
       { success: false, message: error.message },
       { status: 500 }
     );
   }
-  return Response.json(
-    { success: true, message: "Comment deleted successfully" },
-    { status: 200 }
-  );
 }
 
 // comments general structure
