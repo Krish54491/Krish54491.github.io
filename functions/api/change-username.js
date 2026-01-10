@@ -1,0 +1,39 @@
+import { eq } from "drizzle-orm";
+import { getDb } from "../../db/drizzle.js";
+import { usersTable } from "../../db/schema.js";
+import { getUserFromCookie } from "../utils/cookie.js";
+
+export async function onRequest({ request }) {
+  if (request.method !== "POST") {
+    return Response.json(
+      { success: false, message: "Invalid request method" },
+      { status: 405 }
+    );
+  }
+  const body = await request.json();
+  const { newUsername } = body;
+  console.log("Requested new username:", newUsername);
+  const db = getDb();
+  const user = await getUserFromCookie(request);
+  if (!user || !newUsername) {
+    return Response.json(
+      { success: false, message: "Missing required fields" },
+      { status: 400 }
+    );
+  }
+  try {
+    await db
+      .update(usersTable)
+      .set({ username: newUsername })
+      .where(eq(usersTable.id, user.id));
+  } catch (error) {
+    return Response.json(
+      { success: false, message: error.message },
+      { status: 500 }
+    );
+  }
+  return Response.json(
+    { success: true, message: "Username changed successfully" },
+    { status: 200 }
+  );
+}

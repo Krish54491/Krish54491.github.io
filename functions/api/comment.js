@@ -79,7 +79,7 @@ export async function onRequest({ request, env }) {
 
 async function addComment(page, user, content) {
   try {
-    console.log("Adding comment for user:", user);
+    //console.log("Adding comment for user:", user);
     await getDb().insert(commentsTable).values({
       page: page,
       user_id: user.id,
