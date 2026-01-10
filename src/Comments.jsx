@@ -17,6 +17,7 @@ export default function Comments() {
   const [menuOpen, setMenuOpen] = useState(null); // Track which menu is open
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
   const [newUsername, setNewUsername] = useState("");
+  const [commentsFetch, setCommentsFetch] = useState(false);
   const location = useLocation();
   let page = location.pathname.substring(1);
   //console.log("Current page for comments:", page);
@@ -40,7 +41,7 @@ export default function Comments() {
       }
     }
     fetchComments();
-  }, [page]);
+  }, [page, commentsFetch]);
 
   async function handleAddComment(event) {
     event.preventDefault();
@@ -106,9 +107,10 @@ export default function Comments() {
       });
       const data = await response.json();
       if (data.success) {
-        alert("Username updated successfully!");
+        //alert("Username updated successfully!");
         setIsUsernameModalOpen(false);
         setNewUsername("");
+        setCommentsFetch(!commentsFetch);
       } else {
         alert("Failed to update username: " + data.message);
       }
