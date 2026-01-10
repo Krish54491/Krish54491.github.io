@@ -56,7 +56,7 @@ export async function onRequest({ request }) {
     {
       status: 200,
       headers: {
-        "Set-Cookie": `krish-auth=${userId}; HttpOnly; Path=/;`,
+        "Set-Cookie": `krish-auth=${userId}; HttpOnly; Path=/;`, // may hash it in the future
       },
     }
   );

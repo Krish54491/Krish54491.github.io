@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { getDb } from "../../db/drizzle.js";
 import { commentsTable, usersTable } from "../../db/schema.js";
 import { getUserFromCookie } from "../utils/cookie.js";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 /**
  *
@@ -151,24 +151,27 @@ async function deleteComment(page, user, id) {
   // comment has to belong to the user in order to be deleted or admin
   // admin perms will be added later
   try {
-    await getDb()
+    const result = await getDb()
       .delete(commentsTable)
       .where(
-        eq(commentsTable.id, id),
-        eq(commentsTable.user_id, user.id),
-        eq(commentsTable.page, page)
+        and(
+          eq(commentsTable.id, id),
+          eq(commentsTable.user_id, user.id),
+          eq(commentsTable.page, page)
+        )
       );
+    if (!result.rowCount || result.rowCount === 0) {
+      return Response.json(
+        { success: false, message: "Comment not found or unauthorized" },
+        { status: 400 }
+      );
+    }
     return Response.json(
       { success: true, message: "Comment deleted successfully" },
       { status: 200 }
     );
   } catch (error) {
-    // const { data, error } = await supabase
-    //   .from("comments")
-    //   .delete()
-    //   .eq("id", id)
-    //   .eq("user_id", user)
-    //   .eq("page", page);
+    //console.error("Error deleting comment:", error); // Debugging log
     return Response.json(
       { success: false, message: error.message },
       { status: 500 }
