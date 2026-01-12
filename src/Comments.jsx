@@ -18,8 +18,14 @@ export default function Comments() {
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
   const [newUsername, setNewUsername] = useState("");
   const [commentsFetch, setCommentsFetch] = useState(false);
+  const [amountOfComments, setAmountOfComments] = useState(5);
+  const [prevPage, setPrevPage] = useState("");
   const location = useLocation();
   let page = location.pathname.substring(1);
+  if (page !== prevPage) {
+    setAmountOfComments(5);
+    setPrevPage(page);
+  }
   //console.log("Current page for comments:", page);
   if (page === "") {
     page = "home";
@@ -28,7 +34,7 @@ export default function Comments() {
     async function fetchComments() {
       try {
         const response = await fetch(
-          `${API_ROUTES.COMMENTS}?action=list&page=${encodeURIComponent(page)}`
+          `${API_ROUTES.COMMENTS}?action=list&page=${encodeURIComponent(page)}&amount=${encodeURIComponent(amountOfComments)}`
         );
         const data = await response.json();
         if (data.success) {
@@ -41,7 +47,7 @@ export default function Comments() {
       }
     }
     fetchComments();
-  }, [page, commentsFetch]);
+  }, [page, commentsFetch, amountOfComments]);
 
   async function handleAddComment(event) {
     event.preventDefault();
@@ -185,6 +191,16 @@ export default function Comments() {
           </li>
         ))}
       </ul>
+
+      {/* Load More Button */}
+      {comments.length === amountOfComments && (
+        <button
+          onClick={() => setAmountOfComments((prev) => prev + 5)}
+          className="w-full bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-md hover:bg-gray-400 dark:hover:bg-gray-600 mt-4"
+        >
+          Load More
+        </button>
+      )}
 
       <ReactModal
         isOpen={isUsernameModalOpen}
