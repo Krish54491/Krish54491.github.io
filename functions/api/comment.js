@@ -78,6 +78,12 @@ export async function onRequest({ request, env }) {
 }
 
 async function addComment(page, user, content) {
+  if (user.banned) {
+    return Response.json(
+      { success: false, message: "User is banned from commenting" },
+      { status: 400 }
+    );
+  }
   try {
     //console.log("Adding comment for user:", user);
     await getDb().insert(commentsTable).values({

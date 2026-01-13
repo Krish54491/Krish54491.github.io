@@ -1,3 +1,4 @@
+import { boolean } from "drizzle-orm/gel-core";
 import { pgTable, timestamp, text, uuid } from "drizzle-orm/pg-core";
 
 export const usersTable = pgTable("users", {
@@ -5,7 +6,8 @@ export const usersTable = pgTable("users", {
   created_at: timestamp("created_at").defaultNow(),
   username: text("username").notNull().default("Anon"),
   mac_address: text("mac_address").notNull().unique(),
-});
+  banned: boolean("banned").notNull().default(false),
+}).enableRLS();
 export const commentsTable = pgTable("comments", {
   id: uuid("id").primaryKey().defaultRandom(),
   page: text("page").notNull(),
@@ -14,4 +16,4 @@ export const commentsTable = pgTable("comments", {
     .references(() => usersTable.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
   created_at: timestamp("created_at").defaultNow(),
-});
+}).enableRLS();
