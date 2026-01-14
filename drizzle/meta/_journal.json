@@ -15,6 +15,20 @@
       "when": 1768346723614,
       "tag": "0001_talented_nicolaos",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1768349651010,
+      "tag": "0002_acoustic_dark_beast",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1768351219690,
+      "tag": "0003_productive_quicksilver",
+      "breakpoints": true
     }
   ]
 }

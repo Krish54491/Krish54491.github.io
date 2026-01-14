@@ -24,7 +24,7 @@ export async function onRequest({ request }) {
   const userResults = await db
     .select()
     .from(usersTable)
-    .where(eq(usersTable.mac_address, deviceId))
+    .where(eq(usersTable.device_id, deviceId))
     .limit(1);
 
   let userId = userResults[0]?.id;
@@ -35,7 +35,7 @@ export async function onRequest({ request }) {
         await db
           .insert(usersTable)
           .values({
-            mac_address: deviceId,
+            device_id: deviceId,
           })
           .returning({
             id: usersTable.id,

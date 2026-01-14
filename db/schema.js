@@ -5,7 +5,7 @@ export const usersTable = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   created_at: timestamp("created_at").defaultNow(),
   username: text("username").notNull().default("Anon"),
-  mac_address: text("mac_address").notNull().unique(),
+  device_id: text("device_id").notNull().unique(),
   banned: boolean("banned").notNull().default(false),
 }).enableRLS();
 export const commentsTable = pgTable("comments", {
@@ -16,4 +16,8 @@ export const commentsTable = pgTable("comments", {
     .references(() => usersTable.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
   created_at: timestamp("created_at").defaultNow(),
+  deleted: boolean("deleted").notNull().default(false),
+  parent_comment_id: uuid("parent_comment_id")
+    .references(() => commentsTable.id, { onDelete: "no action" })
+    .default(null),
 }).enableRLS();
