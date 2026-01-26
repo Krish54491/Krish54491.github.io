@@ -158,7 +158,23 @@ async function deleteComment(page, user, id) {
   // comment has to belong to the user in order to be deleted or admin
   // admin perms will be added later
   try {
-    const result = await getDb()
+    const commentToBeDeleted = await getDb()
+      .select()
+      .from(commentsTable)
+      .where(
+        and(
+          eq(commentsTable.id, id),
+          eq(commentsTable.user_id, user.id),
+          eq(commentsTable.page, page),
+        ),
+      );
+    if (!commentToBeDeleted || commentToBeDeleted.length === 0) {
+      return Response.json(
+        { success: false, message: "Comment not found or unauthorized" },
+        { status: 400 },
+      );
+    }
+    await getDb()
       .delete(commentsTable)
       .where(
         and(
@@ -167,12 +183,6 @@ async function deleteComment(page, user, id) {
           eq(commentsTable.page, page),
         ),
       );
-    if (!result.rowCount || result.rowCount === 0) {
-      return Response.json(
-        { success: false, message: "Comment not found or unauthorized" },
-        { status: 400 },
-      );
-    }
     return Response.json(
       { success: true, message: "Comment deleted successfully" },
       { status: 200 },
