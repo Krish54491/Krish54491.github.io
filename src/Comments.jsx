@@ -34,7 +34,7 @@ export default function Comments() {
     async function fetchComments() {
       try {
         const response = await fetch(
-          `${API_ROUTES.COMMENTS}?action=list&page=${encodeURIComponent(page)}&amount=${encodeURIComponent(amountOfComments)}`
+          `${API_ROUTES.COMMENTS}?action=list&page=${encodeURIComponent(page)}&amount=${encodeURIComponent(amountOfComments)}`,
         );
         const data = await response.json();
         if (data.success) {
@@ -60,13 +60,13 @@ export default function Comments() {
         `${API_ROUTES.COMMENTS}?action=add&page=${encodeURIComponent(page)}&content=${encodeURIComponent(content)}`,
         {
           method: "POST",
-        }
+        },
       );
       const data = await response.json();
       if (data.success) {
         // Refetch comments to include the new comment with its generated id
         const updatedComments = await fetch(
-          `${API_ROUTES.COMMENTS}?action=list&page=${encodeURIComponent(page)}`
+          `${API_ROUTES.COMMENTS}?action=list&page=${encodeURIComponent(page)}`,
         );
         const updatedData = await updatedComments.json();
         if (updatedData.success) {
@@ -85,13 +85,20 @@ export default function Comments() {
     try {
       const response = await fetch(
         `${API_ROUTES.COMMENTS}?action=delete&page=${encodeURIComponent(page)}&id=${encodeURIComponent(
-          commentId
+          commentId,
         )}`,
-        { method: "POST" }
+        { method: "POST" },
       );
       const data = await response.json();
       if (data.success) {
-        setComments(comments.filter((comment) => comment.id !== commentId));
+        // Refetch comments to include the new comment with its generated id
+        const updatedComments = await fetch(
+          `${API_ROUTES.COMMENTS}?action=list&page=${encodeURIComponent(page)}`,
+        );
+        const updatedData = await updatedComments.json();
+        if (updatedData.success) {
+          setComments(updatedData.comments);
+        }
       } else {
         console.error("Failed to delete comment:", data.message);
       }
