@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { API_ROUTES } from "./utils/apiRoutes";
 import ReactModal from "react-modal";
+import { webAuthnLogin } from "./utils/webAuth.js";
 
 // this will a while so I'll start by writing what it should do first
 // This component is not in pages because it will be used in almost every page
@@ -20,6 +21,9 @@ export default function Comments() {
   const [commentsFetch, setCommentsFetch] = useState(false);
   const [amountOfComments, setAmountOfComments] = useState(5);
   const [prevPage, setPrevPage] = useState("");
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem("loggedIn") === "true",
+  );
   const location = useLocation();
   let page = location.pathname.substring(1);
   if (page !== prevPage) {
@@ -29,6 +33,33 @@ export default function Comments() {
   //console.log("Current page for comments:", page);
   if (page === "") {
     page = "home";
+  }
+  async function loginUser() {
+    if (!loggedIn) {
+      webAuthnLogin()
+        .then(async (credentialId) => {
+          try {
+            await fetch(API_ROUTES.LOGIN, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ deviceId: credentialId }),
+            });
+            //const data = await response.json();
+            //console.log("Login response:", data);
+            localStorage.setItem("loggedIn", "true");
+            setLoggedIn(true);
+          } catch (error) {
+            console.error("Login fetch error:", error);
+            localStorage.setItem("loggedIn", "false");
+          }
+        })
+        .catch((error) => {
+          console.error("WebAuthn login failed:", error);
+          localStorage.setItem("loggedIn", "false");
+        });
+    }
   }
   useEffect(() => {
     async function fetchComments() {
@@ -139,12 +170,22 @@ export default function Comments() {
         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
           Comments
         </h2>
-        <button
-          onClick={() => setIsUsernameModalOpen(true)}
-          className="bg-cyan-500 py-2 px-4 rounded-md shadow-lg hover:bg-cyan-600 dark:bg-blue-800 dark:hover:bg-blue-700 hover:text-white dark:hover:text-black"
-        >
-          Change Username
-        </button>
+
+        {loggedIn ? (
+          <button
+            onClick={() => setIsUsernameModalOpen(true)}
+            className="bg-cyan-500 py-2 px-4 rounded-md shadow-lg hover:bg-cyan-600 dark:bg-blue-800 dark:hover:bg-blue-700 hover:text-white dark:hover:text-black"
+          >
+            Change Username
+          </button>
+        ) : (
+          <button
+            onClick={loginUser}
+            className="bg-cyan-500 py-2 px-4 rounded-md shadow-lg hover:bg-cyan-600 dark:bg-blue-800 dark:hover:bg-blue-700 hover:text-white dark:hover:text-black"
+          >
+            Login
+          </button>
+        )}
       </div>
       <form onSubmit={handleAddComment} className="mb-6">
         <div className="mb-4">
