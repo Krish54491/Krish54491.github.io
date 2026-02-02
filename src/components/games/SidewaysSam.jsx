@@ -181,7 +181,7 @@ export const SidewaysSam = () => {
         //console.log("Collision detected");
         endGame();
       } else if (armCollision && !armhit) {
-        console.log("hit arm");
+        //console.log("hit arm");
         setPrevSamSpeed(samSpeed);
         setSamSpeed(samSpeed * 0.8); // slow sam down if hit arm
         setArmHit(true);

@@ -6,7 +6,7 @@ export async function onRequest({ request }) {
   if (request.method !== "POST") {
     return Response.json(
       { success: false, message: "Invalid request method" },
-      { status: 405 }
+      { status: 405 },
     );
   }
 
@@ -17,7 +17,7 @@ export async function onRequest({ request }) {
   if (!deviceId) {
     return Response.json(
       { success: false, message: "Missing deviceId" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -44,7 +44,7 @@ export async function onRequest({ request }) {
     } catch (error) {
       return Response.json(
         { success: false, message: error.message },
-        { status: 500 }
+        { status: 500 },
       );
     }
   }
@@ -58,6 +58,6 @@ export async function onRequest({ request }) {
       headers: {
         "Set-Cookie": `krish-auth=${userId}; HttpOnly; Path=/;`, // may hash it in the future
       },
-    }
+    },
   );
 }

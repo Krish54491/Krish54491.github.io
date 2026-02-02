@@ -12,7 +12,7 @@ export const MouseGame = () => {
   const [prevMinute, setPrevMinute] = useState(0);
   const [speed, setSpeed] = useState(5);
   const [cheater, setCheater] = useState(
-    localStorage.getItem("mouseGameCheated") === "true"
+    localStorage.getItem("mouseGameCheated") === "true",
   ); // if you ever have cheated you will be shamed for it
   const [prevPosition, setPrevPosition] = useState({ x: 0, y: 0 });
   if (localStorage.getItem("mouseGameHighScore") != null && check) {
@@ -33,7 +33,7 @@ export const MouseGame = () => {
       setSpeed(5);
       setPrevPosition({ x: 0, y: 0 });
       setProjectiles([]); // reset projectiles
-      console.log("Game Started");
+      //console.log("Game Started");
     }
   };
   const endGame = (cheat) => {
@@ -45,7 +45,7 @@ export const MouseGame = () => {
       setHighScore(timeSurvived);
       localStorage.setItem("mouseGameHighScore", timeSurvived.toString());
     }
-    console.log("Game Ended");
+    //console.log("Game Ended");
   };
   const resetHighScore = () => {
     setHighScore(0);
@@ -116,7 +116,7 @@ export const MouseGame = () => {
     //    setCheck(false);
     //}
     if (minutes > prevMinute && time != highScore) {
-      console.log("minute change");
+      //console.log("minute change");
       setDifficulty(1);
       const newProjectiles = [];
       newProjectiles.push({
@@ -137,7 +137,7 @@ export const MouseGame = () => {
         endGame(true);
       }
     } else if (Math.floor(time / 10) > prevTime && time != highScore) {
-      console.log("seconds change");
+      //console.log("seconds change");
 
       setDifficulty(difficulty + 1);
       setPrevTime(Math.floor(time / 10));

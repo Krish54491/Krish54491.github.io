@@ -1,6 +1,6 @@
 const BASE_API_URL = import.meta.env.VITE_BASE_API_URL || "";
 
-console.log("B", import.meta.env);
+//console.log("B", import.meta.env);
 
 export const API_ROUTES = {
   LOGIN: `${BASE_API_URL}/api/login`,

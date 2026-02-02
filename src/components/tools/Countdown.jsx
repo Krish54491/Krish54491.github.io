@@ -48,7 +48,7 @@ export const Countdown = () => {
     const val = e.currentTarget.value;
     if (!val.includes(":")) return;
     const arr = val.split(":").map((v) => Math.min(59, parseInt(v)));
-    console.log(val, arr);
+    //console.log(val, arr);
     if (!arr[0] && arr[0] !== 0) {
       arr[0] = 0;
     }
@@ -65,8 +65,8 @@ export const Countdown = () => {
         new Date(
           new Date().getTime() +
             initial.minutes * 60 * 1000 +
-            (initial.seconds + 1) * 1000
-        )
+            (initial.seconds + 1) * 1000,
+        ),
       );
       setTimerActive(true);
       return;
@@ -75,8 +75,8 @@ export const Countdown = () => {
     if (!timerActive) {
       setEndPoint(
         new Date(
-          new Date().getTime() + minutes * 60 * 1000 + (seconds + 1) * 1000
-        )
+          new Date().getTime() + minutes * 60 * 1000 + (seconds + 1) * 1000,
+        ),
       );
       setTimerActive(true);
     }
