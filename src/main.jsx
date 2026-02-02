@@ -3,9 +3,7 @@ import "./index.css";
 import App from "./App.jsx";
 
 import { HashRouter } from "react-router-dom";
-// import { loadFingerprinting } from "./utils/fingerprinting.js";
 
-// Check if user already has auth cookie
 // const loggedIn = localStorage.getItem("loggedIn") === "true";
 // if (!loggedIn) {
 //   webAuthnLogin()
@@ -31,16 +29,6 @@ import { HashRouter } from "react-router-dom";
 //       localStorage.setItem("loggedIn", "false");
 //     });
 // }
-// loadFingerprinting().then(async (fp) => {
-//   const fpResult = await fp.get();
-//   fetch(API_ROUTES.LOGIN, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({ deviceId: fpResult.visitorId }),
-//   });
-// });
 
 createRoot(document.getElementById("root")).render(
   <HashRouter>
