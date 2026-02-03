@@ -345,8 +345,8 @@ export const SidewaysSam = () => {
       <div className="flex flex-col items-center justify-normal mt-4">
         <h1>Sideways Sam</h1>
         <p>
-          In this game sam has to dodge the rocks that I&apos;m throwing at him.
-          Yes me.
+          In this game, Sam has to dodge rocks that I&apos;m throwing at him.
+          Yes, me.
         </p>
         <br></br>
         <p>High Score: {highscore}</p>
