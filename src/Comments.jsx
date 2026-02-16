@@ -105,9 +105,15 @@ export default function Comments() {
         }
         setContent("");
       } else {
+        if (response.headers.get("loggedIn") === "false") {
+          localStorage.setItem("loggedIn", "false");
+          setLoggedIn(false);
+          alert("You must be logged in to add a comment.");
+        }
         console.error("Failed to add comment:", data.message);
       }
     } catch (error) {
+      localStorage.setItem("loggedIn", "false");
       console.error("Error adding comment:", error);
     }
   }
@@ -159,6 +165,7 @@ export default function Comments() {
         alert("Failed to update username: " + data.message);
       }
     } catch (error) {
+      localStorage.setItem("loggedIn", "false");
       console.error("Error updating username:", error);
       alert("An error occurred while updating the username.");
     }

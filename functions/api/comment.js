@@ -72,7 +72,7 @@ export async function onRequest({ request, env }) {
   } catch (error) {
     return Response.json(
       { success: false, message: error.message },
-      { status: 500 },
+      { status: 500, headers: { loggedIn: "false" } },
     );
   }
 }
