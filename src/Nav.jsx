@@ -77,7 +77,16 @@ export const Nav = () => {
           </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
             <a
-              href="/Krish Bharal - Resume.pdf"
+              href="https://krish54491.github.io/Krish54491-chipmunk/"
+              className={`${menuOpen ? "block w-full" : ""}`}
+              target="_blank"
+            >
+              Chipmunk
+            </a>
+          </button>
+          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
+            <a
+              href="/Krish_Bharal___Resume.pdf"
               className={`${menuOpen ? "block w-full" : ""}`}
               rel="noopener noreferrer"
               target="_blank"
@@ -149,7 +158,7 @@ export const Nav = () => {
             </button>
           </a>
           <a
-            href="/Krish Bharal - Resume.pdf"
+            href="/Krish_Bharal_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
           >
