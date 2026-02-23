@@ -21,7 +21,7 @@ export function VideoTranslator() {
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
-      }
+      },
     );
 
     return res.data; // { transcript: "...", translated: "..." }
@@ -63,7 +63,7 @@ export function VideoTranslator() {
     const res = await axios.post(
       "https://video-language-changer.onrender.com/api/audio",
       { text, language },
-      { responseType: "blob" }
+      { responseType: "blob" },
     );
     const blob = new Blob([res.data], { type: "audio/mpeg" });
     const url = URL.createObjectURL(blob);
@@ -81,7 +81,8 @@ export function VideoTranslator() {
           of your video in the desired language. If the transcript is empty that
           means the audio couldn&apos;t be understood. The audio takes a while
           to be made, sorry about that. The program may fail at times due to the
-          AI calls getting rate limited.
+          AI calls getting rate limited or the video being too long(working on
+          fixing).
         </h3>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-row mb-4">
