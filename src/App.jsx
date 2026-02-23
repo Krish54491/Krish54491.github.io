@@ -10,6 +10,7 @@ import { SidewaysSam } from "./components/games/SidewaysSam.jsx";
 import { UltimateTicTacToe } from "./components/games/UltimateTicTacToe.jsx";
 import { Pokedex } from "./components/games/Pokedex.jsx";
 import { VideoTranslator } from "./components/tools/VideoTranslator.jsx";
+import { VideoRater } from "./components/tools/VideoRater.jsx";
 import Ampharos from "./assets/Ampharos.png";
 import Comments from "./Comments.jsx";
 function PokemonImage({ pokemonId, getPokemonPic }) {
@@ -32,7 +33,7 @@ function PokemonImage({ pokemonId, getPokemonPic }) {
 
 function App() {
   const [pokedexCompletion, setPokedexCompletion] = useState(
-    Array(1026).fill(0)
+    Array(1026).fill(0),
   );
   const [pic, setPic] = useState("./Krish544 Icon.png");
   const [pokemonName, setPokemonName] = useState("Krish544 Icon");
@@ -43,8 +44,8 @@ function App() {
     setPokemonFound(
       pokedexCompletion.reduce(
         (amount, val) => (val === 1 || val === 2 ? amount + 1 : amount),
-        0
-      )
+        0,
+      ),
     );
     //console.log("Pokedex Completion Loaded");
     setPokeCheck(false);
@@ -60,7 +61,7 @@ function App() {
   };
   const changePic = async () => {
     const speciesRes = await fetch(
-      "https://pokeapi.co/api/v2/pokemon-species?limit=0"
+      "https://pokeapi.co/api/v2/pokemon-species?limit=0",
     );
     const speciesData = await speciesRes.json();
     const total = speciesData.count;
@@ -89,7 +90,7 @@ function App() {
       pokedexCompletion[randomId] = 1;
     }
     const pokemonRes = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${randomId}`
+      `https://pokeapi.co/api/v2/pokemon/${randomId}`,
     );
     const pokemon = await pokemonRes.json();
     const shinyChance = Math.floor(Math.random() * 4096 + 1);
@@ -111,14 +112,14 @@ function App() {
     }
     localStorage.setItem(
       "pokedexCompletion",
-      JSON.stringify(pokedexCompletion)
+      JSON.stringify(pokedexCompletion),
     );
     setPokemonName(pokemon.name);
     setPokemonFound(
       pokedexCompletion.reduce(
         (amount, val) => (val === 1 || val === 2 ? amount + 1 : amount),
-        0
-      )
+        0,
+      ),
     );
     //console.log(pokedexCompletion[0]);
     //if (pic === "Ampharos.png") {
@@ -160,7 +161,7 @@ function App() {
                         pokemonId={idx}
                         getPokemonPic={getPokemonPic}
                       />
-                    ) : null
+                    ) : null,
                   )
                 ) : (
                   <div>No data</div>
@@ -178,6 +179,7 @@ function App() {
         <Route path="/sidewayssam" element={<SidewaysSam />} />
         <Route path="/pokedex" element={<Pokedex />} />
         <Route path="/videotranslator" element={<VideoTranslator />} />
+        <Route path="/videorater" element={<VideoRater />} />
       </Routes>
       <Comments />
       <Routes>
