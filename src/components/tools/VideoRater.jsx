@@ -54,8 +54,8 @@ export function VideoRater() {
       <h3 className="mb-4">
         If the script score is -1, it means the AI errored out and could not
         give a rating. This tool only works for English videos shorter than 30
-        minutes. Sometimes due to issues with server it may take a while to
-        respond. Doesn&apos;t work if the video is too big (1gb+).
+        minutes. Sometimes due to cold starting the server it may take a while
+        to respond. Doesn&apos;t work if the video is too big (1gb+).
       </h3>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-row mb-4">

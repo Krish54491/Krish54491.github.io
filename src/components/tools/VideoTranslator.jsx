@@ -79,11 +79,11 @@ export function VideoTranslator() {
         <h3 className="mb-4">
           Translates your videos to different language and outputs an audio file
           of your video in the desired language. If the transcript is empty that
-          means the audio couldn&apos;t be understood. The audio takes a while
-          to be made, sorry about that. The program may fail at times due to the
-          AI calls getting rate limited, just try again. If the video is too
-          big( 1gb+) it doesn&apos;t work at all, so try to keep it under that.
-          The tool only works for videos shorter than 30 minutes.
+          means the audio couldn&apos;t be understood. The audio may take a
+          while to be made because of cold starting the server, sorry about
+          that. The program may fail at times due to the AI calls getting rate
+          limited, just try again. If the video is too big( 1gb+) it
+          doesn&apos;t work at all, so try to keep it under that.
         </h3>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-row mb-4">
