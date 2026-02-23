@@ -17,7 +17,7 @@ export function VideoTranslator() {
     formData.append("language", language);
 
     const res = await axios.post(
-      "https://video-language-changer.onrender.com/api/translate",
+      "https://video-language-changer-production.up.railway.app/api/translate",
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -61,7 +61,7 @@ export function VideoTranslator() {
   };
   async function getAudio(text, language) {
     const res = await axios.post(
-      "https://video-language-changer.onrender.com/api/audio",
+      "https://video-language-changer-production.up.railway.app/api/audio",
       { text, language },
       { responseType: "blob" },
     );
@@ -81,8 +81,9 @@ export function VideoTranslator() {
           of your video in the desired language. If the transcript is empty that
           means the audio couldn&apos;t be understood. The audio takes a while
           to be made, sorry about that. The program may fail at times due to the
-          AI calls getting rate limited or the video being too long(working on
-          fixing).
+          AI calls getting rate limited, just try again. If the video is too
+          big( 1gb+) it doesn&apos;t work at all, so try to keep it under that.
+          The tool only works for videos shorter than 30 minutes.
         </h3>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-row mb-4">
