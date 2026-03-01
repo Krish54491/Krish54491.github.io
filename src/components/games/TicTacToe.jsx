@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Square = ({ value, onSquareClick }) => {
   return (
     <button
-      className={`border-2 dark:border-neutral-200 border-slate-900 p-2 lg:p-20 text-8xl rounded-md lg:w-[16.25rem] lg:h-[16.25rem] ${
+      className={`border-2 dark:border-neutral-200 border-slate-900 p-2 lg:p-20 text-8xl rounded-md h-24 w-24 sm:h-52 sm:w-52 md:h-60 md:w-60 lg:w-[16.25rem] lg:h-[16.25rem] ${
         value ? "" : "hover:animate-scale"
       }`}
       onClick={onSquareClick}
@@ -120,8 +120,14 @@ export const TicTacToe = () => {
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row justify-center mt-2 ">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      <div className="flex flex-col lg:flex-row justify-center mt-2 items-center">
+        <div className="flex flex-row">
+          <Board
+            xIsNext={xIsNext}
+            squares={currentSquares}
+            onPlay={handlePlay}
+          />
+        </div>
         <ol className="flex items-start justify-center flex-col m-3 ">
           {status}
           {moves}

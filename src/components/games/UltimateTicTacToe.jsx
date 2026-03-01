@@ -5,10 +5,10 @@ export const UltimateTicTacToe = () => {
   const [squares, setSquares] = useState(
     Array(9)
       .fill(0)
-      .map(() => Array(9).fill(0))
+      .map(() => Array(9).fill(0)),
   );
   const [finalSquares, setFinalSquares] = useState(Array(9).fill(0));
-  const [playingBoard, setPlayingBoard] = useState(null); // null means any board is allowed
+  const [playingBoard, setPlayingBoard] = useState(10); // 10 means any board is allowed
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 === 0;
   const winner = calculateWinner(finalSquares);
@@ -59,14 +59,14 @@ export const UltimateTicTacToe = () => {
     setSquares(
       Array(9)
         .fill(0)
-        .map(() => Array(9).fill(0))
+        .map(() => Array(9).fill(0)),
     );
-    setPlayingBoard(null);
+    setPlayingBoard(10);
   }
   const Square = ({ value, onSquareClick, active }) => {
     return (
       <button
-        className={`border-2 dark:border-neutral-200 border-slate-900 p-2 lg:p-8 text-2xl md:text-4xl rounded-md md:w-[4rem] md:h-[4rem] lg:w-[5rem] lg:h-[5rem] ${
+        className={`border-2 dark:border-neutral-200 border-slate-900 p-2 lg:p-8 text-2xl md:text-4xl rounded-md md:w-[4rem] md:h-[4rem] lg:w-[5rem] lg:h-[5rem] text-center ${
           value === 0 && active ? "hover:animate-scale" : ""
         }`}
         onClick={onSquareClick}
@@ -108,13 +108,13 @@ export const UltimateTicTacToe = () => {
       ) {
         setPlayingBoard(i);
       } else {
-        setPlayingBoard(null); // Any board allowed if next is won/full
+        setPlayingBoard(10); // Any board allowed if next is won/full
       }
     };
     //console.log((active +" "+ playingBoard))
     return (
       <div
-        className={`grid grid-cols-3 grid-rows-3 gap-1 ${active && playingBoard !== null ? "animate-pulse" : ""}`}
+        className={`grid grid-cols-3 grid-rows-3 gap-1 ${active ? "animate-pulse" : ""}`}
       >
         {squares[boardIndex].map((val, i) => (
           <Square
@@ -147,7 +147,7 @@ export const UltimateTicTacToe = () => {
                     </button>
                   </div>
                 ) : squares[i].every(
-                    (val) => val !== 0 && val !== undefined
+                    (val) => val !== 0 && val !== undefined,
                   ) ? (
                   <div className="grid grid-cols-3 grid-rows-3 gap-1 w-full h-full">
                     <button
@@ -163,7 +163,7 @@ export const UltimateTicTacToe = () => {
                     disabled={gameOver}
                     active={
                       !gameOver &&
-                      (playingBoard === null || playingBoard === i) &&
+                      (playingBoard === 10 || playingBoard === i) &&
                       !calculateWinner(squares[i]) &&
                       !squares[i].every((val) => val !== 0 && val !== undefined)
                     }

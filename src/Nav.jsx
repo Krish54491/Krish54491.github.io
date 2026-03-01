@@ -97,7 +97,7 @@ export const Nav = () => {
         </div>
 
         <div
-          className={`flex-row justify-center hidden md:flex ${menuOpen ? "flex flex-col" : "hidden space-x-2"} p-2 space-y-2 md:space-y-0 absolute md:static bg-cyan-500 dark:bg-blue-800 left-0 w-full md:w-auto  md:top-auto z-10 md:items-center`}
+          className={`flex-row justify-center hidden md:flex ${menuOpen ? "flex flex-col" : "hidden space-x-2"} p-2 space-y-2 md:space-y-0 absolute md:static bg-cyan-500 dark:bg-blue-800 left-0 w-fit lg:w-full  md:top-auto z-10 md:items-center`}
         >
           <Link to="/">
             <button

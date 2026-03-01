@@ -11,6 +11,7 @@ import { UltimateTicTacToe } from "./components/games/UltimateTicTacToe.jsx";
 import { Pokedex } from "./components/games/Pokedex.jsx";
 import { VideoTranslator } from "./components/tools/VideoTranslator.jsx";
 import { VideoRater } from "./components/tools/VideoRater.jsx";
+import Games from "./components/GamesMain.jsx";
 import Ampharos from "./assets/Ampharos.png";
 import Comments from "./Comments.jsx";
 function PokemonImage({ pokemonId, getPokemonPic }) {
@@ -180,6 +181,7 @@ function App() {
         <Route path="/pokedex" element={<Pokedex />} />
         <Route path="/videotranslator" element={<VideoTranslator />} />
         <Route path="/videorater" element={<VideoRater />} />
+        <Route path="/games" element={<Games />} />
       </Routes>
       <Comments />
       <Routes>
