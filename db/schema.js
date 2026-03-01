@@ -1,5 +1,5 @@
 import { boolean } from "drizzle-orm/gel-core";
-import { pgTable, timestamp, text, uuid } from "drizzle-orm/pg-core";
+import { pgTable, timestamp, text, uuid, integer } from "drizzle-orm/pg-core";
 
 export const usersTable = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -7,6 +7,7 @@ export const usersTable = pgTable("users", {
   username: text("username").notNull().default("Anon"),
   device_id: text("device_id").notNull().unique(),
   banned: boolean("banned").notNull().default(false),
+  stockAmount: integer("stock_amount").notNull().default(0),
 }).enableRLS();
 export const commentsTable = pgTable("comments", {
   id: uuid("id").primaryKey().defaultRandom(),
