@@ -1,3 +1,4 @@
+// components:
 import { TicTacToe } from "./components/games/TicTacToe.jsx";
 import { Countdown } from "./components/tools/Countdown.jsx";
 import { MouseGame } from "./components/games/MouseGame.jsx";
@@ -11,9 +12,11 @@ import { UltimateTicTacToe } from "./components/games/UltimateTicTacToe.jsx";
 import { Pokedex } from "./components/games/Pokedex.jsx";
 import { VideoTranslator } from "./components/tools/VideoTranslator.jsx";
 import { VideoRater } from "./components/tools/VideoRater.jsx";
+import { BinaryConverter } from "./components/tools/BetterBinaryConverter.jsx";
 import Games from "./components/GamesMain.jsx";
 import Ampharos from "./assets/Ampharos.png";
 import Comments from "./Comments.jsx";
+
 function PokemonImage({ pokemonId, getPokemonPic }) {
   const [imgUrl, setImgUrl] = useState(null);
 
@@ -31,7 +34,93 @@ function PokemonImage({ pokemonId, getPokemonPic }) {
 
   return <img src={imgUrl} alt="Pokemon" />;
 }
-
+const games = [
+  {
+    id: "ultimatetictactoe",
+    name: "Ultimate Tic Tac Toe",
+    description:
+      "A more complex version of tic tac toe where you have to win 3 boards to win the game.",
+    path: "/ultimatetictactoe",
+    thumbnail: () =>
+      import("./assets/games/thumbnails/Ultimate Tic-Tac-Toe.png"),
+    video: "./assets/games/videos/ultimate Tic-Tac-Toe.mp4",
+  },
+  {
+    id: "tictactoe",
+    name: "Tic Tac Toe",
+    description: "The classic tic tac toe game. Get three in a row to win!",
+    path: "/tictactoe",
+    thumbnail: () => import("./assets/games/thumbnails/Tic-Tac-Toe.png"),
+    video: "./assets/games/videos/tic-tac-toe.mp4",
+  },
+  {
+    id: "mouse",
+    name: "Mouse Game",
+    description: "Control your mouse and try to survive the projectiles!",
+    path: "/mouse",
+    thumbnail: () => import("./assets/games/thumbnails/Mouse Game.png"),
+    video: "./assets/games/videos/mouse-game.mp4",
+  },
+  {
+    id: "sidewayssam",
+    name: "Sideways Sam",
+    description: "Help Sam dodge rocks and avoid a concussion!",
+    path: "/sidewayssam",
+    thumbnail: () => import("./assets/games/thumbnails/Sideways Sam.png"),
+    video: "./assets/games/videos/sideways-sam.mp4",
+  },
+];
+const tools = [
+  {
+    id: "countdown",
+    name: "Countdown Timer",
+    description: "A simple countdown timer for your needs.",
+    path: "/countdown",
+    thumbnail: () => import("./assets/tools/thumbnails/Countdown.png"),
+    video: "./assets/tools/videos/countdown.mp4",
+  },
+  {
+    id: "todo",
+    name: "To-Do List",
+    description: "A simple to-do list for your needs.",
+    path: "/todo",
+    thumbnail: () => import("./assets/tools/thumbnails/ToDoList.png"),
+    video: "./assets/tools/videos/todo.mp4",
+  },
+  {
+    id: "videotranslator",
+    name: "Video Translator",
+    description: "Translate videos with ease.",
+    path: "/videotranslator",
+    thumbnail: () =>
+      import(
+        "./assets/tools/thumbnails/Placeholder Image.png"
+      ) /* import("./assets/tools/thumbnails/VideoTranslator.png")*/,
+    video: "./assets/tools/videos/videotranslator.mp4",
+  },
+  {
+    id: "videorater",
+    name: "Video Rater",
+    description: "Rate and review videos with ease.",
+    path: "/videorater",
+    thumbnail: () =>
+      import(
+        /*"./assets/tools/thumbnails/VideoRater.png"*/ "./assets/tools/thumbnails/Placeholder Image.png"
+      ),
+    video: "./assets/tools/videos/videorater.mp4",
+  },
+  {
+    id: "binaryconverter",
+    name: "Binary Converter",
+    description: "Convert between binary and decimal numbers.",
+    path: "/binaryconverter",
+    thumbnail: () =>
+      import(
+        /*"./assets/tools/thumbnails/BinaryConverter.png"*/ "./assets/tools/thumbnails/Placeholder Image.png"
+      ),
+    video: "./assets/tools/videos/binaryconverter.mp4",
+  },
+];
 function App() {
   const [pokedexCompletion, setPokedexCompletion] = useState(
     Array(1026).fill(0),
@@ -181,7 +270,15 @@ function App() {
         <Route path="/pokedex" element={<Pokedex />} />
         <Route path="/videotranslator" element={<VideoTranslator />} />
         <Route path="/videorater" element={<VideoRater />} />
-        <Route path="/games" element={<Games />} />
+        <Route
+          path="/games"
+          element={<Games games={games} listName="Games" />}
+        />
+        <Route
+          path="/tools"
+          element={<Games games={tools} listName="Tools" />}
+        />
+        <Route path="/binaryconverter" element={<BinaryConverter />} />
       </Routes>
       <Comments />
       <Routes>

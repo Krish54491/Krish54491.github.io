@@ -21,4 +21,6 @@ export const commentsTable = pgTable("comments", {
   parent_comment_id: uuid("parent_comment_id")
     .references(() => commentsTable.id, { onDelete: "no action" })
     .default(null),
+  likes: integer("likes").notNull().default(0),
+  dislikes: integer("dislikes").notNull().default(0),
 }).enableRLS();
