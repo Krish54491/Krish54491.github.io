@@ -1,12 +1,53 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 
+const PokemonImage = memo(
+  function PokemonImage({
+    pokemonId,
+    pokemonName,
+    pokemonComplete,
+    item,
+    getPokemonPic,
+  }) {
+    const [imgUrl, setImgUrl] = useState(null);
+
+    useEffect(() => {
+      let isMounted = true;
+      getPokemonPic(pokemonId, item).then((url) => {
+        if (isMounted) setImgUrl(url);
+      });
+      return () => {
+        isMounted = false;
+      };
+    }, [pokemonId, pokemonName, pokemonComplete, item, getPokemonPic]);
+
+    if (!imgUrl) return <div></div>;
+    return (
+      <a
+        href={`https://bulbapedia.bulbagarden.net/wiki/${pokemonName}_(Pokémon)`}
+        target="_blank"
+      >
+        <img
+          src={imgUrl}
+          className={`${pokemonComplete === 0 ? "brightness-0" : ""}`}
+          alt={pokemonName}
+        />
+      </a>
+    );
+  },
+  (prevProps, nextProps) => {
+    return (
+      prevProps.pokemonId === nextProps.pokemonId &&
+      prevProps.item === nextProps.item
+    );
+  },
+);
 export const Pokedex = () => {
-  const [pokedexCompletion, setPokedexCompletion] = useState(
-    Array(1026).fill(0),
-  );
   const [pokeCheck, setPokeCheck] = useState(true);
   const [pokemonFound, setPokemonFound] = useState(0);
   const [pokemonNames, setPokemonNames] = useState(Array(1026).fill(""));
+  const [pokedexCompletion, setPokedexCompletion] = useState(
+    Array(1026).fill(0),
+  );
   const [sorting, setSorting] = useState("all"); // all, found, shiny, not found - might add alphabetical ordering one day
   const [amount, setAmount] = useState(51); // Number of Pokémon to display at a time
   if (localStorage.getItem("pokedexCompletion") != null && pokeCheck) {
@@ -47,33 +88,7 @@ export const Pokedex = () => {
     [pokedexCompletion],
   );
   //console.log(pokemonFound, pokedexCompletion);
-  function PokemonImage({ pokemonId, getPokemonPic }) {
-    const [imgUrl, setImgUrl] = useState(null);
 
-    useEffect(() => {
-      let isMounted = true;
-      getPokemonPic(pokemonId).then((url) => {
-        if (isMounted) setImgUrl(url);
-      });
-      return () => {
-        isMounted = false;
-      };
-    }, [pokemonId, getPokemonPic]);
-
-    if (!imgUrl) return <div></div>;
-    return (
-      <a
-        href={`https://bulbapedia.bulbagarden.net/wiki/${pokemonNames[pokemonId]}_(Pokémon)`}
-        target="_blank"
-      >
-        <img
-          src={imgUrl}
-          className={`${pokedexCompletion[pokemonId] === 0 ? "brightness-0" : ""}`}
-          alt={pokemonNames[pokemonId]}
-        />
-      </a>
-    );
-  }
   return (
     <>
       <div className="flex flex-row justify-center items-start m-4 ">
@@ -101,19 +116,28 @@ export const Pokedex = () => {
                 <PokemonImage
                   key={idx}
                   pokemonId={idx}
-                  getPokemonPic={() => getPokemonPic(idx, item)}
+                  pokemonName={pokemonNames[idx]}
+                  pokemonComplete={pokedexCompletion[idx]}
+                  item={item}
+                  getPokemonPic={getPokemonPic}
                 />
               ) : item === 2 ? (
                 <PokemonImage
                   key={idx}
                   pokemonId={idx}
-                  getPokemonPic={() => getPokemonPic(idx, item)}
+                  pokemonName={pokemonNames[idx]}
+                  pokemonComplete={pokedexCompletion[idx]}
+                  item={item}
+                  getPokemonPic={getPokemonPic}
                 />
               ) : item === 1 ? (
                 <PokemonImage
                   key={idx}
                   pokemonId={idx}
-                  getPokemonPic={() => getPokemonPic(idx, item)}
+                  pokemonName={pokemonNames[idx]}
+                  pokemonComplete={pokedexCompletion[idx]}
+                  item={item}
+                  getPokemonPic={getPokemonPic}
                 />
               ) : null,
             )
@@ -123,13 +147,19 @@ export const Pokedex = () => {
                   <PokemonImage
                     key={idx}
                     pokemonId={idx}
-                    getPokemonPic={() => getPokemonPic(idx, item)}
+                    pokemonName={pokemonNames[idx]}
+                    pokemonComplete={pokedexCompletion[idx]}
+                    item={item}
+                    getPokemonPic={getPokemonPic}
                   />
                 ) : item === 1 ? (
                   <PokemonImage
                     key={idx}
                     pokemonId={idx}
-                    getPokemonPic={() => getPokemonPic(idx, item)}
+                    pokemonName={pokemonNames[idx]}
+                    pokemonComplete={pokedexCompletion[idx]}
+                    item={item}
+                    getPokemonPic={getPokemonPic}
                   />
                 ) : null,
               )
@@ -139,7 +169,10 @@ export const Pokedex = () => {
                     <PokemonImage
                       key={idx}
                       pokemonId={idx}
-                      getPokemonPic={() => getPokemonPic(idx, item)}
+                      pokemonName={pokemonNames[idx]}
+                      pokemonComplete={pokedexCompletion[idx]}
+                      item={item}
+                      getPokemonPic={getPokemonPic}
                     />
                   ) : null,
                 )
@@ -149,7 +182,10 @@ export const Pokedex = () => {
                       <PokemonImage
                         key={idx}
                         pokemonId={idx}
-                        getPokemonPic={() => getPokemonPic(idx, item)}
+                        pokemonName={pokemonNames[idx]}
+                        pokemonComplete={pokedexCompletion[idx]}
+                        item={item}
+                        getPokemonPic={getPokemonPic}
                       />
                     ) : null,
                   )
