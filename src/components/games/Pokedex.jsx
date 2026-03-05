@@ -1,46 +1,51 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export const Pokedex = () => {
   const [pokedexCompletion, setPokedexCompletion] = useState(
-    Array(1026).fill(0)
+    Array(1026).fill(0),
   );
   const [pokeCheck, setPokeCheck] = useState(true);
   const [pokemonFound, setPokemonFound] = useState(0);
   const [pokemonNames, setPokemonNames] = useState(Array(1026).fill(""));
   const [sorting, setSorting] = useState("all"); // all, found, shiny, not found - might add alphabetical ordering one day
+  const [amount, setAmount] = useState(51); // Number of Pokémon to display at a time
   if (localStorage.getItem("pokedexCompletion") != null && pokeCheck) {
     setPokedexCompletion(JSON.parse(localStorage.getItem("pokedexCompletion")));
     setPokemonFound(
       pokedexCompletion.reduce(
         (amount, val) => (val === 1 || val === 2 ? amount + 1 : amount),
-        0
-      )
+        0,
+      ),
     );
     //console.log("Pokedex Completion Loaded");
     setPokemonNames(new Array(pokedexCompletion.length).fill(""));
     setPokeCheck(false);
+    console.log(pokedexCompletion);
   }
 
-  const getPokemonPic = async (id, item) => {
-    const pokemonRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    const pokemonData = await pokemonRes.json();
-    setPokemonNames((prevNames) => {
-      prevNames[id] = pokemonData.name;
-      return prevNames;
-    });
-    setPokemonFound(
-      pokedexCompletion.reduce(
-        (amount, val) => (val === 1 || val === 2 ? amount + 1 : amount),
-        0
-      )
-    );
-    if (item === 2) {
-      const shinypic = pokemonData.sprites.front_shiny;
-      return shinypic;
-    }
-    const defaultpic = pokemonData.sprites.front_default;
-    return defaultpic;
-  };
+  const getPokemonPic = useCallback(
+    async (id, item) => {
+      const pokemonRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      const pokemonData = await pokemonRes.json();
+      setPokemonNames((prevNames) => {
+        prevNames[id] = pokemonData.name;
+        return prevNames;
+      });
+      setPokemonFound(
+        pokedexCompletion.reduce(
+          (amount, val) => (val === 1 || val === 2 ? amount + 1 : amount),
+          0,
+        ),
+      );
+      if (item === 2) {
+        const shinypic = pokemonData.sprites.front_shiny;
+        return shinypic;
+      }
+      const defaultpic = pokemonData.sprites.front_default;
+      return defaultpic;
+    },
+    [pokedexCompletion],
+  );
   //console.log(pokemonFound, pokedexCompletion);
   function PokemonImage({ pokemonId, getPokemonPic }) {
     const [imgUrl, setImgUrl] = useState(null);
@@ -76,9 +81,7 @@ export const Pokedex = () => {
           {" "}
           {pokemonFound === 0
             ? "No Pokémon found"
-            : pokemonFound === pokedexCompletion
-              ? "YOU FOUND EVERY POKEMON!"
-              : `${pokemonFound - 1} out of ${pokedexCompletion.length - 1} Pokémon found - Sorting Method:`}{" "}
+            : `${pokemonFound - 1} out of ${pokedexCompletion.length - 1} Pokémon found - Sorting Method:`}{" "}
         </h1>
         <select
           value={sorting}
@@ -94,7 +97,7 @@ export const Pokedex = () => {
       <div className="flex flex-row flex-wrap">
         {sorting === "all"
           ? pokedexCompletion.map((item, idx) =>
-              idx === 0 ? null : item === 0 ? (
+              idx > amount ? null : idx === 0 ? null : item === 0 ? (
                 <PokemonImage
                   key={idx}
                   pokemonId={idx}
@@ -112,7 +115,7 @@ export const Pokedex = () => {
                   pokemonId={idx}
                   getPokemonPic={() => getPokemonPic(idx, item)}
                 />
-              ) : null
+              ) : null,
             )
           : sorting === "found"
             ? pokedexCompletion.map((item, idx) =>
@@ -128,7 +131,7 @@ export const Pokedex = () => {
                     pokemonId={idx}
                     getPokemonPic={() => getPokemonPic(idx, item)}
                   />
-                ) : null
+                ) : null,
               )
             : sorting === "shiny"
               ? pokedexCompletion.map((item, idx) =>
@@ -138,7 +141,7 @@ export const Pokedex = () => {
                       pokemonId={idx}
                       getPokemonPic={() => getPokemonPic(idx, item)}
                     />
-                  ) : null
+                  ) : null,
                 )
               : sorting === "not found"
                 ? pokedexCompletion.map((item, idx) =>
@@ -148,9 +151,25 @@ export const Pokedex = () => {
                         pokemonId={idx}
                         getPokemonPic={() => getPokemonPic(idx, item)}
                       />
-                    ) : null
+                    ) : null,
                   )
                 : null}
+      </div>
+      <div
+        className={`${amount < pokedexCompletion.length ? "flex" : "hidden"} justify-center w-full`}
+      >
+        <button
+          onClick={() =>
+            setAmount(
+              amount < pokedexCompletion.length
+                ? Math.min(amount + 100, pokedexCompletion.length)
+                : amount,
+            )
+          }
+          className="bg-cyan-500 dark:bg-indigo-800 p-2 rounded-md my-1"
+        >
+          Load More
+        </button>
       </div>
     </>
   );

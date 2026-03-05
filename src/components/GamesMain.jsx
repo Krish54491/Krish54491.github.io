@@ -76,7 +76,7 @@ function GameCard({ game }) {
 export default function GamesMain({ games = [], listName = "How?" }) {
   return (
     <div className="">
-      <h1 className="text-4xl font-bold mb-4  text-center my-2">{listName}</h1>
+      <h1 className="text-4xl font-bold mb-4 text-center my-2">{listName}</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 m-4">
         {games && games.length > 0 ? (
           games.map((game) => <GameCard key={game.id} game={game} />)
