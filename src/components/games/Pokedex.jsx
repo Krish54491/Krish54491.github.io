@@ -19,7 +19,6 @@ const PokemonImage = memo(
         isMounted = false;
       };
     }, [pokemonId, pokemonName, pokemonComplete, item, getPokemonPic]);
-
     if (!imgUrl) return <div></div>;
     return (
       <a
@@ -36,6 +35,7 @@ const PokemonImage = memo(
   },
   (prevProps, nextProps) => {
     return (
+      prevProps.pokemonName === nextProps.pokemonName &&
       prevProps.pokemonId === nextProps.pokemonId &&
       prevProps.item === nextProps.item
     );
@@ -61,7 +61,7 @@ export const Pokedex = () => {
     //console.log("Pokedex Completion Loaded");
     setPokemonNames(new Array(pokedexCompletion.length).fill(""));
     setPokeCheck(false);
-    console.log(pokedexCompletion);
+    //console.log(pokedexCompletion);
   }
 
   const getPokemonPic = useCallback(
@@ -72,6 +72,8 @@ export const Pokedex = () => {
         prevNames[id] = pokemonData.name;
         return prevNames;
       });
+      //console.log(pokemonData.name);
+      //console.log(pokemonNames);
       setPokemonFound(
         pokedexCompletion.reduce(
           (amount, val) => (val === 1 || val === 2 ? amount + 1 : amount),
