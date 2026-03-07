@@ -11,6 +11,9 @@ const PokemonImage = memo(
     const [imgUrl, setImgUrl] = useState(null);
 
     useEffect(() => {
+      //console.log(
+      //  `Fetching image for ${pokemonName} with ID ${pokemonId} and status ${pokemonComplete}`,
+      //);
       let isMounted = true;
       getPokemonPic(pokemonId, item).then((url) => {
         if (isMounted) setImgUrl(url);
@@ -19,6 +22,9 @@ const PokemonImage = memo(
         isMounted = false;
       };
     }, [pokemonId, pokemonName, pokemonComplete, item, getPokemonPic]);
+    //console.log(
+    //  `Rendering ${pokemonName} with ID ${pokemonId} and status ${pokemonComplete}`,
+    //);
     if (!imgUrl) return <div></div>;
     return (
       <a
@@ -69,8 +75,9 @@ export const Pokedex = () => {
       const pokemonRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
       const pokemonData = await pokemonRes.json();
       setPokemonNames((prevNames) => {
-        prevNames[id] = pokemonData.name;
-        return prevNames;
+        const newNames = [...prevNames];
+        newNames[id] = pokemonData.name;
+        return newNames;
       });
       //console.log(pokemonData.name);
       //console.log(pokemonNames);
