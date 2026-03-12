@@ -1,10 +1,11 @@
 // components:
+
 import { TicTacToe } from "./components/games/TicTacToe.jsx";
 import { Countdown } from "./components/tools/Countdown.jsx";
 import { MouseGame } from "./components/games/MouseGame.jsx";
 import { Clicker } from "./components/games/Clicker.jsx";
 import { useState, useEffect } from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes, Link, useLocation } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
 import { ToDoList } from "./components/tools/TodoList.jsx";
 import { SidewaysSam } from "./components/games/SidewaysSam.jsx";
@@ -19,7 +20,6 @@ import Comments from "./Comments.jsx";
 
 function PokemonImage({ pokemonId, getPokemonPic }) {
   const [imgUrl, setImgUrl] = useState(null);
-
   useEffect(() => {
     let isMounted = true;
     getPokemonPic(pokemonId).then((url) => {
@@ -125,6 +125,7 @@ function App() {
   const [pokedexCompletion, setPokedexCompletion] = useState(
     Array(1026).fill(0),
   );
+  const [page, setPage] = useState("");
   const [pic, setPic] = useState("./Krish544 Icon.png");
   const [pokemonName, setPokemonName] = useState("Krish544 Icon");
   const [pokemonFound, setPokemonFound] = useState(1);
@@ -219,7 +220,10 @@ function App() {
     //  console.log("Worse than jolteon!");
     //}
   };
-
+  const location = useLocation();
+  useEffect(() => {
+    setPage(location.pathname.substring(1));
+  }, [location]);
   return (
     <>
       <Nav />
@@ -233,7 +237,7 @@ function App() {
                   src={`${pic}`}
                   onClick={changePic}
                   alt={pokemonName}
-                  className="lg:w-[20svw] w-[80svw] hover:animate-smallspin"
+                  className="lg:w-1/5 w-4/5 hover:animate-smallspin"
                 ></img>
                 <h3 className="text-2xl">
                   {pokemonFound === 0
@@ -280,7 +284,7 @@ function App() {
         />
         <Route path="/binaryconverter" element={<BinaryConverter />} />
       </Routes>
-      <Comments />
+      <Comments page={page} />
       <Routes>
         <Route
           path="/"
