@@ -12,6 +12,7 @@ import { webAuthnLogin } from "./utils/webAuth.js";
 
 // I'm going to make a backend api route to handle the comments, so the component will call that route
 // The api route will handle fetching and adding comments to the database
+
 export default function Comments() {
   const [comments, setComments] = useState([]);
   const [content, setContent] = useState("");
@@ -20,6 +21,7 @@ export default function Comments() {
   const [newUsername, setNewUsername] = useState("");
   const [commentsFetch, setCommentsFetch] = useState(false);
   const [amountOfComments, setAmountOfComments] = useState(5);
+  const [totalComments, setTotalComments] = useState(0);
   const [prevPage, setPrevPage] = useState("");
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem("loggedIn") === "true",
@@ -79,7 +81,23 @@ export default function Comments() {
     }
     fetchComments();
   }, [page, commentsFetch, amountOfComments]);
-
+  useEffect(() => {
+    async function fetchTotalComments() {
+      try {
+        const response = await fetch(
+          `${API_ROUTES.COMMENTS}?action=total&page=${encodeURIComponent(page)}`,
+        );
+        const data = await response.json();
+        if (data.success) {
+          //console.log("Total comments fetched:", data.totalComments); // Debugging log
+          setTotalComments(data.totalComments);
+        }
+      } catch (error) {
+        console.error("Error fetching total comments:", error);
+      }
+    }
+    fetchTotalComments();
+  }, [page]);
   async function handleAddComment(event) {
     event.preventDefault();
     if (!content) {
@@ -170,7 +188,9 @@ export default function Comments() {
       alert("An error occurred while updating the username.");
     }
   }
-
+  //console.log("Total comments:", totalComments);
+  //console.log("Amount of comments to show:", amountOfComments);
+  //console.log("Comments currently shown:", comments.length);
   return (
     <div className="max-w-2xl mx-auto p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md mt-8">
       <div className="flex justify-between items-center mb-4">
@@ -248,14 +268,15 @@ export default function Comments() {
       </ul>
 
       {/* Load More Button */}
-      {comments.length === amountOfComments && (
-        <button
-          onClick={() => setAmountOfComments((prev) => prev + 5)}
-          className="w-full bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-md hover:bg-gray-400 dark:hover:bg-gray-600 mt-4"
-        >
-          Load More
-        </button>
-      )}
+      {comments.length === amountOfComments &&
+        amountOfComments < totalComments && (
+          <button
+            onClick={() => setAmountOfComments((prev) => prev + 5)}
+            className="w-full bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-md hover:bg-gray-400 dark:hover:bg-gray-600 mt-4"
+          >
+            Load More
+          </button>
+        )}
 
       <ReactModal
         isOpen={isUsernameModalOpen}

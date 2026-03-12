@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { getDb } from "../../db/drizzle.js";
 import { commentsTable, usersTable } from "../../db/schema.js";
 import { getUserFromCookie } from "../utils/cookie.js";
-import { eq, and } from "drizzle-orm";
+import { eq, and, count } from "drizzle-orm";
 import { filterComment } from "../utils/filter.js";
 /**
  *
@@ -64,6 +64,9 @@ export async function onRequest({ request, env }) {
         );
       }
       return await deleteComment(page, user, commentId, supabase);
+    } else if (action === "total") {
+      // test function curl "http://127.0.0.1:8788/api/Comment?action=total&page=testpage"
+      return await getTotalComments(page);
     }
     return Response.json(
       { success: false, message: "Invalid action" },
@@ -195,7 +198,24 @@ async function deleteComment(page, user, id) {
     );
   }
 }
-
+async function getTotalComments(page) {
+  try {
+    const totalComments = await getDb()
+      .select({ count: count() })
+      .from(commentsTable)
+      .where(eq(commentsTable.page, page));
+    //console.log("Total comments for page", page, ":", totalComments[0].count); // Debugging log
+    return Response.json(
+      { success: true, totalComments: totalComments[0].count },
+      { status: 200 },
+    );
+  } catch (error) {
+    return Response.json(
+      { success: false, message: error.message },
+      { status: 500 },
+    );
+  }
+}
 // comments general structure
 //  id: uuid default gen_random_uuid() primary key,
 //  page: string (not null)
