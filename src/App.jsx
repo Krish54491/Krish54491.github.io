@@ -287,7 +287,7 @@ function App() {
       <Comments page={page} />
       <Routes>
         <Route
-          path="/"
+          path="/*"
           element={
             <div className="flex flex-row items-center justify-center space-x-5 my-4">
               <a
