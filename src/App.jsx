@@ -5,7 +5,7 @@ import { Countdown } from "./components/tools/Countdown.jsx";
 import { MouseGame } from "./components/games/MouseGame.jsx";
 import { Clicker } from "./components/games/Clicker.jsx";
 import { useState, useEffect } from "react";
-import { Route, Routes, Link, useLocation } from "react-router-dom";
+import { Route, Routes, Link } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
 import { ToDoList } from "./components/tools/TodoList.jsx";
 import { SidewaysSam } from "./components/games/SidewaysSam.jsx";
@@ -125,7 +125,6 @@ function App() {
   const [pokedexCompletion, setPokedexCompletion] = useState(
     Array(1026).fill(0),
   );
-  const [page, setPage] = useState("");
   const [pic, setPic] = useState("./Krish544 Icon.png");
   const [pokemonName, setPokemonName] = useState("Krish544 Icon");
   const [pokemonFound, setPokemonFound] = useState(1);
@@ -220,10 +219,6 @@ function App() {
     //  console.log("Worse than jolteon!");
     //}
   };
-  const location = useLocation();
-  useEffect(() => {
-    setPage(location.pathname.substring(1));
-  }, [location]);
   return (
     <>
       <Nav />
@@ -284,7 +279,7 @@ function App() {
         />
         <Route path="/binaryconverter" element={<BinaryConverter />} />
       </Routes>
-      <Comments page={page} />
+      <Comments />
       <Routes>
         <Route
           path="/*"

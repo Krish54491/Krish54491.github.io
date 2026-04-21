@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import { useLocation } from "react-router-dom";
 import { API_ROUTES } from "./utils/apiRoutes";
 import ReactModal from "react-modal";
 import { webAuthnLogin } from "./utils/webAuth.js";
@@ -13,7 +13,7 @@ import { webAuthnLogin } from "./utils/webAuth.js";
 // I'm going to make a backend api route to handle the comments, so the component will call that route
 // The api route will handle fetching and adding comments to the database
 
-export default function Comments({ page }) {
+export default function Comments() {
   const [comments, setComments] = useState([]);
   const [content, setContent] = useState("");
   const [menuOpen, setMenuOpen] = useState(null); // Track which menu is open
@@ -22,18 +22,20 @@ export default function Comments({ page }) {
   const [commentsFetch, setCommentsFetch] = useState(false);
   const [amountOfComments, setAmountOfComments] = useState(5);
   const [totalComments, setTotalComments] = useState(0);
+  const [prevPage, setPrevPage] = useState("");
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem("loggedIn") === "true",
   );
-
+  const location = useLocation();
+  let page = location.pathname.substring(1);
+  if (page !== prevPage) {
+    setAmountOfComments(5);
+    setPrevPage(page);
+  }
+  //console.log("Current page for comments:", page);
   if (page === "") {
     page = "home";
   }
-  useEffect(() => {
-    setAmountOfComments(5);
-  }, [page]);
-  //console.log("Current page for comments:", page);
-
   async function loginUser() {
     if (!loggedIn) {
       webAuthnLogin()
