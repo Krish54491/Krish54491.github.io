@@ -18,6 +18,14 @@ function GameCard({ game }) {
     } else {
       setThumbnailUrl(game.thumbnail);
     }
+    if (typeof game.video === "function") {
+      game.video().then((module) => {
+        // Use module.default for the video URL
+        videoRef.current.src = module.default;
+      });
+    } else {
+      videoRef.current.src = game.video;
+    }
   }, [game]);
 
   const handleMouseEnter = () => {
@@ -61,6 +69,7 @@ function GameCard({ game }) {
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${
             isHovering ? "opacity-100" : "opacity-0"
           }`}
+          preload="none"
           muted
           loop
         />
