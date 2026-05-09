@@ -49,8 +49,6 @@ export async function onRequest({ request }) {
     }
   }
 
-  // Here you would typically check the credentials against a database
-  // For now, we'll just return a success response
   return Response.json(
     { success: true, message: "Login successful" },
     {

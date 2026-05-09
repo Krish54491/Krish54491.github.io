@@ -11,7 +11,6 @@ export function getAuthCookie(request) {
   if (!authCookie) {
     throw new Error("No auth cookie found");
   }
-
   return authCookie;
 }
 
