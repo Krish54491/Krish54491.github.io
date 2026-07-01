@@ -1,19 +1,19 @@
 // components:
 
-import { TicTacToe } from "./components/games/TicTacToe.jsx";
-import { Countdown } from "./components/tools/Countdown.jsx";
-import { MouseGame } from "./components/games/MouseGame.jsx";
-import { Clicker } from "./components/games/Clicker.jsx";
+import { TicTacToe } from "./games/TicTacToe.jsx";
+import { Countdown } from "./tools/Countdown.jsx";
+import { MouseGame } from "./games/MouseGame.jsx";
+import { Clicker } from "./games/Clicker.jsx";
 import { useState, useEffect } from "react";
 import { Route, Routes, Link } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
-import { ToDoList } from "./components/tools/TodoList.jsx";
-import { SidewaysSam } from "./components/games/SidewaysSam.jsx";
-import { UltimateTicTacToe } from "./components/games/UltimateTicTacToe.jsx";
-import { Pokedex } from "./components/games/Pokedex.jsx";
-import { VideoTranslator } from "./components/tools/VideoTranslator.jsx";
-import { VideoRater } from "./components/tools/VideoRater.jsx";
-import { BinaryConverter } from "./components/tools/BetterBinaryConverter.jsx";
+import { ToDoList } from "./tools/TodoList.jsx";
+import { SidewaysSam } from "./games/SidewaysSam.jsx";
+import { UltimateTicTacToe } from "./games/UltimateTicTacToe.jsx";
+import { Pokedex } from "./games/Pokedex.jsx";
+import { VideoTranslator } from "./tools/VideoTranslator.jsx";
+import { VideoRater } from "./tools/VideoRater.jsx";
+import { BinaryConverter } from "./tools/BetterBinaryConverter.jsx";
 import Games from "./components/GamesMain.jsx";
 import Ampharos from "./assets/Ampharos.png";
 import Comments from "./Comments.jsx";
@@ -44,6 +44,7 @@ const games = [
     thumbnail: () =>
       import("./assets/games/thumbnails/Ultimate Tic-Tac-Toe.png"),
     video: () => import("./assets/games/videos/ultimate Tic-Tac-Toe.mp4"),
+    mobile: true,
   },
   {
     id: "tictactoe",
@@ -52,6 +53,7 @@ const games = [
     path: "/tictactoe",
     thumbnail: () => import("./assets/games/thumbnails/Tic-Tac-Toe.png"),
     video: () => import("./assets/games/videos/tic-tac-toe.mp4"),
+    mobile: true,
   },
   {
     id: "mouse",
@@ -60,6 +62,7 @@ const games = [
     path: "/mouse",
     thumbnail: () => import("./assets/games/thumbnails/Mouse Game.png"),
     video: () => import("./assets/games/videos/mouse-game.mp4"),
+    mobile: false,
   },
   {
     id: "sidewayssam",
@@ -68,6 +71,7 @@ const games = [
     path: "/sidewayssam",
     thumbnail: () => import("./assets/games/thumbnails/Sideways Sam.png"),
     video: () => import("./assets/games/videos/sideways-sam.mp4"),
+    mobile: true,
   },
 ];
 const tools = [
@@ -78,6 +82,7 @@ const tools = [
     path: "/countdown",
     thumbnail: () => import("./assets/tools/thumbnails/Countdown.png"),
     video: () => import("./assets/tools/videos/countdown.mp4"),
+    mobile: true,
   },
   {
     id: "todo",
@@ -86,6 +91,7 @@ const tools = [
     path: "/todo",
     thumbnail: () => import("./assets/tools/thumbnails/ToDoList.png"),
     video: () => import("./assets/tools/videos/todo.mp4"),
+    mobile: true,
   },
   {
     id: "videotranslator",
@@ -94,6 +100,7 @@ const tools = [
     path: "/videotranslator",
     thumbnail: () => import("./assets/tools/thumbnails/VideoTranslator.png"),
     video: () => import("./assets/tools/videos/videotranslator.mp4"),
+    mobile: true,
   },
   {
     id: "videorater",
@@ -102,6 +109,7 @@ const tools = [
     path: "/videorater",
     thumbnail: () => import("./assets/tools/thumbnails/VideoRater.png"),
     video: () => import("./assets/tools/videos/videorater.mp4"),
+    mobile: true,
   },
   {
     id: "binaryconverter",
@@ -113,6 +121,7 @@ const tools = [
         /*"./assets/tools/thumbnails/BinaryConverter.png"*/ "./assets/tools/thumbnails/Placeholder Image.png"
       ),
     video: "./assets/tools/videos/binaryconverter.mp4",
+    mobile: true,
   },
 ];
 function App() {

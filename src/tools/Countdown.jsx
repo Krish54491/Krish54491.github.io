@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Confetti } from "../../Confetti.jsx";
+import { Confetti } from "../components/Confetti.jsx";
 
 export const Countdown = () => {
   const [initial, setInitial] = useState({

@@ -161,7 +161,7 @@ export const MouseGame = () => {
     <>
       <div className="flex flex-col items-center justify-normal mt-4">
         <h1 className="text-4xl font-bold mb-4">Mouse Dodge</h1>
-        <p className="text-xl mb-2">
+        <p className="text-xl mb-2 text-center">
           {cheater
             ? "Don't try to cheat my game..."
             : "Avoid the projectiles and survive as long as you can!"}

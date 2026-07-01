@@ -49,12 +49,11 @@ function GameCard({ game }) {
   return (
     <Link
       to={game.path}
-      className="group relative overflow-hidden rounded-lg border-black dark:border-white border-2 bg-cyan-500 dark:bg-blue-800 hover:bg-cyan-600 dark:hover:bg-blue-700 hover:text-white dark:hover:text-black transition-colors duration-200"
+      className={`${game.mobile ? "" : "hidden md:block"} group relative overflow-hidden rounded-lg border-black dark:border-white border-2 bg-cyan-500 dark:bg-blue-800 hover:bg-cyan-600 dark:hover:bg-blue-700 hover:text-white dark:hover:text-black transition-colors duration-200`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <div className="relative aspect-video w-full overflow-hidden bg-gray-400 dark:bg-gray-700 ">
-        {/* Thumbnail - shown by default */}
         <img
           src={thumbnailUrl}
           alt={game.name}

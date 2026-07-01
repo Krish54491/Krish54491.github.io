@@ -151,18 +151,11 @@ export const SidewaysSam = () => {
     setRockSize(20);
     setEasterEgg(false);
   };
-  //console.log(projectiles);
-  //console.log(period+" "+ rockSpeed);
-  //console.log(x, y);
-  //console.log(bounds);
-  //console.log("RockAmount:", rockAmount, "Period:", period, "RockSpeed:", rockSpeed);
+
   useEffect(() => {
-    // collision detection
     if (!gameStarted) return;
     // Collision detection
     projectiles.forEach((p) => {
-      //console.log(p);
-      //console.log("Sam:", {x, y, width, height});
       const isColliding =
         p.x >= x - width / 4 - 5 && // left side of rock to left side of sam
         p.x <= x + width / 4 + 5 &&
@@ -178,7 +171,6 @@ export const SidewaysSam = () => {
       // hitbox is very generous when sam is small compared to when sam is big
       // arms are not included in hitbox nvm it's now included because my roomate said it wasn't realistic
       if (isColliding) {
-        //console.log("Collision detected");
         endGame();
       } else if (armCollision && !armhit) {
         //console.log("hit arm");
@@ -219,8 +211,6 @@ export const SidewaysSam = () => {
     }
     setX(newX);
     setY(bounds.bottom);
-    //console.log("Bounds:", bounds);
-    //console.log("Position:", {x, y});
   }, [x, y, bounds, gameStarted]);
   useEffect(() => {
     // move rocks
@@ -305,7 +295,6 @@ export const SidewaysSam = () => {
         setX((x) => (x >= bounds.right ? bounds.right : x + samSpeed));
       } else if (event.key === "`") {
         setRockSize((rockSize) => rockSize + 1);
-        // the hitbox doesn't change it's just funny to see big rocks
       } else if (event.key === "Control") {
         setEasterEgg((easterEgg) => !easterEgg);
       }
@@ -343,8 +332,8 @@ export const SidewaysSam = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-normal mt-4">
-        <h1>Sideways Sam</h1>
-        <p>
+        <h1 className="text-4xl font-bold mb-4">Sideways Sam</h1>
+        <p className="text-center">
           In this game, Sam has to dodge rocks that I&apos;m throwing at him.
           Yes, me.
         </p>

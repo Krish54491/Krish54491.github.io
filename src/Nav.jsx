@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-// Configuration for games and tools - easily modifiable
+// Config for my Resume route
+const krish_resume = "Krish_Bharal - Resume.pdf";
+// Config for games and tools - easily modifiable
 const GAMES = [
   { label: "Tic-Tac-Toe", path: "/tictactoe" },
   { label: "Mouse Game", path: "/mouse" },
@@ -57,43 +59,17 @@ export const Nav = () => {
               Home
             </Link>
           </button>
-          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
-            <Link
-              to="/tictactoe"
-              className={`${menuOpen ? "block w-full" : ""}`}
-            >
-              Tic-Tac-Toe
+          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 px-4 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
+            <Link to="/games" className={`${menuOpen ? "block w-full" : ""}`}>
+              Games
             </Link>
           </button>
-          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
-            <Link
-              to="/countdown"
-              className={`${menuOpen ? "block w-full" : ""}`}
-            >
-              Countdown
+          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 px-4 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
+            <Link to="/tools" className={`${menuOpen ? "block w-full" : ""}`}>
+              Tools
             </Link>
           </button>
-          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
-            <Link to="/todo" className={`${menuOpen ? "block w-full" : ""}`}>
-              To-Do
-            </Link>
-          </button>
-          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
-            <Link
-              to="/sidewayssam"
-              className={`${menuOpen ? "block w-full" : ""}`}
-            >
-              Sideways Sam
-            </Link>
-          </button>
-          <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
-            <Link
-              to="/videotranslator"
-              className={`${menuOpen ? "block w-full" : ""}`}
-            >
-              Video Translator
-            </Link>
-          </button>
+
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
             <a
               href="https://krish54491.github.io/Krish54491-chipmunk/"
@@ -105,7 +81,7 @@ export const Nav = () => {
           </button>
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
             <a
-              href="/Krish_Bharal___Resume.pdf"
+              href={`/${krish_resume}`}
               className={`${menuOpen ? "block w-full" : ""}`}
               rel="noopener noreferrer"
               target="_blank"
@@ -116,7 +92,7 @@ export const Nav = () => {
         </div>
 
         <div
-          className={`flex-row justify-center hidden md:flex ${menuOpen ? "flex flex-col" : "hidden space-x-2"} p-2 space-y-2 md:space-y-0 absolute md:static bg-cyan-500 dark:bg-blue-800 left-0 w-fit md:w-full  md:top-auto z-10 md:items-center`}
+          className={`flex-row justify-center hidden md:flex ${menuOpen ? "flex flex-col" : "hidden"} space-x-2 p-2 space-y-2 md:space-y-0 absolute md:static bg-cyan-500 dark:bg-blue-800 left-0 w-fit md:w-full  md:top-auto z-10 md:items-center`}
         >
           <Link to="/">
             <button
@@ -220,7 +196,7 @@ export const Nav = () => {
             </button>
           </a>
           <a
-            href="/Krish_Bharal_Resume.pdf"
+            href={`/${krish_resume}`}
             target="_blank"
             rel="noopener noreferrer"
           >
