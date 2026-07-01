@@ -14,7 +14,7 @@ import { Pokedex } from "./games/Pokedex.jsx";
 import { VideoTranslator } from "./tools/VideoTranslator.jsx";
 import { VideoRater } from "./tools/VideoRater.jsx";
 import { BinaryConverter } from "./tools/BetterBinaryConverter.jsx";
-import Games from "./components/GamesMain.jsx";
+import Cards from "./components/Cards.tsx";
 import Ampharos from "./assets/Ampharos.png";
 import Comments from "./Comments.jsx";
 
@@ -120,7 +120,7 @@ const tools = [
       import(
         /*"./assets/tools/thumbnails/BinaryConverter.png"*/ "./assets/tools/thumbnails/Placeholder Image.png"
       ),
-    video: "./assets/tools/videos/binaryconverter.mp4",
+    video: "", //"./assets/tools/videos/binaryconverter.mp4",
     mobile: true,
   },
 ];
@@ -274,11 +274,11 @@ function App() {
         <Route path="/videorater" element={<VideoRater />} />
         <Route
           path="/games"
-          element={<Games games={games} listName="Games" />}
+          element={<Cards items={games} listName="Games" />}
         />
         <Route
           path="/tools"
-          element={<Games games={tools} listName="Tools" />}
+          element={<Cards items={tools} listName="Tools" />}
         />
         <Route path="/binaryconverter" element={<BinaryConverter />} />
       </Routes>

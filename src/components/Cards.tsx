@@ -1,36 +1,51 @@
-// this component will be the main page for games, it will show all of games and a search bar to filter them
+// this component will be the main page for features(games or tools), it will show all of games/tools and a search bar(eventually) to filter them
 // a square that shows a thumbnail of the game and its name, clicking on it will take you to the game page
 // hovering over the thumbnail will show a preview video of the game
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-function GameCard({ game }) {
+interface Item {
+  id: string;
+  name: string;
+  description: string;
+  path: string;
+  thumbnail: () => Promise<{ default: string }>;
+  video: string | (() => Promise<{ default: string }>);
+  mobile: boolean;
+}
+
+function Card({ item }: { item: Item }) {
   const [isHovering, setIsHovering] = useState(false);
-  const [thumbnailUrl, setThumbnailUrl] = useState(null);
-  const videoRef = useRef(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Load thumbnail dynamically when component mounts
   useEffect(() => {
-    if (typeof game.thumbnail === "function") {
-      game.thumbnail().then((module) => {
+    if (typeof item.thumbnail === "function") {
+      item.thumbnail().then((module) => {
         setThumbnailUrl(module.default);
       });
     } else {
-      setThumbnailUrl(game.thumbnail);
+      setThumbnailUrl(item.thumbnail);
     }
-    if (typeof game.video === "function") {
-      game.video().then((module) => {
-        // Use module.default for the video URL
+
+    if (typeof item.video === "string") {
+      if (videoRef.current) {
+        videoRef.current.src = item.video;
+      }
+      return;
+    }
+    item.video().then((module) => {
+      // Use module.default for the video URL
+      if (videoRef.current) {
         videoRef.current.src = module.default;
-      });
-    } else {
-      videoRef.current.src = game.video;
-    }
-  }, [game]);
+      }
+    });
+  }, [item]);
 
   const handleMouseEnter = () => {
     setIsHovering(true);
-    if (videoRef.current) {
+    if (videoRef.current && item.video) {
       videoRef.current.currentTime = 0;
       videoRef.current
         .play()
@@ -48,25 +63,25 @@ function GameCard({ game }) {
 
   return (
     <Link
-      to={game.path}
-      className={`${game.mobile ? "" : "hidden md:block"} group relative overflow-hidden rounded-lg border-black dark:border-white border-2 bg-cyan-500 dark:bg-blue-800 hover:bg-cyan-600 dark:hover:bg-blue-700 hover:text-white dark:hover:text-black transition-colors duration-200`}
+      to={item.path}
+      className={`${item.mobile ? "" : "hidden md:block"} group relative overflow-hidden rounded-lg border-black dark:border-white border-2 bg-cyan-500 dark:bg-blue-800 hover:bg-cyan-600 dark:hover:bg-blue-700 hover:text-white dark:hover:text-black transition-colors duration-200`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <div className="relative aspect-video w-full overflow-hidden bg-gray-400 dark:bg-gray-700 ">
         <img
           src={thumbnailUrl}
-          alt={game.name}
+          alt={item.name}
           className={`h-full w-full object-cover transition-opacity duration-200 ${
-            isHovering ? "opacity-0" : "opacity-100"
+            item.video && isHovering ? "opacity-0" : "opacity-100"
           }`}
         />
         {/* Video - shown on hover */}
         <video
           ref={videoRef}
-          src={game.video}
+          // src={item.video}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${
-            isHovering ? "opacity-100" : "opacity-0"
+            item.video && isHovering ? "opacity-100" : "opacity-0"
           }`}
           preload="none"
           muted
@@ -74,20 +89,26 @@ function GameCard({ game }) {
         />
       </div>
       <div className="p-4">
-        <h2 className="text-xl font-bold mb-2 ">{game.name}</h2>
-        <p className="hidden sm:block text-sm ">{game.description}</p>
+        <h2 className="text-xl font-bold mb-2 ">{item.name}</h2>
+        <p className="hidden sm:block text-sm ">{item.description}</p>
       </div>
     </Link>
   );
 }
 
-export default function GamesMain({ games = [], listName = "How?" }) {
+export default function CardMain({
+  items = [],
+  listName = "How?",
+}: {
+  items: Item[];
+  listName: string;
+}) {
   return (
     <div className="">
       <h1 className="text-4xl font-bold mb-4 text-center my-2">{listName}</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 m-4">
-        {games && games.length > 0 ? (
-          games.map((game) => <GameCard key={game.id} game={game} />)
+        {items && items.length > 0 ? (
+          items.map((item) => <Card key={item.id} item={item} />)
         ) : (
           <p>{listName ? `No ${listName}` : "Error!"}</p>
         )}

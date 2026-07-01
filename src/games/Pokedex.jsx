@@ -60,7 +60,7 @@ export const Pokedex = () => {
     setPokedexCompletion(JSON.parse(localStorage.getItem("pokedexCompletion")));
     setPokemonFound(
       pokedexCompletion.reduce(
-        (amount, val) => (val === 1 || val === 2 ? amount + 1 : amount),
+        (quantity, val) => (val === 1 || val === 2 ? quantity + 1 : quantity),
         0,
       ),
     );
@@ -83,7 +83,7 @@ export const Pokedex = () => {
       //console.log(pokemonNames);
       setPokemonFound(
         pokedexCompletion.reduce(
-          (amount, val) => (val === 1 || val === 2 ? amount + 1 : amount),
+          (quantity, val) => (val === 1 || val === 2 ? quantity + 1 : quantity),
           0,
         ),
       );
