@@ -92,7 +92,7 @@ export const Nav = () => {
         </div>
 
         <div
-          className={`flex-row justify-center hidden md:flex ${menuOpen ? "flex flex-col" : "hidden"} space-x-2 p-2 space-y-2 md:space-y-0 absolute md:static bg-cyan-500 dark:bg-blue-800 left-0 w-fit md:w-full  md:top-auto z-10 md:items-center`}
+          className={`flex-row justify-center hidden md:flex ${menuOpen ? "flex flex-col md:flex-row" : "hidden"} space-x-2 p-2 space-y-2 md:space-y-0 absolute md:static bg-cyan-500 dark:bg-blue-800 left-0 w-fit md:w-full  md:top-auto z-10 md:items-center`}
         >
           <Link to="/">
             <button
@@ -131,10 +131,10 @@ export const Nav = () => {
               </button>
             </Link>
             {gamesOpen && (
-              <div className="absolute left-0 mt-0 w-48 bg-cyan-500 dark:bg-blue-900 rounded-md py-2 shadow-lg z-20">
+              <div className="absolute left-0 mt-0 w-48 bg-cyan-400 dark:bg-blue-900 rounded-md py-2 shadow-lg z-20">
                 {GAMES.map((game) => (
                   <Link key={game.path} to={game.path}>
-                    <button className="block w-full text-left px-4 py-2 hover:bg-cyan-600 dark:hover:bg-blue-800 hover:text-white">
+                    <button className="block w-full text-left px-4 py-2 hover:bg-cyan-600 dark:hover:bg-blue-800 hover:text-white dark:hover:text-black">
                       {game.label}
                     </button>
                   </Link>
@@ -170,10 +170,10 @@ export const Nav = () => {
               </button>
             </Link>
             {toolsOpen && (
-              <div className="absolute left-0 mt-0 w-48 bg-cyan-600 dark:bg-blue-900 rounded-md shadow-lg py-2 z-20">
+              <div className="absolute left-0 mt-0 w-48 bg-cyan-400 dark:bg-blue-900 rounded-md shadow-lg py-2 z-20">
                 {TOOLS.map((tool) => (
                   <Link key={tool.path} to={tool.path}>
-                    <button className="block w-full text-left px-4 py-2 hover:bg-cyan-700 dark:hover:bg-blue-800 hover:text-white">
+                    <button className="block w-full text-left px-4 py-2 hover:bg-cyan-600 dark:hover:bg-blue-800 hover:text-white dark:hover:text-black">
                       {tool.label}
                     </button>
                   </Link>
