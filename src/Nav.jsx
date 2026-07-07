@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-// Config for my Resume route
+// Config for my External links
 const krish_resume = "Krish_Bharal - Resume.pdf";
+const chipmunk = "https://chipmunk.krish544.com";
+const pianowizards = "https://pianowizards.krish544.com";
 // Config for games and tools - easily modifiable
 const GAMES = [
   { label: "Tic-Tac-Toe", path: "/tictactoe" },
@@ -72,7 +74,7 @@ export const Nav = () => {
 
           <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
             <a
-              href="https://krish54491.github.io/Krish54491-chipmunk/"
+              href={chipmunk}
               className={`${menuOpen ? "block w-full" : ""}`}
               target="_blank"
             >
@@ -182,15 +184,12 @@ export const Nav = () => {
             )}
           </div>
 
-          <a
-            href="https://krish54491.github.io/Krish54491-chipmunk/"
-            target="_blank"
-          >
+          <a href={chipmunk} target="_blank">
             <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
               Chipmunk
             </button>
           </a>
-          <a href="https://pianowizards.krish544.com" target="_blank">
+          <a href={pianowizards} target="_blank">
             <button className="bg-cyan-500 dark:bg-blue-800 p-2 rounded-md m-1 hover:text-white dark:hover:text-black hover:bg-cyan-600 dark:hover:bg-blue-700">
               Piano Wizards
             </button>
