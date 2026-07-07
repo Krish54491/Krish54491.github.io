@@ -2,7 +2,7 @@
   "name": "krish544",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://Krish54491.github.io/Krish54491.github.io/",
+  "homepage": "https://krish544.com",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
