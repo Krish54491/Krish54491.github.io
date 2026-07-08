@@ -110,6 +110,8 @@ export const SidewaysSam = () => {
   const [easterEgg, setEasterEgg] = useState(false); // easter egg counter
   const [prevSamSpeed, setPrevSamSpeed] = useState(samSpeed);
   const [armhit, setArmHit] = useState(false); // if sam's arm was hit
+  const initialRocks = 2;
+
   if (localStorage.getItem("SamHighScore") != null && check) {
     setHighscore(parseInt(localStorage.getItem("SamHighScore")));
     setCheck(false);
@@ -131,6 +133,16 @@ export const SidewaysSam = () => {
         bottom: rect.height - height + adjustment, // height of Sam
       });
     }
+    setProjectiles(() => {
+      let newProjectiles = [];
+      for (let i = 0; i < initialRocks; i++) {
+        newProjectiles.push({
+          x: i,
+          y: bounds.top - rockSize * rockAmount - adjustment,
+        });
+      }
+      return newProjectiles;
+    });
   };
   const resetHighScore = () => {
     setHighscore(0);
@@ -151,35 +163,6 @@ export const SidewaysSam = () => {
     setRockSize(20);
     setEasterEgg(false);
   };
-
-  useEffect(() => {
-    if (!gameStarted) return;
-    // Collision detection
-    projectiles.forEach((p) => {
-      const isColliding =
-        p.x >= x - width / 4 - 5 && // left side of rock to left side of sam
-        p.x <= x + width / 4 + 5 &&
-        p.y > 0 &&
-        p.y <= y &&
-        p.y > y - height - adjustment - (sizeAdjustment ? 10 : 0); // bottom of rock to top of sam (size adjustment for when sam is small)
-      const armCollision =
-        p.x >= x - width / 2 - 5 && // left side of rock to left side of sam's arm
-        p.x <= x + width / 2 + 5 &&
-        p.y > 0 &&
-        p.y <= y &&
-        p.y > y - height - adjustment - (sizeAdjustment ? 10 : 0); // bottom of rock to top of sam's arm
-      // hitbox is very generous when sam is small compared to when sam is big
-      // arms are not included in hitbox nvm it's now included because my roomate said it wasn't realistic
-      if (isColliding) {
-        endGame();
-      } else if (armCollision && !armhit) {
-        //console.log("hit arm");
-        setPrevSamSpeed(samSpeed);
-        setSamSpeed(samSpeed * 0.8); // slow sam down if hit arm
-        setArmHit(true);
-      }
-    });
-  }, [projectiles, x, width, height, gameStarted]);
   useEffect(() => {
     // score counter
     let scoreInterval;
@@ -190,6 +173,7 @@ export const SidewaysSam = () => {
     }, 1000);
     return () => clearInterval(scoreInterval);
   }, [gameStarted]);
+
   useEffect(() => {
     // keep sam in bounds
     if (!gameStarted) return;
@@ -212,9 +196,35 @@ export const SidewaysSam = () => {
     setX(newX);
     setY(bounds.bottom);
   }, [x, y, bounds, gameStarted]);
+
   useEffect(() => {
     // move rocks
     if (!gameStarted) return;
+    const checkCollision = (p) => {
+      const isColliding =
+        p.x >= x - width / 4 - 5 && // left side of rock to left side of sam
+        p.x <= x + width / 4 + 5 &&
+        p.y > 0 &&
+        p.y <= y &&
+        p.y > y - height - adjustment - (sizeAdjustment ? 10 : 0); // bottom of rock to top of sam (size adjustment for when sam is small)
+      //console.log(isColliding);
+      const armCollision =
+        p.x >= x - width / 2 - 5 && // left side of rock to left side of sam's arm
+        p.x <= x + width / 2 + 5 &&
+        p.y > 0 &&
+        p.y <= y &&
+        p.y > y - height - adjustment - (sizeAdjustment ? 10 : 0); // bottom of rock to top of sam's arm
+      // hitbox is very generous when sam is small compared to when sam is big
+      // arms are included because my roomate said it wasn't realistic
+      if (isColliding) {
+        //endGame();
+      } else if (armCollision && !armhit) {
+        //console.log("hit arm");
+        setPrevSamSpeed(samSpeed);
+        setSamSpeed(samSpeed * 0.8); // slow sam down if hit arm
+        setArmHit(true);
+      }
+    };
     const interval = setInterval(() => {
       // increase difficulty every 10 seconds
       //setPeriod(period => Math.max(10, period - 5)); // cap period at 10ms
@@ -228,35 +238,39 @@ export const SidewaysSam = () => {
 
     const moveInterval = setInterval(() => {
       setProjectiles((prev) => {
-        //console.log(prev);
-        let newProjectiles = prev.filter((p) => {
-          p.y += rockSpeed;
-          return p.y < bounds.bottom - 24 - adjustment; //- rockSpeed
-        });
-        setProjectiles((prev) => {
-          const newProjectiles = [...prev];
-          let rockNotOnSamCheck = true;
-          while (newProjectiles.length < rockAmount) {
-            if (rockNotOnSamCheck) {
-              if (newProjectiles.filter((p) => p.x === x).length === 0) {
-                newProjectiles.push({
-                  x: x,
-                  y: bounds.top - 20 * rockAmount - adjustment,
-                });
-                //console.log("Added rock at Sam's position because I got aim!");
-                continue;
-              }
-              rockNotOnSamCheck = false;
-            }
-            let newX =
-              Math.random() * (bounds.right - bounds.left) + bounds.left;
-            newProjectiles.push({
+        const newProjectiles = prev.map((p) => ({
+          ...p,
+          y: p.y + rockSpeed,
+        }));
+
+        for (let i = 0; i < newProjectiles.length; i++) {
+          if (
+            newProjectiles[i].y >
+            y - height - adjustment - (sizeAdjustment ? 10 : 0)
+          ) {
+            checkCollision(newProjectiles[i]);
+          }
+          if (newProjectiles[i].y >= bounds.bottom - adjustment) {
+            const newX =
+              Math.random() * 10 === 0
+                ? x
+                : Math.random() * (bounds.right - bounds.left) + bounds.left;
+            newProjectiles[i] = {
               x: newX,
               y: bounds.top - rockSize * rockAmount - adjustment,
-            });
+            };
           }
-          return newProjectiles;
-        });
+        }
+        if (newProjectiles.length < rockAmount) {
+          const newX =
+            Math.random() * 10 === 0
+              ? x
+              : Math.random() * (bounds.right - bounds.left) + bounds.left;
+          newProjectiles.push({
+            x: newX,
+            y: bounds.top - rockSize * rockAmount - adjustment,
+          });
+        }
         return newProjectiles;
       });
     }, 30);
@@ -264,7 +278,7 @@ export const SidewaysSam = () => {
       clearInterval(moveInterval);
       clearInterval(interval);
     };
-  }, [gameStarted, bounds, rockSpeed]);
+  }, [gameStarted, bounds, rockSpeed, x, width, height]);
   useEffect(() => {
     if (!gameStarted) return;
     function updateBounds() {
@@ -357,7 +371,7 @@ export const SidewaysSam = () => {
         className={`${!gameStarted ? "hidden" : "flex flex-col items-center justify-normal mt-4"}`}
       >
         <div
-          className="border-4 dark:border-neutral-200 border-slate-900 w-1/2 h-[40vh]"
+          className="border-4 dark:border-neutral-200 border-slate-900 w-full md:w-1/2 h-[40vh] overflow-hidden"
           ref={borderRef}
         >
           <Sam x={x} y={y} w={width} h={height} />
