@@ -111,7 +111,7 @@ export const SidewaysSam = () => {
   const [prevSamSpeed, setPrevSamSpeed] = useState(samSpeed);
   const [armhit, setArmHit] = useState(false); // if sam's arm was hit
   const initialRocks = 2;
-
+  const key = useRef({ left: false, right: false });
   if (localStorage.getItem("SamHighScore") != null && check) {
     setHighscore(parseInt(localStorage.getItem("SamHighScore")));
     setCheck(false);
@@ -124,6 +124,7 @@ export const SidewaysSam = () => {
     setWidth(40);
     setHeight(100);
     setAdjustment(10);
+    key.current = { left: false, right: false };
     if (borderRef.current) {
       const rect = borderRef.current.getBoundingClientRect();
       setBounds({
@@ -217,7 +218,7 @@ export const SidewaysSam = () => {
       // hitbox is very generous when sam is small compared to when sam is big
       // arms are included because my roomate said it wasn't realistic
       if (isColliding) {
-        //endGame();
+        endGame();
       } else if (armCollision && !armhit) {
         //console.log("hit arm");
         setPrevSamSpeed(samSpeed);
@@ -273,12 +274,18 @@ export const SidewaysSam = () => {
         }
         return newProjectiles;
       });
+      if (key.current.left) {
+        setX((x) => (x <= bounds.left ? bounds.left : x - samSpeed));
+      } else if (key.current.right) {
+        setX((x) => (x >= bounds.right ? bounds.right : x + samSpeed));
+      }
     }, 30);
+
     return () => {
       clearInterval(moveInterval);
       clearInterval(interval);
     };
-  }, [gameStarted, bounds, rockSpeed, x, width, height]);
+  }, [gameStarted, bounds, rockSpeed, x, width, height, samSpeed]);
   useEffect(() => {
     if (!gameStarted) return;
     function updateBounds() {
@@ -296,30 +303,42 @@ export const SidewaysSam = () => {
     window.addEventListener("resize", updateBounds);
     return () => window.removeEventListener("resize", updateBounds);
   }, [width, height, gameStarted]);
+
   useEffect(() => {
     if (!gameStarted) return;
     const handleKeyDown = (event) => {
       if (event.key === "ArrowLeft" || event.key === "a" || event.key === "A") {
-        setX((x) => (x <= bounds.left ? bounds.left : x - samSpeed));
+        key.current.left = true;
       } else if (
         event.key === "ArrowRight" ||
         event.key === "d" ||
         event.key === "D"
       ) {
-        setX((x) => (x >= bounds.right ? bounds.right : x + samSpeed));
+        key.current.right = true;
       } else if (event.key === "`") {
         setRockSize((rockSize) => rockSize + 1);
       } else if (event.key === "Control") {
         setEasterEgg((easterEgg) => !easterEgg);
       }
-
-      //console.log("Key pressed:", event.key);
+    };
+    const handleKeyUp = (event) => {
+      if (event.key === "ArrowLeft" || event.key === "a" || event.key === "A") {
+        key.current.left = false;
+      } else if (
+        event.key === "ArrowRight" ||
+        event.key === "d" ||
+        event.key === "D"
+      ) {
+        key.current.right = false;
+      }
     };
     document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
     };
-  }, [bounds, gameStarted, samSpeed]);
+  }, [gameStarted]);
   useEffect(() => {
     //console.log(mouseDown);
     let leftInterval, rightInterval;
