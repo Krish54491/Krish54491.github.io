@@ -285,7 +285,18 @@ export const SidewaysSam = () => {
       clearInterval(moveInterval);
       clearInterval(interval);
     };
-  }, [gameStarted, bounds, rockSpeed, x, width, height, samSpeed]);
+  }, [
+    gameStarted,
+    bounds,
+    rockSpeed,
+    x,
+    width,
+    height,
+    samSpeed,
+    rockAmount,
+    prevSamSpeed,
+    armhit,
+  ]);
   useEffect(() => {
     if (!gameStarted) return;
     function updateBounds() {
