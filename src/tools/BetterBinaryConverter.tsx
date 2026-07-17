@@ -159,7 +159,29 @@ export function BinaryConverter() {
     }
     return result;
   }
-
+  // plan to add 2's complement
+  function twosComplement(num: string): string {
+    // takes in string of binary number and will have it returns 2's complement alongside convertion to whatever base the user wants
+    // this function is only called if the user has selected base 2 as a base(input or output)
+    let result = num
+      .split("")
+      .map((digit) => (digit === "0" ? "1" : "0"))
+      .join("");
+    console.log(result);
+    for (let i = num.length - 1; i >= 0; i--) {
+      if (num[i] !== "0" && num[i] !== "1") {
+        return "Invalid input";
+      }
+      if (result[i] === "0") {
+        result = result.substring(0, i) + "1" + result.substring(i + 1);
+        console.log("stopping point:", result);
+        break;
+      } else {
+        result = result.substring(0, i) + "0" + result.substring(i + 1);
+      }
+    }
+    return "1" + result;
+  }
   const numOnLeave = (e: React.FocusEvent<HTMLInputElement>) => {
     const val = e.target?.value ?? "";
     if (val === "") {
@@ -295,6 +317,37 @@ export function BinaryConverter() {
                 readOnly
                 className={`bg-inherit m-2 rounded-md border-2 w-full md:w-1/2 text-center border-black dark:border-white border-spacing-2 text-2xl font-bold ${numInput === "" || !showResult ? "hidden" : ""}`}
               ></input>
+              {baseInput[0] === "2" ? (
+                <>
+                  <h2
+                    className={`text-2xl font-bold my-2 ${numInput === "" || !showResult ? "hidden" : ""}`}
+                  >
+                    2's Complement:
+                  </h2>
+                  <input
+                    type="text"
+                    value={twosComplement(numInput)}
+                    readOnly
+                    className={`bg-inherit m-2 rounded-md border-2 w-full md:w-1/2 text-center border-black dark:border-white border-spacing-2 text-2xl font-bold ${numInput === "" || !showResult ? "hidden" : ""}`}
+                  ></input>
+                </>
+              ) : baseInput[1] === "2" ? (
+                <>
+                  <h2
+                    className={`text-2xl font-bold my-2 ${numInput === "" || !showResult ? "hidden" : ""}`}
+                  >
+                    2's Complement:
+                  </h2>
+                  <input
+                    type="text"
+                    value={twosComplement(result)}
+                    readOnly
+                    className={`bg-inherit m-2 rounded-md border-2 w-full md:w-1/2 text-center border-black dark:border-white border-spacing-2 text-2xl font-bold ${numInput === "" || !showResult ? "hidden" : ""}`}
+                  ></input>
+                </>
+              ) : (
+                <></>
+              )}
             </>
           )}
           {result === "Invalid input" && (
