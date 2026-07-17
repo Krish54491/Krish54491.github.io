@@ -114,8 +114,10 @@ const map: Map<number, string> = new Map([
 const reverseMap: Map<string, number> = new Map(
   [...map.entries()].map(([key, value]) => [value, key]),
 );
+const spacing = 5;
+const baseOptions = Array.from({ length: 109 }, (_, i) => i + 2);
 export function BinaryConverter() {
-  const [baseInput, setBaseInput] = useState<string[]>(["", ""]);
+  const [baseInput, setBaseInput] = useState<string[]>(["10", "2"]);
   const [numInput, setNumInput] = useState<string>("");
   const [result, setResult] = useState<string>("");
   const [showResult, setShowResult] = useState<boolean>(false);
@@ -129,12 +131,10 @@ export function BinaryConverter() {
     let result: number = 0;
     for (let i = 0; i < num.length; i++) {
       let digit: string = num[i];
-      console.log(`Digit: ${digit}, Base: ${base}`);
       let digitValue: number =
         reverseMap.get(digit) || reverseMap.get(digit) === 0
           ? reverseMap.get(digit)!
           : NaN;
-      console.log(`Digit Value: ${digitValue}`);
       if (digitValue >= base || isNaN(digitValue)) {
         return NaN; // Invalid digit for the given base
       }
@@ -172,30 +172,6 @@ export function BinaryConverter() {
     setShowResult(true);
   };
 
-  const base1OnLeave = (e: React.FocusEvent<HTMLInputElement>) => {
-    const val = e.target?.value ?? "";
-    if (val === "") {
-      setResult("");
-      setBaseInput(["", baseInput[1]]);
-      return;
-    }
-    setBaseInput([val, baseInput[1]]);
-    setResult(convert(numInput, val, baseInput[1]));
-    setShowResult(true);
-  };
-
-  const base2OnLeave = (e: React.FocusEvent<HTMLInputElement>) => {
-    const val = e.target?.value ?? "";
-    if (val === "") {
-      setResult("");
-      setBaseInput([baseInput[0], ""]);
-      return;
-    }
-    setBaseInput([baseInput[0], val]);
-    setResult(convert(numInput, baseInput[0], val));
-    setShowResult(true);
-  };
-
   function convert(num: string, base1: string, base2: string): string {
     if (base1 === "" || base2 === "" || num === "") {
       return "";
@@ -220,10 +196,7 @@ export function BinaryConverter() {
     <>
       <div className="text-center my-2">
         <h2 className="text-2xl font-bold my-2">Base Converter</h2>
-        <p className="">
-          Convert numbers between any base. just exit the input fields to see
-          the result
-        </p>
+        <p className="">Convert numbers between any base</p>
       </div>
       <div className="flex flex-col text-center">
         <div className="flex flex-row justify-start md:justify-center items-center">
@@ -239,19 +212,33 @@ export function BinaryConverter() {
             className="bg-inherit m-2 rounded-md border-2 text-3xl w-1/2 border-black dark:border-white border-spacing-2"
           ></input>
         </div>
+        <h3 className="text-2xl font-bold my-2">Base:</h3>
         <div className="flex flex-row justify-center items-center">
-          <h3 className="text-2xl font-bold my-2">Base:</h3>
-          <input
-            type="text"
+          <select
             value={baseInput[0]}
-            onBlur={base1OnLeave}
             onChange={(e) => {
-              const val = e.target?.value ?? "";
+              const val = e.target?.value ?? "10";
               setBaseInput([val, baseInput[1]]);
-              setShowResult(false);
+              setResult(convert(numInput, val, baseInput[1]));
+              setShowResult(true);
             }}
-            className="bg-inherit ml-2 rounded-md border-2 text-3xl w-1/3 md:w-20 border-black dark:border-white border-spacing-2"
-          ></input>
+            className="bg-neutral-200 dark:bg-slate-900 ml-2 rounded-md border-2 text-3xl border-black dark:border-white border-spacing-2"
+          >
+            {baseOptions.map((n) => (
+              <option
+                key={n}
+                value={String(n)}
+                className="bg-neutral-200 dark:bg-slate-900 text-slate-900 dark:text-neutral-200 text-sm md:text-base"
+              >
+                {n}
+              </option>
+            ))}
+            {Array.from({ length: spacing }, (_, i) => (
+              <option key={`pad-${i}`} value="" disabled>
+                &nbsp;
+              </option>
+            ))}
+          </select>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -268,23 +255,37 @@ export function BinaryConverter() {
               </g>
             </g>
           </svg>
-          <input
-            type="text"
+          <select
             value={baseInput[1]}
-            onBlur={base2OnLeave}
             onChange={(e) => {
-              const val = e.target?.value ?? "";
+              const val = e.target?.value ?? "2";
               setBaseInput([baseInput[0], val]);
-              setShowResult(false);
+              setResult(convert(numInput, baseInput[0], val));
+              setShowResult(true);
             }}
-            className="bg-inherit rounded-md border-2 text-3xl w-1/3 md:w-20 border-black dark:border-white border-spacing-2"
-          ></input>
+            className="bg-neutral-200 dark:bg-slate-900 rounded-md border-2 text-3xl border-black dark:border-white border-spacing-2"
+          >
+            {baseOptions.map((n) => (
+              <option
+                key={n}
+                value={String(n)}
+                className="bg-neutral-200 dark:bg-slate-900 text-slate-900 dark:text-neutral-200 text-sm md:text-base"
+              >
+                {n}
+              </option>
+            ))}
+            {Array.from({ length: spacing }, (_, i) => (
+              <option key={`pad-${i}`} value="" disabled>
+                &nbsp;
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-col justify-center items-center">
           {result != "Invalid input" && (
             <>
               <h2
-                className={`text-2xl font-bold my-2 ${numInput === "" || baseInput[0] === "" || baseInput[1] === "" || !showResult ? "hidden" : ""}`}
+                className={`text-2xl font-bold my-2 ${numInput === "" || !showResult ? "hidden" : ""}`}
               >
                 Result:
               </h2>
@@ -292,7 +293,7 @@ export function BinaryConverter() {
                 type="text"
                 value={result}
                 readOnly
-                className={`bg-inherit m-2 rounded-md border-2 w-full md:w-1/2 text-center border-black dark:border-white border-spacing-2 text-2xl font-bold ${numInput === "" || baseInput[0] === "" || baseInput[1] === "" || !showResult ? "hidden" : ""}`}
+                className={`bg-inherit m-2 rounded-md border-2 w-full md:w-1/2 text-center border-black dark:border-white border-spacing-2 text-2xl font-bold ${numInput === "" || !showResult ? "hidden" : ""}`}
               ></input>
             </>
           )}
