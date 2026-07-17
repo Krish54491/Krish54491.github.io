@@ -18,7 +18,7 @@ const TOOLS = [
   { label: "To-Do", path: "/todo" },
   { label: "Video Translator", path: "/videotranslator" },
   { label: "Video Rater", path: "/videorater" },
-  { label: "Binary Converter", path: "/binaryconverter" },
+  { label: "Base Converter", path: "/baseconverter" },
 ];
 
 export const Nav = () => {

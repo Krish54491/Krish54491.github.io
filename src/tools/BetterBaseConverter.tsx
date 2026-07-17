@@ -116,7 +116,7 @@ const reverseMap: Map<string, number> = new Map(
 );
 const spacing = 5;
 const baseOptions = Array.from({ length: 109 }, (_, i) => i + 2);
-export function BinaryConverter() {
+export function BaseConverter() {
   const [baseInput, setBaseInput] = useState<string[]>(["10", "2"]);
   const [numInput, setNumInput] = useState<string>("");
   const [result, setResult] = useState<string>("");

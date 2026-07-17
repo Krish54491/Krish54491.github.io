@@ -13,7 +13,7 @@ import { UltimateTicTacToe } from "./games/UltimateTicTacToe.jsx";
 import { Pokedex } from "./games/Pokedex.jsx";
 import { VideoTranslator } from "./tools/VideoTranslator.jsx";
 import { VideoRater } from "./tools/VideoRater.jsx";
-import { BinaryConverter } from "./tools/BetterBinaryConverter.tsx";
+import { BaseConverter } from "./tools/BetterBaseConverter.tsx";
 import Cards from "./components/Cards.tsx";
 import Ampharos from "./assets/Ampharos.png";
 import Comments from "./Comments.jsx";
@@ -112,15 +112,16 @@ const tools = [
     mobile: true,
   },
   {
-    id: "binaryconverter",
-    name: "Binary Converter",
-    description: "Convert between binary and decimal numbers.",
-    path: "/binaryconverter",
+    id: "baseconverter",
+    name: "Base Converter",
+    description:
+      "Convert between different numberical bases(e.g binary, decimal, hexadecimal).",
+    path: "/baseconverter",
     thumbnail: () =>
       import(
-        /*"./assets/tools/thumbnails/BinaryConverter.png"*/ "./assets/tools/thumbnails/Placeholder Image.png"
+        /*"./assets/tools/thumbnails/BaseConverter.png"*/ "./assets/tools/thumbnails/Placeholder Image.png"
       ),
-    video: "", //"./assets/tools/videos/binaryconverter.mp4",
+    video: "", //"./assets/tools/videos/baseconverter.mp4",
     mobile: true,
   },
 ];
@@ -280,7 +281,7 @@ function App() {
           path="/tools"
           element={<Cards items={tools} listName="Tools" />}
         />
-        <Route path="/binaryconverter" element={<BinaryConverter />} />
+        <Route path="/baseconverter" element={<BaseConverter />} />
       </Routes>
       <Comments />
       <Routes>
