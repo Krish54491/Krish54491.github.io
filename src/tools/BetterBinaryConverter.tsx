@@ -1,0 +1,308 @@
+import { useState } from "react";
+const map: Map<number, string> = new Map([
+  [0, "0"],
+  [1, "1"],
+  [2, "2"],
+  [3, "3"],
+  [4, "4"],
+  [5, "5"],
+  [6, "6"],
+  [7, "7"],
+  [8, "8"],
+  [9, "9"],
+  [10, "A"],
+  [11, "B"],
+  [12, "C"],
+  [13, "D"],
+  [14, "E"],
+  [15, "F"],
+  [16, "G"],
+  [17, "H"],
+  [18, "I"],
+  [19, "J"],
+  [20, "K"],
+  [21, "L"],
+  [22, "M"],
+  [23, "N"],
+  [24, "O"],
+  [25, "P"],
+  [26, "Q"],
+  [27, "R"],
+  [28, "S"],
+  [29, "T"],
+  [30, "U"],
+  [31, "V"],
+  [32, "W"],
+  [33, "X"],
+  [34, "Y"],
+  [35, "Z"],
+  [36, "a"],
+  [37, "b"],
+  [38, "c"],
+  [39, "d"],
+  [40, "e"],
+  [41, "f"],
+  [42, "g"],
+  [43, "h"],
+  [44, "i"],
+  [45, "j"],
+  [46, "k"],
+  [47, "l"],
+  [48, "m"],
+  [49, "n"],
+  [50, "o"],
+  [51, "p"],
+  [52, "q"],
+  [53, "r"],
+  [54, "s"],
+  [55, "t"],
+  [56, "u"],
+  [57, "v"],
+  [58, "w"],
+  [59, "x"],
+  [60, "y"],
+  [61, "z"],
+  [62, "Α"],
+  [63, "Β"],
+  [64, "Γ"],
+  [65, "Δ"],
+  [66, "Ε"],
+  [67, "Ζ"],
+  [68, "Η"],
+  [69, "Θ"],
+  [70, "Ι"],
+  [71, "Κ"],
+  [72, "Λ"],
+  [73, "Μ"],
+  [74, "Ν"],
+  [75, "Ξ"],
+  [76, "Ο"],
+  [77, "Π"],
+  [78, "Ρ"],
+  [79, "Σ"],
+  [80, "Τ"],
+  [81, "Υ"],
+  [82, "Φ"],
+  [83, "Χ"],
+  [84, "Ψ"],
+  [85, "Ω"],
+  [86, "α"],
+  [87, "β"],
+  [88, "γ"],
+  [89, "δ"],
+  [90, "ε"],
+  [91, "ζ"],
+  [92, "η"],
+  [93, "θ"],
+  [94, "ι"],
+  [95, "κ"],
+  [96, "λ"],
+  [97, "μ"],
+  [98, "ν"],
+  [99, "ξ"],
+  [100, "ο"],
+  [101, "π"],
+  [102, "ρ"],
+  [103, "ς"],
+  [104, "τ"],
+  [105, "υ"],
+  [106, "φ"],
+  [107, "χ"],
+  [108, "ψ"],
+  [109, "ω"],
+]);
+const reverseMap: Map<string, number> = new Map(
+  [...map.entries()].map(([key, value]) => [value, key]),
+);
+export function BinaryConverter() {
+  const [baseInput, setBaseInput] = useState<string[]>(["", ""]);
+  const [numInput, setNumInput] = useState<string>("");
+  const [result, setResult] = useState<string>("");
+  const [showResult, setShowResult] = useState<boolean>(false);
+  function baseToDecimal(num: string, base: number): number {
+    if (base < 2 || base > 110) {
+      return NaN; // planning to make base input dropdown with 2-110 as options, so this should never happen
+    }
+    if (num.length === 0) {
+      return 0;
+    }
+    let result: number = 0;
+    for (let i = 0; i < num.length; i++) {
+      let digit: string = num[i];
+      console.log(`Digit: ${digit}, Base: ${base}`);
+      let digitValue: number =
+        reverseMap.get(digit) || reverseMap.get(digit) === 0
+          ? reverseMap.get(digit)!
+          : NaN;
+      console.log(`Digit Value: ${digitValue}`);
+      if (digitValue >= base || isNaN(digitValue)) {
+        return NaN; // Invalid digit for the given base
+      }
+      result += digitValue * Math.pow(base, num.length - 1 - i);
+    }
+    return result;
+  }
+  function decimalToBase(num: number, base: number): string {
+    if (base < 2 || base > 110) {
+      return "Invalid base"; // planning to make base input dropdown with 2-110 as options, so this should never happen
+    }
+    // max is 110 for now
+    let result: string = "";
+    let digits: number[] = [];
+    while (num) {
+      digits.push(num % base);
+      num = Math.floor(num / base);
+    }
+    // convert digits
+    for (let i = digits.length - 1; i >= 0; i--) {
+      result += map.get(digits[i]) || "";
+    }
+    return result;
+  }
+
+  const numOnLeave = (e: React.FocusEvent<HTMLInputElement>) => {
+    const val = e.target?.value ?? "";
+    if (val === "") {
+      setResult("");
+      setNumInput("");
+      return;
+    }
+    setNumInput(val);
+    setResult(convert(val, baseInput[0], baseInput[1]));
+    setShowResult(true);
+  };
+
+  const base1OnLeave = (e: React.FocusEvent<HTMLInputElement>) => {
+    const val = e.target?.value ?? "";
+    if (val === "") {
+      setResult("");
+      setBaseInput(["", baseInput[1]]);
+      return;
+    }
+    setBaseInput([val, baseInput[1]]);
+    setResult(convert(numInput, val, baseInput[1]));
+    setShowResult(true);
+  };
+
+  const base2OnLeave = (e: React.FocusEvent<HTMLInputElement>) => {
+    const val = e.target?.value ?? "";
+    if (val === "") {
+      setResult("");
+      setBaseInput([baseInput[0], ""]);
+      return;
+    }
+    setBaseInput([baseInput[0], val]);
+    setResult(convert(numInput, baseInput[0], val));
+    setShowResult(true);
+  };
+
+  function convert(num: string, base1: string, base2: string): string {
+    if (base1 === "" || base2 === "" || num === "") {
+      return "";
+    }
+    if (isNaN(parseInt(base1)) || isNaN(parseInt(base2))) {
+      return "Invalid input";
+    }
+    const decimalValue = baseToDecimal(num, parseInt(base1));
+    const ans = decimalToBase(decimalValue, parseInt(base2));
+    if (ans === "Invalid base" || isNaN(decimalValue)) {
+      return "Invalid input";
+    }
+    return ans;
+  }
+  /*
+  1. Convert the input number to decimal
+  2. Convert the decimal number to the desired base
+  3. Display the result
+   Bases supported: 2-110
+  */
+  return (
+    <>
+      <div className="text-center my-2">
+        <h2 className="text-2xl font-bold my-2">Base Converter</h2>
+        <p className="">
+          Convert numbers between any base. just exit the input fields to see
+          the result
+        </p>
+      </div>
+      <div className="flex flex-col text-center">
+        <div className="flex flex-row justify-start md:justify-center items-center">
+          <h3 className="text-2xl font-bold my-2">Number:</h3>
+          <input
+            type="text"
+            value={numInput}
+            onBlur={numOnLeave}
+            onChange={(e) => {
+              setNumInput(e.target?.value ?? "");
+              setShowResult(false);
+            }}
+            className="bg-inherit m-2 rounded-md border-2 text-3xl w-1/2 border-black dark:border-white border-spacing-2"
+          ></input>
+        </div>
+        <div className="flex flex-row justify-center items-center">
+          <h3 className="text-2xl font-bold my-2">Base:</h3>
+          <input
+            type="text"
+            value={baseInput[0]}
+            onBlur={base1OnLeave}
+            onChange={(e) => {
+              const val = e.target?.value ?? "";
+              setBaseInput([val, baseInput[1]]);
+              setShowResult(false);
+            }}
+            className="bg-inherit ml-2 rounded-md border-2 text-3xl w-1/3 md:w-20 border-black dark:border-white border-spacing-2"
+          ></input>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            fill="#000000"
+            version="1.1"
+            id="Capa_1"
+            className="w-8 h-8 m-2 dark:fill-white fill-black"
+            viewBox="0 0 340.034 340.034"
+            xmlSpace="preserve"
+          >
+            <g>
+              <g>
+                <polygon points="222.814,52.783 200.902,74.686 280.748,154.528 0,154.528 0,185.513 280.748,185.513 200.902,265.353     222.814,287.252 340.034,170.023   " />
+              </g>
+            </g>
+          </svg>
+          <input
+            type="text"
+            value={baseInput[1]}
+            onBlur={base2OnLeave}
+            onChange={(e) => {
+              const val = e.target?.value ?? "";
+              setBaseInput([baseInput[0], val]);
+              setShowResult(false);
+            }}
+            className="bg-inherit rounded-md border-2 text-3xl w-1/3 md:w-20 border-black dark:border-white border-spacing-2"
+          ></input>
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          {result != "Invalid input" && (
+            <>
+              <h2
+                className={`text-2xl font-bold my-2 ${numInput === "" || baseInput[0] === "" || baseInput[1] === "" || !showResult ? "hidden" : ""}`}
+              >
+                Result:
+              </h2>
+              <input
+                type="text"
+                value={result}
+                readOnly
+                className={`bg-inherit m-2 rounded-md border-2 w-full md:w-1/2 text-center border-black dark:border-white border-spacing-2 text-2xl font-bold ${numInput === "" || baseInput[0] === "" || baseInput[1] === "" || !showResult ? "hidden" : ""}`}
+              ></input>
+            </>
+          )}
+          {result === "Invalid input" && (
+            <h2 className="text-2xl font-bold my-2 text-red-500">
+              Invalid input
+            </h2>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}

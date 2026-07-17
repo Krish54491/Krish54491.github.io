@@ -86,7 +86,7 @@ export const ToDoList = () => {
           type="text"
           value={itemName}
           onChange={textFollow}
-          className="bg-inherit m-2 rounded-md border-2 text-3xl border-black dark:border-white border-spacing-2"
+          className="bg-inherit m-2 rounded-md border-2 text-3xl w-full md:w-1/2 border-black dark:border-white border-spacing-2"
         ></input>
         <button
           className="text-2xl bg-cyan-500 dark:bg-indigo-800 rounded-md p-2"

@@ -13,7 +13,7 @@ import { UltimateTicTacToe } from "./games/UltimateTicTacToe.jsx";
 import { Pokedex } from "./games/Pokedex.jsx";
 import { VideoTranslator } from "./tools/VideoTranslator.jsx";
 import { VideoRater } from "./tools/VideoRater.jsx";
-import { BinaryConverter } from "./tools/BetterBinaryConverter.jsx";
+import { BinaryConverter } from "./tools/BetterBinaryConverter.tsx";
 import Cards from "./components/Cards.tsx";
 import Ampharos from "./assets/Ampharos.png";
 import Comments from "./Comments.jsx";
