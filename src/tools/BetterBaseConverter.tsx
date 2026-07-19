@@ -218,10 +218,13 @@ export function BaseConverter() {
     <>
       <div className="text-center my-2">
         <h2 className="text-2xl font-bold my-2">Base Converter</h2>
-        <p className="">Convert numbers between any base</p>
+        <p className="">
+          Convert numbers between any base, click out of the input field to see
+          the result
+        </p>
       </div>
       <div className="flex flex-col text-center">
-        <div className="flex flex-row justify-start md:justify-center items-center">
+        <div className="flex flex-col justify-center items-center">
           <h3 className="text-2xl font-bold my-2">Number:</h3>
           <input
             type="text"
@@ -231,7 +234,7 @@ export function BaseConverter() {
               setNumInput(e.target?.value ?? "");
               setShowResult(false);
             }}
-            className="bg-inherit m-2 rounded-md border-2 text-3xl w-1/2 border-black dark:border-white border-spacing-2"
+            className="bg-inherit m-2 rounded-md border-2 text-3xl w-full md:w-1/2 text-center border-black dark:border-white border-spacing-2"
           ></input>
         </div>
         <h3 className="text-2xl font-bold my-2">Base:</h3>
@@ -304,6 +307,32 @@ export function BaseConverter() {
           </select>
         </div>
         <div className="flex flex-col justify-center items-center">
+          <button
+            className="mt-2 bg-inherit"
+            onClick={() => {
+              setBaseInput([baseInput[1], baseInput[0]]);
+              setResult(convert(numInput, baseInput[1], baseInput[0]));
+              setShowResult(true);
+            }}
+          >
+            <svg
+              version="1.0"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512.000000 512.000000"
+              preserveAspectRatio="xMidYMid meet"
+              className="w-8 h-8 m-2 dark:fill-white fill-black"
+            >
+              {" "}
+              <g
+                transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                stroke="none"
+              >
+                {" "}
+                <path d="M1544 4165 c-561 -431 -659 -510 -662 -533 -1 -15 1 -32 5 -38 8 -11 1256 -972 1299 -1001 30 -19 68 -6 79 26 4 13 -39 132 -125 350 -71 182 -130 333 -130 336 0 3 482 5 1070 5 1057 0 1070 0 1090 20 19 19 20 33 20 295 0 262 -1 276 -20 295 -20 20 -33 20 -1090 20 -588 0 -1070 2 -1070 5 0 3 59 154 130 334 72 181 130 334 130 340 0 15 -37 51 -53 51 -8 0 -310 -227 -673 -505z" />{" "}
+                <path d="M2952 2648 c-7 -7 -12 -21 -12 -33 0 -11 56 -163 125 -338 69 -174 126 -321 127 -327 2 -7 -334 -10 -1057 -10 -835 0 -1065 -3 -1085 -13 l-25 -13 0 -294 0 -294 25 -13 c20 -10 257 -12 1084 -13 583 0 1060 -1 1061 -2 1 -2 -56 -149 -126 -327 -71 -179 -129 -335 -129 -348 0 -35 43 -52 79 -32 38 23 1250 956 1286 990 25 24 28 32 20 53 -14 35 -1305 1026 -1337 1026 -13 0 -29 -5 -36 -12z" />{" "}
+              </g>{" "}
+            </svg>
+          </button>
           {result != "Invalid input" && (
             <>
               <h2
